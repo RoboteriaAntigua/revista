@@ -18,8 +18,8 @@ app.use('/',express.static(__dirname+'/public'));
 
 
 
-app.listen(3000,(req,res)=>{
-    console.log('servidor corriendo en el 3000')
+app.listen(8080,(req,res)=>{
+    console.log('servidor corriendo en el 8080')
 })
 
 module.exports = app;
