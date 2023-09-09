@@ -1,0 +1,108 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Introduccion a Mysql</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Introduccion a Mysql</h1>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
+
+                        <div class="principal">
+                            <h2 class="section-heading">Contenido del curso</h2>
+                            <p>Habiendo tantos sitios que ofrecen un curso de SQL ¿Porque aqui?</p>
+                            <p>&larr; Primero checa el contenido del curso en la barra lateral <br>
+                                Como ves empezamos con lo basico y en el final alcanzamos cuestiones avanzadas.</p>
+                            <p> · Vamos a hacer pasadas de aproximación, un sistema didactico que explica una misma cosa varias veces, 
+                                haciendo aproximaciones que van a ir agregando complejidad gradualmente. 
+                                Consiguiendo una inserción en conceptos avanzados para todos.
+                            </p>
+                            <p>· En otros cursos vas a notar miles de funciones, no es necesario, para ello esta el manual con sus referencias. 
+                                Aqui en cambio vamos a construir una base de datos, vamos a crear tablas, consultarlas, modificarlas, relacionarlas y administrarlas.
+                            </p>
+                            <p>· Vamos a practicar, mucho, desde el comienzo y hasta que lo hagas de manera fluida</p>
+                            <p>· Vamos a ver conceptos avanzados, que van mas allá de una tecnología, te van a servir para todo lo referido a bases de datos.</p>
+                            <p>Usaremos mysql que como este curso, es completamente gratuito, no solo en su aprendizaje, también en su uso profesional.</p>
+
+                            <h2 class="section-heading">Que es Mysql</h2>
+                            <p>· SQL stands for Structured Query Language</p>
+                            <p>· Es un servidor de base de datos relacionales. </p>
+                            <p>· Mysql, PostgreSQL, MariaDB, SQL Server son algunos de los mas populares "fabricantes" de tecnologias para su uso </p>
+                            <p>· Las bases de datos relacionales son simples tablas (como excel), relacionadas entre si y listas para las funciones CRUD </p>
+                            <p>· CRUD (Create Read Update Drop) Recuerdalo, te servira mas tarde</p>
+
+                <h2 class="section-heading">Porque debo aprender SQL</h2>
+                            <p> Muchas veces llegamos a este punto sin tener idea del porque, pero sabemos que "necesitamos" saber sobre bases de datos.</p>
+                            <p> Las DB (Data Bases) son la forma que tenemos los desarrolladores de guardar información tal como Usuarios, claves, información de contacto y todo tipo de datos como productos, precios, etc...</p>
+                            <p>Antiguamente (hace miles de años), la informacion se guardaba en archivos de texto plano y anteriormente, cuando existian los dinosaurios en targetas perforadas.</p>
+
+
+                <h2 class="section-heading">Porque MySQL</h2>
+                            <p>Mysql es de uso gratuito y muy popular, en cambio otras como SQL server (Microsoft) las podras usar localmente, pero para "activar" tu primer proyecto tendras que abonar una licencia (400 usd aprox).</p>
+                            <p> Es muy fácil de aprender y de usar profesionalmente</p>
+                            <p> Es una base de datos muy rapida.</p>
+                            <p>En la siguiente seccion, veremos como instalarlo localmente (en tu pc) y empezaras a convertirte en un Master en Datos.
+                            </p>
+                            
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/mysql-instalacion">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/"> Volver al indice</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

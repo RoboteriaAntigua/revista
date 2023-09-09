@@ -1,0 +1,220 @@
+<%- include('../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Buenas practicas en Nodejs y Javascript</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/libro_antiguo.jpg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Guia de buenas practicas en Nodejs y Javascript</h1>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../plantillas/acordeon_articulos.ejs') %>
+
+                        <div class="principal">
+                            <p> El codigo mal escrito si funciona, pero es insostenible en el tiempo, ademas de poco
+                                amistoso hacia otros integrantes del proyecto, es por eso que en Roboteria Antigua, diseñamos 
+                                esta guia de supervivencia en el mundo Javascript.
+                            <p> Esperamos que esta guia sea transformadora, tanto en el Back-End con NodeJs, como en el Front-End.</p>
+                            
+                            <p>Desde Roboteria Antigua, no creemos en que sea
+                                buena practica clasificar a las personas. El es "Junior", aquel es "Senior", ella "Semi sr", etc.
+                                Es siempre una practica degradante y pedante al mismo tiempo, no se debe perder el tiempo en aquello,
+                                el codigo puede ser criticado y mejorado, sin nesecidad de "tachar de" a nadie. 
+                            </p>
+                            <p> Sin mas preambulos a mejorar ese codigo amigx!</p>
+
+                            <h2 class="section-heading">Usar === como comparación</h2>
+                            <p>El operador == convierte los tipos antes de la comparación</p>
+                            <p>El operador === compara tipos y valores</p>
+
+<pre>
+    0 == "";        // true 
+    1 == "1";       // true 
+    1 == true;      // true
+    0 === "";       // false   
+    1 === "1";      // false   
+    1 === true;     // false   
+</pre>
+                            <br>
+
+                            <h2 class="section-heading">if anidados </h2>
+
+                            <p>No anide condicionales, es ilegible </p>
+                            
+                            <!--codigo-->
+                            
+<pre>
+    if ( funcion1 () ) {   
+       if ( funcion2() ) {   
+            if ( funcion3 () ) {   
+                if( funcion4 () ){
+                    /*                      
+                    Codigo que procede a hacer algo 
+                    */
+                }
+                else {
+                    error= "error en la funcion4";
+                }
+            }                       
+            else {                  
+                error = "error en funcion3";    
+            }                                  
+        } 
+        else {
+            error = "error en funcion2";   
+        }
+    } 
+    else {
+        error = "error en funcion1";
+    }
+</pre>
+                            <p> En su lugar, negamos!</p>
+<pre>
+    if( ! funcion1 () ) {
+        return "error en funcion1";
+    }
+    
+    if ( ! funcion2 () ) {
+        return "error en funcion2";
+    }
+    
+    if( ! funcion3 () ) {
+        return "error en funcion3";
+    }
+
+    if( ! funcion4 () ) {
+        return "error en funcion4";
+    } 
+    //Codigo que procede a hacer algo
+</pre>
+                            <h2 class="section-heading">Declaracion de variables en javascript</h2>
+
+                            <p>Deben ser al principio del script y si es posible inicializarlas </p>
+<pre>
+    let cadena="";          //string vacio
+    let numero=0;           //un entero
+    const miArreglo = [];   //arreglo
+    const miObjeto = {};    //objeto
+</pre>
+
+                            <h2 class="section-heading">Evita los switch en javascript</h2>
+                            <p>Los switch recorren todos los casos hasta encontrar un return, tambien las estructuras de tipo if else if obligan al codigo a recorrer todos 
+                                los loops. Es ilegible, ineficiente y podemos evitarlo
+                            </p>
+<pre>
+    switch (casos) {
+        case 'Monitor':
+          console.log('El precio es 5000 creditos');
+          break;
+        case 'CPU':
+          console.log('El precio es 11000 creditos');
+          break;
+        case 'Teclado':
+          console.log('El precio es500 creditos');
+          break;
+        case 'Mouse':
+          console.log('El precio es 500 creditos');
+          break;
+        case 'Chorizos':
+          console.log('El precio es 50 creditos');
+          break;
+        default:
+          console.log('Lo lamentamos, por el momento no disponemos de ...);
+      }
+</pre>
+                            <p> En su lugar podemos crear un objeto con los casos y llamarlo!</p>
+<pre>
+    const productos = {
+        "Monitor": 5000,
+        "CPU": 11000,
+        "Teclado":500,
+        "Mouse": 500,
+        "Chorizo": 50
+    }
+    console.log("El precio es: "+productos.Monitor);        //Caso de ser monitor
+
+</pre>
+
+                            <h2 class="section-heading">Sobre los buckles for y la fuga de memoria</h2>
+                            <p>Cuando hagas un buckle de este tipo, declara la variable de iteracion (en general) "i" antes 
+                                del for, para que se declare una vez y no se redeclare en cada iteracion, 
+                            </p>
+<pre>
+    for(let i=0; i&lt;longitud; i++) {
+        /*
+            codigo aqui 
+           */
+    }
+
+// En su lugar:
+    let i=0;
+        for(i=0; i&lt;longitud; i++) {
+            /*
+            codigo aqui
+            */
+        }
+</pre>  
+                <h2 class="section-heading">Mejora tu programacion orientada a objetos</h2>
+                            <p>Aplica los principios SOLID a tu POO, para ello sigue este enlace:
+                            </p>
+                            
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/">Todos los Posts &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/cursos/solid"> SOLID en la programacion orientada a objetos</a>
+                                </li> 
+                            </ul>
+                        </div>
+                        <!--Columna derecha reservada para algo-->
+                        <div class="side-derecho"></div>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

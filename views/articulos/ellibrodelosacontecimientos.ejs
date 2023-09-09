@@ -1,0 +1,113 @@
+<%- include('../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> El libro de los acontecimientos</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/libro_antiguo.jpg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>El futuro ya fue escrito, El libro de los acontecimientos de Laplace </h1>
+                                <h2 class="subheading">Determinismo, algebra y algo mas... </h2>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../plantillas/acordeon_articulos.ejs') %>
+
+                        <div class="principal">
+                            <p> Imaginemos que se arroja un lápiz, este rebota un numero finito de veces en el suelo y
+                                se quisiera saber su posición exacta cuando deje de chocar con el piso. A simple modo,
+                                parece imposible saberlo, pero si supiéramos exactamente cuales son las variables
+                                involucradas bien podría determinare su posición final.</p>
+                            <p>Esto podría considerare como determinismo, una filosofía del siglo 18 en la cual se
+                                entiende que: el futuro es potencialmente predecible a partir del presente. El pasado
+                                también podría ser "predecible" si conocemos perfectamente una situación puntual de la
+                                cadena de causalidad. </p>
+
+                            <h2 class="section-heading">¿Y si no existen sucesos aleatorios o azarosos?</h2>
+                            <p>¿Seria posible que el avance del tiempo y de todos los
+                                acontecimientos transcurridos y por transcurrir ya estén escritos? </p>
+                            <p>Y si así fuera, que posibilidades tenemos los mortales de romper con esas escrituras, de
+                                igual forma ¿es el tiempo una simple plataforma entre el antes y el después? ¿Y el libre
+                                albergador donde queda en todo esto? </p>
+
+                            <blockquote>Este libro imaginario donde estarían escritos los acontecimientos pasados y
+                                futuros, seria leído unicamente en el lenguaje que solo sabe leer el tiempo y la
+                                materia, y quienes practiquen ciencias apenas hallan empezado a des encriptar un poco de
+                                este lenguaje. </blockquote>
+
+
+                            <p>Entonces puede ser predicho la posición del lápiz luego de ser arrojado, conociendo la
+                                aceleración a la cual se lo arroja, su peso, sus materiales, su forma, de que manera de
+                                lo arroja, conociendo el material del piso, la aceleración de la gravedad y la
+                                resistencia del viento. Pequeñas letras en el inmenso “libro de Laplace”, enorme
+                                esfuerzo para nosotros. </p>
+
+                            <div style="text-align: center;">
+                                <img src="img/laplace.jpeg" alt="Demonio de Laplace">
+                            </div>
+                            <span class="caption text-muted">Pierre-Simon Laplace, matemático (Normandia 1748), cuyos
+                                aportes al álgebra todavía se enseñan en las universidades de todo el mundo, defendía
+                                esta teoría.
+
+                            </span>
+                            <p>Esta idea es a menudo llamada demonio de Laplace (y a veces superhombre de Laplace).
+                                Laplace mismo no utilizó la palabra "demonio". En cambio, se refirió a esta entidad como
+                                «Une intelligence... Rien ne serait incertain pour elle, et l'avenir, comme le passé,
+                                serait présent à ses yeux.» («Una inteligencia (...) Tal que para ella nada sería
+                                incierto y el pasado, al igual que el futuro, serían presente ante sus ojos»).
+                            </p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/">Todos los Posts &rarr;</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--Columna derecha reservada para algo-->
+                        <div class="side-derecho"></div>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

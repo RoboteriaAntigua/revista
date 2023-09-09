@@ -1,0 +1,217 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Instalacion de MySQL</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Instalacion de MySQL</h1>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
+
+                        <div class="principal">
+                           
+                            <h2 class="section-heading">Instalando Mysql en Linux</h2>
+                            <p>En distribucion como Ubuntu y Debian es tan facil como hacer:</p>
+<pre>
+    sudo apt install mysql-server
+</pre>                            
+                        
+                        <h2 class="section-heading">Instalando Mysql en Windows</h2>
+                        <p>
+                        En primer lugar, accede al sitio https://www.mysql.com/.            <br>
+                        Una vez  dentro pincha sobre el botón Downloads del menú superior.  <br>
+                        En la página de descargas haz scroll y pincha sobre el enlace MySQL Community (GPL) Downloads.<br>
+                        Ahora verás un listado con todas las opciones de descargas existentes.      <br>
+                        En este punto debes pinchar sobre MySQL Installer for Windows.              <br>
+                        En la siguiente página te encontrarás dos enlaces de descarga que aparentemente parecen el mismo, pero uno tiene un peso de unos 2,4 MB mientras que el otro pesa 428,3 MB.<br>
+                        </p>
+                        <p>
+                            El primero es un instalador que necesitará conexión a Internet para poder completar el proceso, mientras que el segundo ya incluye todo lo necesario para instalar la base de datos sin necesidad de conexión.
+                        </p>
+
+                        <p> Luego no hay lio, puedes hacer un clasico siguiente, siguiente, siguiente. </p>
+                        
+                        <h2 class="section-heading">Primeros pasos con mysql</h2>
+                        <p> Primero vamos a la consola y entramos con el simple comando: </p>
+<pre>
+    mysql
+</pre>       
+                        <p> Esta forma de entrar es solo por primera vez, dado que no hay usuarios.</p>  
+                        <p>Si ya hay usuario de mysql entra con el comando:</p>
+<pre>
+    mysql -u nombre_usuario -p
+</pre>
+                        
+                        <h2 class="section-heading">creamos un usuario</h2>
+<pre>                       
+    mysql> create user 'nombre'@'localhost' identified by 'claveQueElijas';
+    Query OK, 0 rows affected (0,10 sec)
+</pre>                    
+
+                        <h2 class="section-heading">privilegios al new user</h2>
+                        <p>
+                        CREATE: permite a los usuarios crear una base de datos o una tabla<br>
+                        SELECT: permite a los usuarios recuperar datos<br>
+                        INSERT: permite a los usuarios agregar nuevas entradas en las tablas<br>
+                        UPDATE: permite a los usuarios modificar entradas existentes en tablas<br>
+                        DELETE: permite a los usuarios borrar entradas de la tabla<br>
+                        DROP: permite a los usuarios eliminar tablas de bases de datos completas<br>
+                        ALL PRIVILEGES: Otorga todos los privilegios<br>
+                        
+                        y la sintaxis es:</p>
+<pre>
+    mysql> GRANT ALL PRIVILEGES ON * . * TO 'nuevo_usuario'@'localhost';
+</pre>               
+                        <p> Con *.* le decimos que los privilegios son sobre todas las bases de datos y todas las tablas
+                        </p>     
+                        <p> Si ya existe un usuario, no podras darte tantos permisos, dicho usuario deberá ser quien os los dé</p>
+                        
+                        <p>sintaxis general:</p>
+                        <blockquote>
+                            GRANT type_of_permission ON database_name.table_name TO 'username'@'localhost';
+                        </blockquote>
+
+                        <h3> Continuamos practicando y todo empezara a estar mas claro que el agua</h3>
+
+                        <p>revocar permisos, (luego se los volvemos a dar):</p>
+<pre>
+    REVOKE type_of_permission ON database_name.table_name FROM 'username'@'localhost';
+</pre>
+
+                        <p>Revisar los permisos de usuario:</p>
+<pre>
+    SHOW GRANTS FOR 'username'@'localhost';
+</pre>
+
+                        <p>Borrar un usuario, (luego lo volvemos a crear):</p>
+<pre>    
+    DROP USER 'username'@'localhost';
+</pre>
+
+                        <p>cerrar sesion:</p>
+<pre>
+    quit
+</pre>  
+
+                        <p>iniciar sesion con usuario pre-existente:</p>
+<pre>
+    mysql -u [username] -p
+</pre>
+                            
+                        <p>Crear la base de datos</p>
+<pre>
+    create database nombre_db;
+</pre>
+
+                    
+                        <p>Vemos las base de datos existentes:</p>
+<pre>
+    show databases;
+</pre>  
+                    
+                        <p>Borrar db (luego la volvemos a crear)</p>
+<pre>
+    drop databases nombre_db;
+</pre>  
+     
+                        <p>Seleccionamos que db usaremos:</p>
+<pre>
+    use introduccion;
+</pre>  
+                    
+      
+                        <p>Creamos una table en esta base de datos:</p>
+<pre>
+    create table mi_tabla ( columna1 int, columna2 varchar(45), columna3 varchar(60) );
+</pre>
+                     <blockquote> Seguido del nombre de la columna, tenemos el tipo de dato, varchar es para cadenas de texto de (x) caracteres como maximo</blockquote>    
+                   
+                    <p>Borramos la tabla y luego la volvemos a crear:</p> 
+<pre>
+    drop table mi_tabla;
+</pre>
+                    
+                    <p>Insertar contenido en la table table_name:</p>
+<pre>
+    insert into mi_tabla (columna1,columna2,columna3) values (23,"Hola mundo","Hola mundo 2 veces");
+</pre>
+                            
+                    <p>Finalmente vemos el hola mundo:</p>
+<pre>
+    select * from mi_tabla;
+    +----------+------------+-------------------+
+    | columna1 | columna2   | columna3          |
+    +----------+------------+-------------------+
+    |       23 | hola mundo | hola mundo2 veces |
+    +----------+------------+-------------------+
+    1 row in set (0,00 sec)
+        
+</pre>
+                           
+                            <p>Hasta aqui llegamos por hoy, menuda introduccion, en los siguientes capitulos
+                                veremos todo lo que necesitas para poder decir: I know SQL.
+                            </p>
+
+                            <iframe src="https://media.tenor.com/jZRuViU6JEYAAAAC/i-know-kung-fu-neo.gif" style="width: 250px; margin-left: 20%;"></iframe>
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/mysql-constructivas">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/mysql-introduccion"> Anterior</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

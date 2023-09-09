@@ -1,0 +1,348 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Querys constructivas Mysql</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Querys constructivas Mysql</h1>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
+
+                        <div class="principal">
+                            <h2 class="section-heading">Crear base de datos</h2>
+                            <blockquote> CREATE DATABASE databasename;</blockquote>
+                            <p>Vamos practicando:</p>
+<pre>
+    CREATE DATABASE laboratorio_mysql;
+</pre>
+                        <p>Le decimos a Mysql que vamos a usar esta base de datos (db):</p>
+<pre>
+    use laboratorio_mysql;
+</pre>
+                        
+                        <h2 class="section-heading">Crear tabla en mysql</h2>
+
+<pre>
+    create table paises( pais varchar(20), poblacion int, promedio_edad int); 
+</pre>
+                        <p>Esta es la tabla que creamos, sigamos:</p>
+                        
+<pre>
+    +---------+-----------+---------------+
+    | pais    | poblacion | promedio_edad |
+    +---------+-----------+---------------+
+</pre>
+
+<h2 class="section-heading"> Insertamos filas en la tabla paises</h2>
+<blockquote>
+    insert into table_name (col1,col2,col3) values ('dato string',int,int);
+</blockquote>
+
+<pre>
+    mysql> insert into paises (pais, poblacion, promedio_edad)
+           values ('España', 48000000,44);  
+</pre>
+
+<p>Vemos la tabla como va quedando:</p>
+<pre>
+    select * from paises;
+</pre>
+    Resultado:
+<pre>
+    +---------+-----------+---------------+
+    | pais    | poblacion | promedio_edad |
+    +---------+-----------+---------------+
+    | España  |  48000000 |            44 |
+    +---------+-----------+---------------+
+</pre>
+
+
+<p> Insertar mas datos:</p>
+<pre>
+    mysql> insert into paises (pais, poblacion, promedio_edad) 
+    values ('alemania',83000000,48),('italia',59000000,47);
+</pre>
+
+<p> Mas datos:  </p>
+<pre>
+    mysql> insert into paises (pais, poblacion, promedio_edad) 
+    values ('reino unido',67000000,41),  ('francia',68000000,42),
+    ('estados unidos',333000000,39),('japon',125000,48),
+    ('china',1412000000,39),('argentina',45000000,32);
+</pre>
+<p>Vemos la tabla como va quedando:</p>
+<pre>
+    select * from paises;
+</pre>
+    Resultado:
+<pre>
+    +----------------+------------+---------------+
+    | pais           | poblacion  | promedio_edad |
+    +----------------+------------+---------------+
+    | España         |   48000000 |            44 |
+    | alemania       |   83000000 |            48 |
+    | italia         |   59000000 |            47 |
+    | reino unido    |   67000000 |            41 |
+    | francia        |   68000000 |            42 |
+    | estados unidos |  333000000 |            39 |
+    | japon          |     125000 |            48 |
+    | china          | 1412000000 |            39 |
+    | argentina      |   45000000 |            32 |
+    +----------------+------------+---------------+
+</pre>
+    <p> Notese que la poblacion de japon fue mal ingresado por ende nesesitamos modificarlo.</p>
+
+
+<h2>Modificar o rellenar campos especificos en mysql</h2>
+<blockquote>
+    update table_name set column_name=[valor] where [condition];
+</blockquote>
+<pre>
+update paises set poblacion=125000000 where pais='japon';
+</pre>
+<p>Vemos como quedo:</p>
+<pre>
+    +----------------+------------+---------------+
+    | pais           | poblacion  | promedio_edad |
+    +----------------+------------+---------------+
+    | España         |   48000000 |            44 |
+    | alemania       |   83000000 |            48 |
+    | italia         |   59000000 |            47 |
+    | reino unido    |   67000000 |            41 |
+    | francia        |   68000000 |            42 |
+    | estados unidos |  333000000 |            39 |
+    | japon          |  125000000 |            48 |
+    | china          | 1412000000 |            39 |
+    | argentina      |   45000000 |            32 |
+    +----------------+------------+---------------+
+</pre>
+<br>
+<h2> Agregar columna nueva en mysql:</h2>
+<p>Agregamos la columna anio al final </p>
+<pre>
+    alter table paises add anio int; 
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | anio |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | NULL |
+    | alemania       |   83000000 |            48 | NULL |
+    | italia         |   59000000 |            47 | NULL |
+    | reino unido    |   67000000 |            41 | NULL |
+    | francia        |   68000000 |            42 | NULL |
+    | estados unidos |  333000000 |            39 | NULL |
+    | japon          |  125000000 |            48 | NULL |
+    | china          | 1412000000 |            39 | NULL |
+    | argentina      |   45000000 |            32 | NULL |
+    +----------------+------------+---------------+------+
+</pre> 
+    <p>Note que ingresamos mal el nombre de la columna año</p>
+
+<h2>Modificar nombre de columna en mysql </h2>   
+<blockquote> alter table rename column column_name to column_name      </blockquote>
+<pre>
+    ALTER TABLE paises RENAME COLUMN anio TO año;
++----------------+------------+---------------+------+
+| pais           | poblacion  | promedio_edad | año  |
++----------------+------------+---------------+------+
+| España         |   48000000 |            44 | NULL |
+| alemania       |   83000000 |            48 | NULL |
+| italia         |   59000000 |            47 | NULL |
+| reino unido    |   67000000 |            41 | NULL |
+| francia        |   68000000 |            42 | NULL |
+| estados unidos |  333000000 |            39 | NULL |
+| japon          |  125000000 |            48 | NULL |
+| china          | 1412000000 |            39 | NULL |
+| argentina      |   45000000 |            32 | NULL |
++----------------+------------+---------------+------+
+</pre>
+<br>
+
+<h2>Agregar nuevas filas en mysql</h2>
+<p>Vamos a ingresar unos campos con algo de redundancia, los pais Francia, España, Italia pero del año 2001.</p>
+<pre>
+    insert into paises 
+        (pais, poblacion, promedio_edad,año) 
+        values 
+        ('España',41000000,null,2001),
+        ('francia',61,null,2001),
+        ('italia',60000000,null,2001);
+</pre>
+<p>Note que toda sentencia en mysql, termina con punto y coma ';' no importa el salto de linea.</p>
+<p>La tabla queda:</p>
+<pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | NULL |
+    | alemania       |   83000000 |            48 | NULL |
+    | italia         |   59000000 |            47 | NULL |
+    | reino unido    |   67000000 |            41 | NULL |
+    | francia        |   68000000 |            42 | NULL |
+    | estados unidos |  333000000 |            39 | NULL |
+    | japon          |  125000000 |            48 | NULL |
+    | china          | 1412000000 |            39 | NULL |
+    | argentina      |   45000000 |            32 | NULL |
+    | España         |   41000000 |          NULL | 2001 |
+    | francia        |   61       |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre>
+<br>
+<h2> Modifico/agrego valores a la nueva columna en mysql:</h2>
+    <p>[update]</p>
+<blockquote>
+    update table_name set column1=algo where column_name2=algo;
+</blockquote>
+<p>  por ej: (no lo hagas)</p>
+<blockquote> 
+    update paises set poblacion=61000000 where pais='francia';
+</blockquote>
+<p>
+    Pero esto tiene un error hay 2 campos con el nombre 'francia' y solo quiero modificar
+    el correspondiente al año 2001. Solucion en siguiente tip.
+</p>
+
+<h2> Modifico/agrego valores a una columna con redundancia en mysql</h2>
+<pre>
+    update paises set poblacion=61000000 where pais='francia' and año=2001;
+
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | NULL |
+    | alemania       |   83000000 |            48 | NULL |
+    | italia         |   59000000 |            47 | NULL |
+    | reino unido    |   67000000 |            41 | NULL |
+    | francia        |   68000000 |            42 | NULL |
+    | estados unidos |  333000000 |            39 | NULL |
+    | japon          |  125000000 |            48 | NULL |
+    | china          | 1412000000 |            39 | NULL |
+    | argentina      |   45000000 |            32 | NULL |
+    | España         |   41000000 |          NULL | 2001 |
+    | francia        |   61000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre>
+<br>
+<h2>Usar desigualdad en Mysql</h2>
+<p>Vamos a completar todos los años null de los paises, con el año 2022. Para ello:</p>
+<pre>
+    update paises set año=2022 where promedio_edad > 1;
+</pre>
+<p>Note que hay varias formas de hacerlo, seguro se te ocurre otra.</p>
+Resultado:
+<pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | 2022 |
+    | alemania       |   83000000 |            48 | 2022 |
+    | italia         |   59000000 |            47 | 2022 |
+    | reino unido    |   67000000 |            41 | 2022 |
+    | francia        |   68000000 |            42 | 2022 |
+    | estados unidos |  333000000 |            39 | 2022 |
+    | japon          |  125000000 |            48 | 2022 |
+    | china          | 1412000000 |            39 | 2022 |
+    | argentina      |   45000000 |            32 | 2022 |
+    | España         |   41000000 |          NULL | 2001 |
+    | francia        |   61000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre>
+<br>
+
+<h2> Backups de tablas en mysql </h2>
+<p>Ahora vamos a hacer un backup de nuestras tablas, hay varias formas</p>
+
+<p> [insert into + create table]</p>
+
+<p>Primero hay que crear una tabla nueva, igual a nuestra tabla:</p>
+
+<pre>
+    Create paisesBackup like paises;
+</pre>                   
+    Luego hacemos el insert into:
+<blockquote>INSERT INTO tabla_nueva SELECT * FROM tabla_original;</blockquote>
+                
+<p>Otra forma:</p>
+                
+<p>[create table + insert into] </p>
+<blockquote>
+    CREATE TABLE tabla_nueva SELECT * FROM tabla_original;
+</blockquote>
+<pre>
+    CREATE TABLE bacu select * from paises;
+</pre>
+
+<p>Vemos el backup de nuestra tabla:</p>
+<pre>
+    select * from bacu;
+</pre>
+<br>
+
+<h2>Las mayusculas en mysql</h2>
+<p>Como habran visto, no hay diferencias con escribir SELECT o select. </p>
+
+                            
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/mysql-seleccion'">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/mysql-instalacion"> Atras</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

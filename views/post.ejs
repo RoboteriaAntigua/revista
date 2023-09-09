@@ -1,0 +1,145 @@
+<%- include('plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Sample Post</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header" style="background-image: url('img/subway-abandoned.jpg')">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Explora el tiempo y el espacio en Roboteria Antigua</h1>
+                                <h2 class="subheading">Los problemas se ven mas chicos desde el espacio.</h2>
+                                <span class="meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                 <!-- Main Content -->
+            <div class="flecha">
+                <!--acordeon de articulos/barra lateral-->
+                <%- include ('plantillas/acordeon_articulos.ejs') %>
+
+                <div class="principal">
+                    <div class="post-preview">
+                        <a href="/energia-centro-tierra">
+                            <h2 class="post-title">
+                                Extraccion de energia del centro de la tierra
+                            </h2>
+                            <h3 class="post-subtitle">
+                                En un comunicado dirigido a la asociacion britanica para el progreso de la ciencia,
+                                Sir Charles Parsons, en 1904, examino la posibilidad...
+                            </h3>
+                        </a>
+                        <p class="post-meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</p>
+                    </div>
+                    <hr>
+                    <div class="post-preview">
+                        <a href="/dinamitaypaz">
+                            <h2 class="post-title"> Dinamita y paz, su estrecho vinculo </h2>
+                            </h2>
+                            <h3 class="post-subtitle">
+                                "El aceite explosivo de Nobel", como se lo llamaba,
+                                era muy peligroso de manipular debido a la gran violencia y a la capriochosa
+                                produccion de su explosion
+                            </h3>
+                        </a>
+                        <p class="post-meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</p>
+                    </div>
+                    <hr>
+                    
+                    <div class="post-preview">
+                        <a href="post.html">
+                            <h2 class="post-title"> La polvora negra </h2>
+                            <h3 class="post-subtitle">
+                                En 1242, Bacon dio a conocer la composicion de la polvora, en un escrito,
+                                si bien ya existia, fue ampliamente divulgada por quien luego seria encarcelado,
+                                hambreado y vejado por la ignorancia sospechosa de sus contenporaneos...
+                            </h3>
+                        </a>
+                        <p class="post-meta">Posted by <a href="#">Marcos Ricci</a> en agosto, 2023</p>
+                    </div>
+                
+                    <hr>
+                    
+                        <div class="post-preview">
+                            <a href="/laplacedemonio">
+                                <h2 class="post-title">
+                                    El futuro ya escrito
+                                </h2>
+                                <h3 class="post-subtitle">
+                                    El futuro es potencialmente predecible a partir del presente. El pasado también podría ser "predecible" 
+                                si conocemos perfectamente una situación puntual de la cadena de causalidad. Pierre-Simon Laplace...     </h3>
+                            </a>
+                            <p class="post-meta">Posted by <a href="#"> >Marcos Ricci</a> en agosto, 2023</p>
+                                
+                            </p>
+                        </div>
+                        <hr>
+
+                        <div class="post-preview">
+                            <a href="/buenas-practicas-js">
+                                <h2 class="post-title">
+                                    Buenas practicas en Node.js y Javascript
+                                </h2>
+                                <h3 class="post-subtitle">
+                                    Esperamos que esta guia sea transformadora, tanto en el Back-End con NodeJs, como en el Front-End...    </h3>
+                            </a>
+                            <p class="post-meta">Posted by <a href="#"> >Marcos Ricci</a> en agosto, 2023</p>
+                                
+                            </p>
+                        </div>
+                        <hr>
+                        
+                    <!-- Pager -->
+                    <ul class="pager">
+                        <li class="next">
+                            <a href="#">Todos los Posts &rarr;</a>
+                        </li>
+                    </ul>
+                </div>
+            
+            <!--Columna derecha reservada para algo-->
+                <div class="side-derecho"></div>
+            </div>
+
+
+            <hr>
+            
+            <!--footer-->
+            <%- include('plantillas/pies.ejs') %>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
