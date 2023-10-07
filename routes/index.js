@@ -25,6 +25,7 @@ router.get('/contact', (req,res)=>{
 router.get('/energia-centro-tierra', (req,res)=>{   res.render('articulos/energia-centro-tierra');})
 router.get('/dinamitaypaz', (req,res)=>{            res.render('articulos/dinamitaypaz');}) 
 router.get('/laplacedemonio', (req,res)=>{          res.render('articulos/ellibrodelosacontecimientos');})
+router.get('/pucaras', (req,res)=>{            res.render('articulos/pucara-ñandus');}) 
 
 /********************** Fin de Post interesantes ******************************************************************* */
 

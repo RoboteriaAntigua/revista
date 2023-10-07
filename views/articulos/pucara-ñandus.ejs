@@ -1,0 +1,80 @@
+<%- include('../plantillas/cabecera.ejs') %>
+    <meta name="description" content="">
+    <title>  Roboteria Antigua </title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header" style="background-image: url('img/pucara-nandu.jpg'); filter: grayscale(100%);">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Grandes Pilotos Sudamericanos </h1>
+                                <h2 class="subheading">Sobre los pilotos de Pucara en la llanura pampeana Argentina</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                    <!-- Main Content -->
+                    <div class="flecha">
+                        <!--acordeon articulos/barra lateral-->
+                        <%- include('../plantillas/acordeon_articulos.ejs') %>
+
+                            <div class="principal">
+                                <!-- h2 -> class="section-heading"
+                                     pre -> Codigo
+                                     blockcuote -> notas
+                                     imagen -> class="img-responsive"
+
+                                    -->
+                                <h2 class="section-heading"> Entrevista con un veterano de Malvinas</h2>
+                                <p>-Piratear: Así se llamaba a todo acto que este fuera de las reglas y las normas de la aviación. Explica H. Ricciardelli en una entrevista con la gente de la revista Old-Robotics, o en español Roboteria Antigua.</p>
+                                <p>Así una vez siendo jóvenes dieron unas cuantas vueltas demás alrededor de la basílica de Lujan, entre otros tantos vuelos que no estaban programados. Recuerda que esta vez parece que algún oficial los vio, porque al aterrizar, los esperaba una fuerte reprimenda.</p>
+                                <p>-Pero también en plena llanura pampeana, hemos perseguido a los ñandús, para probar su increíble velocidad -continua Ricciardelli frente a la mirada de atónitos. Una vez la reprimenda llego cuando un jefe encontró restos de pasturas en un ala de Pucara. Prueba de que se estuvo 'pirateando' con vuelos rasantes, a pocos metros (quizás 1 metro) del suelo.</p>
+                                <blockquote>Pero dichas osadías no fueron en vano, han sido una experiencia perfecta para eludir a los radares Ingleses en Malvinas. Destrezas que le costaron a Gran Bretaña 31 buques de ultima tecnología.</blockquote>
+                                <p>-¿Eran jóvenes y se divertían con los vuelos rasantes?. -Preguntó quien escribe. Horacio se puso serio, respondió que no…  -así se mataron unos cuantos.</p>
+                                <p>Unos años después en la Antártida, charlando con un miembro de la base Soviética, Ricciardelli le preguntó a un Mayor: ¿Como es la fuerza aérea soviética? El 'Ruso' con mirada fría le dijo que grande: 5000 pilotos graduados por año en 5 escuelas de aviación. Horacio le respondía (humildemente) que Argentina disponía de una sola escuela de aviación y unos 100 pilotos anuales. El 'Ruso' conocía de los pilotos Argentinos y mencionó que eran conocidas las maniobras rasantes que ellos hacían. Su fama les precedía. </p>
+                                    <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/">Todos los Posts &rarr;</a>
+                                </li>
+                            </ul>
+                            </div>
+
+                        <!--Columna derecha reservada para algo-->
+                         <div class="side-derecho"></div>
+                    </div>   
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

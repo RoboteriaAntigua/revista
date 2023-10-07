@@ -1,0 +1,75 @@
+<%- include('../plantillas/cabecera.ejs') %>
+    <meta name="description" content="">
+    <title>  Roboteria Antigua </title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header" style="background-image: url('img/centro-tierra.jpg')">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1> Titulo </h1>
+                                <h2 class="subheading">Proyecto de mas de un siglo </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                    <!-- Main Content -->
+                    <div class="flecha">
+                        <!--acordeon articulos/barra lateral-->
+                        <%- include('../plantillas/acordeon_articulos.ejs') %>
+
+                            <div class="principal">
+                                <!-- h2 -> class="section-heading"
+                                     pre -> Codigo
+                                     blockcuote -> notas
+                                     imagen -> class="img-responsive"
+
+                                    -->
+
+
+                                    <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/">Todos los Posts &rarr;</a>
+                                </li>
+                            </ul>
+                            </div>
+
+                        <!--Columna derecha reservada para algo-->
+                         <div class="side-derecho"></div>
+                    </div>   
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
