@@ -10,7 +10,7 @@ router.get('/index', (req,res)=>{
 })
 
 router.get('/about', (req,res)=>{
-    res.render('about.ejs');
+    res.render('about.ejs',{enconstruccion:''});
 })
 
 router.get('/post', (req,res)=>{
@@ -38,12 +38,12 @@ router.get('/buenas-practicas-js', (req,res)=>{
 router.get('/mysql-introduccion', (req,res)=>{ res.render('cursos/mysql/mysql-introduccion');   })
 router.get('/mysql-instalacion',  (req,res)=>{ res.render('cursos/mysql/mysql-instalacion');    })
 router.get('/mysql-constructivas',(req,res)=>{ res.render('cursos/mysql/mysql-constructivas');  })
-router.get('/mysql-seleccion',    (req,res)=>{ res.render('cursos/mysql/mysql-seleccion');      })
-router.get('/mysql-destructivas', (req,res)=>{ res.render('cursos/mysql/mysql-destructivas');   })
-router.get('/mysql-dba',          (req,res)=>{ res.render('cursos/mysql/mysql-dba');            })
-router.get('/mysql-relacion-1a1', (req,res)=>{ res.render('cursos/mysql/mysql-relacion-1a1');   })
-router.get('/mysql-relacion-1aM', (req,res)=>{ res.render('cursos/mysql/mysql-relacion-1aM');   })
-router.get('/mysql-relacion-MaM', (req,res)=>{ res.render('cursos/mysql/mysql-relacion-MaM');   })
+router.get('/mysql-seleccion',    (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-destructivas', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-dba',          (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-relacion-1a1', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-relacion-1aM', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-relacion-MaM', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
 
 /*******************************fin de curso de mysql **************************************/
 
