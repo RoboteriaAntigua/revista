@@ -45,14 +45,14 @@
                             <a href="/kubernetes-conceptos#alta-disponibilidad">&rarr;   Alta disponiblidad </a> <br>
                             <a href="/kubernetes-conceptos#vertical">&rarr;   Escalado vertical </a><br>
                             <a href="/kubernetes-conceptos#horizontal">&rarr;   Escalado horizontal </a><br>
-                            <a href="/kubernetes-conceptos#Clusters">&rarr;   Clusters de computadoras </a><br>
+                            <a href="/kubernetes-conceptos#clusters">&rarr;   Clusters de computadoras </a><br>
                             <a href="/kubernetes-conceptos#pods">&rarr;   Pods </a><br>
                             <a href="/kubernetes-conceptos#nodes">&rarr;   Nodes </a><br>
                             <a href="/kubernetes-conceptos#deployments">&rarr;   Deployments </a><br>
                             <a href="/kubernetes-conceptos#control-plane">&rarr;   Control plane node </a><br>
                             <a href="/kubernetes-conceptos#etcd">&rarr;   etcd </a><br>
                             <a href="/kubernetes-conceptos#services">&rarr;   services </a><br>
-                            <a href="/kubernetes-conceptos#namespaces">&rarr;   namespaces </a><br>
+                            <a href="/kubernetes-conceptos#minikube">&rarr;   Minikube </a><br>
 
                             <a name="k8"></a>
                             <h2 class="section-heading">K8</h2>
@@ -80,42 +80,70 @@
                             </div>
 
                             <p>O sea, en lugar de que todas las tareas las haga un solo servidor, las tareas están divididas entre muchas instancias de servidor, por ejemplo: En lugar de un servidor de 8gb de ram, con 8 núcleos de procesador, podemos dividir las tareas en 8 maquinas virtuales de 1 gb de RAM y 1 nucleo cada una.</p>
-                            <p> El escalado horizontal en kubernetes se refiere a 'instancias' que son apps o bases de datos, nuestras corriendo en un contenedor docker. Por fuera del mundo k8, el escalado horizontal puede, referirse a aumentar el numero de servidores físicos no solo virtuales.</p>
+                            <p> El escalado horizontal en kubernetes se refiere a 'instancias' que puede ser una app (por ejemplo) nuestra, corriendo en un contenedor docker. Por fuera del mundo k8, el escalado horizontal puede, referirse a aumentar el numero de servidores físicos no solo virtuales.</p>
                             
                             <a name="clusters"></a>
                             <h2 class="section-heading">Clusters de computadoras</h2>
-                            <p></p>
+                            <p>(Clusters=Racimos). Grupo de ordenadores unidos mediante red u otras conexiones, de tal forma que son vistos con un super-ordenador</p>
+                            <p>Es un tema interesante y amplio para abordar, que tuvo sus origenes en la nasa en los 80's. El proyecto <b>Beowulf</b> resulto de la union de una decena de computadoras a travez de sus placas de red.</p>
+                            <p>Un pc (maestro) distribuye la tarea a los exclavos, en el mundo de Kubernetes hablamos de un Control plane node y de workers. (Si Parece que entre exclavos y workers hay varias similitudes) </p>
 
                             <a name="pods"></a>
                             <h2 class="section-heading">Pods</h2>
-                            <p></p>
+                            <p>Son una abstraccion Kubernetes que representan uno o mas contenedores de aplicaciones.</p>
+                            <p>Mas claro: nuestra app de nuestro sitio web, seria una imagen docker, que corre en un pode.</p>
+                            <ul>
+                                <li>Un pod son instancias de uno o mas contenedores.</li>
+                                <li>Los pods son la unidad atómica de kubernetes</li>
+                                <li>Cada pod corre en un Node.</li>
+                                <li>Los pods son mortales, tienen un ciclo de vida</li>
+                            </ul>        
+                        
                             
                             <a name="nodes"></a>
                             <h2 class="section-heading"> Nodes en kubernetes</h2>
-                            <p></p>
+                            <p> Los nodes tienen 3 cosas Kubelet, docker y pods</p>
+                            <p> Docker ya sabemos que es, el pod seria nuestra app 'dockerizada' y el Kubelet es el director dentro del node.</p>
                             <div class="containerK8" >
                                 <img  src="/img/k8-imgs/nodes.svg">
                             </div>
 
+
                             <a name="deployments"> </a>
                             <h2 class="section-heading">Deployments</h2>
-                            <p></p>
+                            <p>Un deployment es un despliegue de nuestra app. Es cuando nuestra app sale al mundo y va a ser visible por el resto de los homo sapiens. (U otras especies pensantes si las hubiese)</p>
 
                             <a name="control-plane"> </a>
                             <h2 class="section-heading">Control plane</h2>
-                            <p></p>
+                            <p>Son nodos con la funcion de Coordinan todo el cluster: 
+                                Mantenimiento planeado, actualizaciones, escalar aplicaciones, etc.</p>
+                            <p>O sea, el cerebro detras de los nodos esclavos que ejecutan la app </p>
+                            <div class="containerK8">
+                                <img src="/img/k8-imgs/controlPlane.svg">
+                            </div>
 
                             <a name="etcd"></a>
                             <h2 class="section-heading">ETCD</h2>
-                            <p></p>
+                            <p>Son nodos de configuracion que permiten la consistencia en el servicio.
+                                Son pares key:value que cuando contratas un servicio como google cloud, OpenShift(red hat) o digital ocean, el etcd 
+                                no lo ves, lo manejan ellos.</p>
 
                             <a name="services"></a>
                             <h2 class="section-heading">Services</h2>
-                            <p></p>
+                            <p> En kubernetes los pods, no son visibles desde el exterior del cluster. Los servicios son quienes los exponen hacia el mundo exterior.
+                                Ejemplo: Un service que expone nuestras 3 instancias de nuestro sitio web (nuestro cluster), hacia el mundo exterior.
+                                Son los End Point hacia el afuera el mundo externo.
+                                Un servicio es una abstraccion kubernetes el cual define un conjunto de pods y politicas sobre como acceder a ellos.
+                                Son definidos en YAML o JSON.</p>
 
-                            <a name="namespaces"></a>
-                            <h2 class="section-heading">Namespaces</h2>
-                            <p></p>
+                            <div class="containerK8">
+                                <img src="/img/k8-imgs/services.png">
+                            </div>
+
+                            <a name="minikube"></a>
+                            <h2 class="section-heading">Minikube</h2>
+                            <p> Maquina virtual ligera, para pruebas locales (para produccion usar computadoras alojadas en la nube)</p>
+                            <p> Es la herramienta gratuita de la que nos serviremos para nuestras practicas en nuestro curso </p>
 
                            
                             

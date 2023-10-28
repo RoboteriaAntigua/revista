@@ -1,0 +1,174 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="primer practica de Kubernetes">
+    <title> Minikube practica de Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Primer practica de Kubernetes desde cero</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Minikube:</h2>
+                            <p> Maquina virtual ligera, para pruebas locales (para produccion usar computadoras alojadas en la nube)
+
+                                Es la herramienta gratuita de la que nos serviremos para nuestras practicas en nuestro curso </p>
+                            <p>
+
+                            <h3>Repaso:</h3>
+                          <br> 
+                            cada node tiene:    <br>
+                            <ul>
+                                <li>Un kubelet (para comunicarce con el control plane)</li>
+                                <li>Un container runtime (docker)</li>
+                                <li>pods</li>
+                            </ul><br>
+                                                        
+                                            
+                            Cada pod tiene:<br>
+                            <ul>
+                                <li>Una o mas aplicaciones contenerizadas (app propia + imagenes + volume)</li>
+                                <li>Un ciclo de vida.</li>
+                                <li>Un volume (para persistir data)</li>
+                            </ul><br>
+
+                            Un Cluster kubernetes tiene:              
+                            <ul>
+                                <li>nodes</li>
+                                <li>control plane</li>
+                            </ul>     <br>    
+
+                            <h3 >Ejemplo que corre una app en minikube </h3>
+
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+
+                            <p>Creamos una Implementacion/deployment que contiene un webserver</p>
+<pre>kubectl create deployment 
+    hello-node 
+    --image=registry.k8s.io/e2e-test-images/agnhost:2.39 
+    -- /agnhost netexec 
+    --http-port=8080    </pre>
+
+                            <blockquote> Lo que acabamos de hacer es descargar una imagen existente (hello-node), hecha por la gente de Kubernetes y desplegarla localmente. En el futuro la imagen la crearas tú mismo, con tu propia aplicación</blockquote>
+                            
+                            <span>No esperes entender toda la linea ahora, continuemos practicando:</span>
+
+                            <p> vemos las deployment:</p>
+                            <pre>kubectl get deployments </pre>
+
+<p> vemos los pods </p>
+<pre>  kubectl get pods 
+    NAME                          READY   STATUS    RESTARTS   AGE  
+    hello-node-7b87cd5f68-vnrr6   1/1     Running   0          11m  
+</pre> 
+
+<p> ver los eventos del cluster: </p>
+<pre>  kubectl get events </pre>
+
+<p> ver la configuración  de kubectl </p>
+<pre>  kubectl config view </pre>
+
+<p> borrar una implementación /deployment (también se puede hacer desde el dashboard con el comando: 'minikube dashboard')</p>
+<pre>  kubectl delete -n default deployment hello-node </pre>
+                            
+
+                                <h2 class="section-heading"> Correr la app hello-node y verla en el navegador</h2>
+
+                                <p>Volvemos a desplegar la app:</p>
+<pre>kubectl create deployment 
+    hello-node 
+    --image=registry.k8s.io/e2e-test-images/agnhost:2.39 
+    -- /agnhost netexec 
+    --http-port=8080    </pre>
+
+                                <p>Los pods por defecto son accesibles solo dentro del cluster kubernetes, 
+                                   para se accesibles por fuera debes exponer la implementación de pods como un kubernetes services: </p>
+<pre>kubectl expose deployment hello-node --port=8080 --type=LoadBalancer</pre>
+                                    <blockquote>type=LoadBalancer es un balanceador de trafico web. Repartirá las solicitudes http entre nuestros Workers. En este caso en 1 pod.</blockquote>
+                            
+                            
+                                <p> Vemos los servicios: </p>
+                                <pre>kubectl get services</pre>
+                            
+                                <p>Usar el servicio, (en este ejemplo con minikube, un proveedor cloud nos daria otra forma)</p>
+                                <pre>minikube service hello-node</pre>
+
+                                <p>Vamos a la ip que nos indica y la abrimos con el navegador. Felicidades diste tu primer paso en Kubernetes. Falta andar, pero se anda rápido con la guia adecuada</p>
+
+                                <p>clean todo lo hecho hasta ahora:</p>
+<pre>
+    kubectl delete service hello-node      #borra el servicio
+    kubectl delete deployment hello-node   #borra la implementacion
+    minikube stop                          #detiene minikube
+    minikube delete                        #borra la vm de minikube
+</pre>
+                                    <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-services">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-minikube#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-conceptos"> Atras</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
