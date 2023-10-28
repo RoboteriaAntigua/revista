@@ -21,7 +21,7 @@ h6 {
   font-weight: 800;
 }
 a {
-  color: #ddc8c8;
+  color: #0085A1;
 }
 a:hover,
 a:focus {
@@ -574,5 +574,24 @@ pre {
     overflow-x: scroll;
     overflow-y: scroll;
     width: 90%;
+  }
+}
+.imgContainer {
+  text-align: center;
+}
+.imgContainer img {
+  border-radius: 12px;
+  box-shadow: 1px 1px 10px #ddc8c8;
+}
+.containerK8 {
+  background-color: #ddc8c8;
+  border-radius: 12px;
+  box-shadow: 1px 1px 10px burlywood;
+  width: 50%;
+  margin-left: 15%;
+}
+@media (max-width: 700px) {
+  .containerK8 {
+    width: 100%;
   }
 }

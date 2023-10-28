@@ -10,8 +10,6 @@ body {
 }
 
 
-
-
 // Typography
 p {
 	line-height: 1.5;
@@ -32,7 +30,7 @@ h6 {
 }
 
 a {
-	color: @blanco;
+	color: @theme-primary;
 	&:hover,
 	&:focus {
 		color: @theme-primary;
@@ -650,4 +648,24 @@ blockquote {
 
 	}
 	
+}
+
+.imgContainer  {
+	text-align: center;
+}
+
+.imgContainer img {
+	border-radius: 12px;
+	box-shadow: 1px 1px 10px @blanco;
+}
+
+.containerK8 {
+	background-color: @blanco; 
+	border-radius: 12px; 
+	box-shadow: 1px 1px 10px @principal; 
+	width: 50%; 
+	margin-left:15%;
+	@media(max-width:700px){
+		width: 100%;
+	}
 }

@@ -48,6 +48,19 @@ router.get('/mysql-relacion-MaM', (req,res)=>{ res.render('about.ejs',{enconstru
 
 /*******************************fin de curso de mysql **************************************/
 
+/******************************** curso de kubernetes **************************************/
+router.get('/kubernetes-introduccion', (req,res)=>{res.render('cursos/kubernetes/kub-introduccion.ejs' ); });
+router.get('/kubernetes-conceptos', (req,res)=>{res.render('cursos/kubernetes/kub-conceptos.ejs' ); });
+router.get('/kubernetes-minikube', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-services', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-exponer-app-node', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-solucionar-problemas', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-multiples-instancias', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-updates-no-down', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-deployment-pods', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+/******************************** fin curso de kubernetes **************************************/
+
+
 module.exports = router;
 
 

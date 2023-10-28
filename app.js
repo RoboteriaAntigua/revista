@@ -19,7 +19,7 @@ app.use('/',express.static(__dirname+'/public'));
 
 
 app.listen(8080,(req,res)=>{
-    console.log('servidor corriendo en el 8080')
+    console.log('servidor corriendo en el http://localhost:8080')
 })
 
 module.exports = app;

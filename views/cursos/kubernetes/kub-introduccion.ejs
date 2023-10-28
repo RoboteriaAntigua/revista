@@ -1,0 +1,105 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="curso gratis de kubernetes en español">
+    <title> Introduccion a Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Curso de Kubernetes</h1>
+                                <span class="meta">Gratuito y completo en español</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                           
+                            <h2 class="section-heading">Introducción al curso</h2>
+                            <p>Este curso, ademas de ser completamente gratuito, contiene practicas en todas las entregas, las cuales se realizan con herramientas gratuitas que estan a tu disposicion en la web. </p>
+                            <p>A tu izquierda (o arriba en móviles) veras un panel con el indice del curso, que como ves, es bastante abarcativo.</p>
+                            <p>A tu derecha un panel general del sitio Roboteria Antigua (Al pie en móviles)</p>
+                            <p>El método de enseñanza que se aplica es el de aproximaciones, o sea, iremos haciendo 'pasadas' que van por la superficie de los conceptos, luego se repiten las pasadas agregando mas detalles. Es por esa razon que te sugerimos seguir adelante cuando no entiendes algo, continua, que con la practica se ira poniendo claro.</p>
+                            
+                            <h2 class="section-heading">Conocimientos previos</h2>
+                            <p>Sera necesario para este curso algunos conocimientos mínimos de Dockers y un poco de Linux</p>
+                            
+                            <h2 class="section-heading">Que es Kubernetes</h2>
+                            <p> Kubernetes es un orquestador de contenedores. Esa es la definición aunque no dice mucho. </p>
+                            <p>Digamos que es un programa que permite que un servidor este siempre 'arriba'. Aún cuando este se este actualizando, reiniciando, con mucho uso (saturado de solicitudes) y también cuando el servidor tiene un problema fatal.</p>
+                            <p>Por ejemplo servidores web, bases de datos, apis, etc.</p>
+                            <h3>¿Como lo hace?</h3>
+                            <p>Cuando un sitio web, tiene a 5 millones de usuarios conectados (o 50 millones) no hay servidor que aguante, por mas memoria y procesador que tenga. Lo que hace kubernetes es crear muchos (o tantos como hagan falta) mini servidores para atender la demanda. Entonces la tarea de kubernetes es manejar este cluster de computadoras virtuales.</p>
+                            <p>Asi pues podemos decir, que <b>kubernetes crea instancias de contenedores dockers corriendo una app, un base de datos o el servicio que haga falta</b></b></p>
+                            <p>Cuando una de estas instancias cae, redirige el tráfico a otra, cuando hay que actualizar, crea nuevas instancias, las actualiza y luego borra las instancias no actualizadas, asi siempre da lo que se llama 'servicio de alta disponibilidad'</p>
+                            <p>Kubernetes fue creado en el epicentro de google, y es la razon por la cual, el buscador de google permanece 'arriba' desde hace 30 años.</p>
+                            
+                            <blockquote> El nombre Kubernetes hace referencia a StarTreck y una raza alienígena llamada los Borg, los cuales tenían naves espaciales en forma de cubos, y la característica de auto-replicarse por toda la galaxia.</blockquote>
+                            <p> En la siguiente sección veremos algunos conceptos fundacionales para entender bien de que estamos hablando. Ahora empecemos por instalar las herramientas necesarias.</p>
+
+                            <h2 class="section-heading">Instalación</h2>
+                            <p>La instalación consiste en instalar la herramienta kubectl que nos permitirá acceder a todos los recursos de kubernetes</p>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/">Instalación en macOs &rarr;</a> <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">Instalación en Linux &rarr;</a>    <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/">Instalación en Windows &rarr;</a> <br>
+
+                            <p> Y la herramienta minikube que nos permitirá hacer pruebas locales</p>
+                            <a href="https://minikube.sigs.k8s.io/docs/start/">Instalar minikube &rarr;</a><br><br>
+                            <blockquote>No te recomendamos instalar guiándote desde otra fuente que no sea la pagina oficial de kubernetes, porque esta se actualiza bastante y los posts y cursos no tan seguido (a veces nunca)</blockquote>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-conceptos">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/"> Home</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

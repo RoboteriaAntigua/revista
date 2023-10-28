@@ -1,0 +1,161 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="conceptos de kubernetes">
+    <title> Conceptos de Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Conceptos de Kubernetes</h1>
+                                <span class="meta">Glosario</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Glosario de Conceptos</h2>
+
+                            <p> Te recomendamos hacer una lectura rápida de este artículo, sin detenerte en algo que no entiendas, pues lo veremos y practicaremos mas adelante</p>
+                            <p> También te sera útil esta pagina para revivir conceptos cada vez que lo necesites</p>
+
+
+                            <h2 class="section-heading">Glosario</h2>
+                            <a href="/kubernetes-conceptos#k8">&rarr; K8</a><br>
+                            <a href="/kubernetes-conceptos#alta-disponibilidad">&rarr;   Alta disponiblidad </a> <br>
+                            <a href="/kubernetes-conceptos#vertical">&rarr;   Escalado vertical </a><br>
+                            <a href="/kubernetes-conceptos#horizontal">&rarr;   Escalado horizontal </a><br>
+                            <a href="/kubernetes-conceptos#Clusters">&rarr;   Clusters de computadoras </a><br>
+                            <a href="/kubernetes-conceptos#pods">&rarr;   Pods </a><br>
+                            <a href="/kubernetes-conceptos#nodes">&rarr;   Nodes </a><br>
+                            <a href="/kubernetes-conceptos#deployments">&rarr;   Deployments </a><br>
+                            <a href="/kubernetes-conceptos#control-plane">&rarr;   Control plane node </a><br>
+                            <a href="/kubernetes-conceptos#etcd">&rarr;   etcd </a><br>
+                            <a href="/kubernetes-conceptos#services">&rarr;   services </a><br>
+                            <a href="/kubernetes-conceptos#namespaces">&rarr;   namespaces </a><br>
+
+                            <a name="k8"></a>
+                            <h2 class="section-heading">K8</h2>
+                            <p> Es la abreviatura de Kubernetes, k + 8 letras</p>
+
+                            <a name="alta-disponibilidad"></a>
+                            <h2 class="section-heading">Alta disponibilidad</h2>
+                            <p>Es una servicio que siempre esta disponible. Las 24 horas sin un segundo de interrupciones</p>
+                            <p>Sin K8 (Kubernetes), una empresa debe parar su sitio web, o un servidor de base de datos, para hacer una actualización o cualquier cambio. 
+                                Con k8 eso no es necesario.
+                            </p>
+                            <p>Cuando hay un error y un servidor 'cae', k8 redirige el trafico a otras instancias de ese servidor, mata a la instancia caída, y genera una en su reemplazo.</p>
+                             <p><b>Casos de uso:</b> Sitios de ventas online, que venden todo el dia y noche, formularios gubernamentales, sitios de películas, de juegos, etc </p>
+
+                            <a name="vertical"></a>
+                            <h2 class="section-heading">Escalado vertical</h2>
+                            <p>Cuando un servidor (ya sea web, base de datos u otros), queda saturado de trabajo, genera cortes y mala experiencia de usuario. El escalado vertical consiste en aumentar la capacidad física del mismo, mas memoria RAM, mejor procesador, + recursos físicos. </p>
+
+                            <a name="horizontal"></a>
+                            <h2 class="section-heading">Escalado horizontal</h2>
+                            <p> Es cuando en lugar de aumentar los recursos de un cpu, aumentamos el numero de replicas del servicio</p>
+                            
+                            <div class="imgContainer">
+                                <img src="/img/escalado.jpeg">
+                            </div>
+
+                            <p>O sea, en lugar de que todas las tareas las haga un solo servidor, las tareas están divididas entre muchas instancias de servidor, por ejemplo: En lugar de un servidor de 8gb de ram, con 8 núcleos de procesador, podemos dividir las tareas en 8 maquinas virtuales de 1 gb de RAM y 1 nucleo cada una.</p>
+                            <p> El escalado horizontal en kubernetes se refiere a 'instancias' que son apps o bases de datos, nuestras corriendo en un contenedor docker. Por fuera del mundo k8, el escalado horizontal puede, referirse a aumentar el numero de servidores físicos no solo virtuales.</p>
+                            
+                            <a name="clusters"></a>
+                            <h2 class="section-heading">Clusters de computadoras</h2>
+                            <p></p>
+
+                            <a name="pods"></a>
+                            <h2 class="section-heading">Pods</h2>
+                            <p></p>
+                            
+                            <a name="nodes"></a>
+                            <h2 class="section-heading"> Nodes en kubernetes</h2>
+                            <p></p>
+                            <div class="containerK8" >
+                                <img  src="/img/k8-imgs/nodes.svg">
+                            </div>
+
+                            <a name="deployments"> </a>
+                            <h2 class="section-heading">Deployments</h2>
+                            <p></p>
+
+                            <a name="control-plane"> </a>
+                            <h2 class="section-heading">Control plane</h2>
+                            <p></p>
+
+                            <a name="etcd"></a>
+                            <h2 class="section-heading">ETCD</h2>
+                            <p></p>
+
+                            <a name="services"></a>
+                            <h2 class="section-heading">Services</h2>
+                            <p></p>
+
+                            <a name="namespaces"></a>
+                            <h2 class="section-heading">Namespaces</h2>
+                            <p></p>
+
+                           
+                            
+                            <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-minikube">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-conceptos#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-introduccion"> &larr; Anterior</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
