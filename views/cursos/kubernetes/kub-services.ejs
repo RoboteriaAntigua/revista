@@ -1,0 +1,154 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="que son los servicios en kubernetes">
+    <title> Servicios en Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Servicios en Kubernetes</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Profundizamos la teoría</h2>
+
+                            <h3>Los pods </h3>
+                            <ul>
+                                <li>Los pods son mortales. Tienen un ciclo de vida</li>
+                                <li>Cuando un node muere, los pods también.</li>
+                                <li>Cada pod en el cluster tiene un ip único</li>
+                                <li>A pesar de que cada pod tiene un único ip, estos ip no son expuestos fuera del cluster, para ello son los services</li>
+                            </ul>
+
+                            <h3>Servicios</h3>
+                            <ul>
+                                <li>Un servicio es una abstracción kubernetes el cual define un conjunto de pods y políticas sobre como acceder a ellos.</li>
+                                <li>Son definidos en YAML o JSON.</li>
+                                <li>Un servicio es la abstracción que permite a los pods morir y replicarse sin impactar en tu aplicación</li>
+                            </ul>
+
+                            <h3>Formas en las que se expone un servicio:</h3>
+                            <ul>
+                                <li>NodePort. Son accesibles afuera del cluster usando <nodeIp>:<NodePort>. Usando NAt</li>
+                                <li>LoadBalancer - Son accesibles afuera del cluster en la nube actual, y se le asigna una ip fija al service.</li>
+                                <li>ClusterIp (default) son accesibles adentro del cluster unicamente.</li>
+                            </ul>
+
+
+                            <h2 class="section-heading">Practica de servicios en kubernetes</h2>
+
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> Iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start  </pre> 
+                            <p>(Si no esta instalado lo instala) </p>
+
+                            <p>Creammos una implementacion(deployment)/instancia llamada prueba</p>
+                            <blockquote>(en este caso voy a usar la imagen de prueba que provee kubernetes (pero podemos usar una propia)</blockquote>
+<pre>
+    kubectl create deployment prueba 
+    --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+</pre>
+
+                            <p>inmediatamente veamos las deployments: </p>
+<pre>
+    kubectl get deployments
+    NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+    prueba   0/1     1            0           2m50s    
+</pre>
+                            <p>veamos los pods existentes:</p>
+                            <pre>kubectl get pods</pre>
+
+                            <p>ver los servicios: </p>
+                            <pre>kubectl get services </pre>    
+                            <p>(cuando iniciamos minikube se crea el servicio kuberntes por default)</p>
+
+                            <p>Exponemos la app, creando un servicio</p>
+<pre>kubectl expose deployment prueba --type="LoadBalancer" --port=8080</pre>  
+
+<p>Volvemos a ver los servicios:</p>
+<pre>kubectl get services</pre>
+<pre>
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)         
+kubernetes   ClusterIP      10.96.0.1        <none>        443/TCP         
+prueba       LoadBalancer   10.109.154.192   <pending>     8080:31778/TCP 
+</pre>
+
+<p>Corramos el servicio con Minikube</p>
+<pre>minikube service prueba</pre>
+
+<p>Listo abrir el enlace que aparecera en el navegador, deberiamos ver un: </p>
+<span>Hello Kubernetes bootcamp! | Running on: prueba-5d9bb7dcd6-5d8b6 | v=1</span>
+
+<p>Limpiamos todo lo hecho:</p>
+<pre>
+    kubectl delete deployment prueba
+    kubectl delete service prueba
+</pre>
+
+                             <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-exponer-app-node">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-services#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-minikube"> Anterior</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
