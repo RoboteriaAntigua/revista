@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');             //para el sitemap
+
 
 router.get('/', (req,res)=>{
     res.render('./index');
@@ -20,6 +22,12 @@ router.get('/post', (req,res)=>{
 router.get('/contact', (req,res)=>{
     res.render('contact');
 })
+
+//Sitemap
+router.get('/sitemap', (req,res)=>{   
+        res.sendFile(__dirname + '/sitemap.txt'); 
+})
+
 
 /********************** Post interesantes ******************************************************************* */
 router.get('/energia-centro-tierra', (req,res)=>{   res.render('articulos/energia-centro-tierra');})
@@ -49,15 +57,15 @@ router.get('/mysql-relacion-MaM', (req,res)=>{ res.render('about.ejs',{enconstru
 /*******************************fin de curso de mysql **************************************/
 
 /******************************** curso de kubernetes **************************************/
-router.get('/kubernetes-introduccion', (req,res)=>{res.render('cursos/kubernetes/kub-introduccion.ejs' ); });
-router.get('/kubernetes-conceptos', (req,res)=>{res.render('cursos/kubernetes/kub-conceptos.ejs' ); });
-router.get('/kubernetes-minikube', (req,res)=>{res.render('cursos/kubernetes/kub-minikube.ejs' ); });
-router.get('/kubernetes-services', (req,res)=>{res.render('cursos/kubernetes/kub-services.ejs' ); });
-router.get('/kubernetes-exponer-app-node', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
-router.get('/kubernetes-solucionar-problemas', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
-router.get('/kubernetes-multiples-instancias', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
-router.get('/kubernetes-updates-no-down', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
-router.get('/kubernetes-deployment-pods', (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-introduccion'           , (req,res)=>{res.render('cursos/kubernetes/kub-introduccion.ejs' ); });
+router.get('/kubernetes-conceptos'              , (req,res)=>{res.render('cursos/kubernetes/kub-conceptos.ejs' ); });
+router.get('/kubernetes-minikube'               , (req,res)=>{res.render('cursos/kubernetes/kub-minikube.ejs' ); });
+router.get('/kubernetes-services'               , (req,res)=>{res.render('cursos/kubernetes/kub-services.ejs' ); });
+router.get('/kubernetes-exponer-app-node'       , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-solucionar-problemas'   , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-multiples-instancias'   , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-updates-no-down'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-deployment-pods'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
 /******************************** fin curso de kubernetes **************************************/
 
 
