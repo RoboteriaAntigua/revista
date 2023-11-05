@@ -18,8 +18,8 @@ app.use('/',express.static(__dirname+'/public'));
 
 
 
-app.listen(8080,(req,res)=>{
-    console.log('servidor corriendo en el http://localhost:8080')
+app.listen(3000,(req,res)=>{
+    console.log('servidor corriendo en el http://localhost:3000')
 })
 
 module.exports = app;
