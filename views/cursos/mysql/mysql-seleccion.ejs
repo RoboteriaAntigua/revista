@@ -1,0 +1,362 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Querys de selección en mysql</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Consultas a nuestras tablas (querys de selección)</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
+
+                        <div class="principal">
+                            <h2 class="section-heading">Contenido</h2>
+                            <a href="/mysql-seleccion#tabla">&rarr; Ver una tabla completa</a><br>
+                            <a href="/mysql-seleccion#col">&rarr; Ver una columna </a><br>
+                            <a href="/mysql-seleccion#distinct">&rarr; Ver los campos no repetidos (distinct)</a><br>
+                            <a href="/mysql-seleccion#count">&rarr; Contando campos de una columna</a><br>
+                            <a href="/mysql-seleccion#where">&rarr; where</a><br>
+                            <a href="/mysql-seleccion#like">&rarr; Like</a><br>
+                            <a href="/mysql-seleccion#in">&rarr; In</a><br>
+                            <a href="/mysql-seleccion#and">&rarr; And, Or y Not</a><br>
+                            <a href="/mysql-seleccion#lr">&rarr; Left and Right</a><br>
+                            <a href="/mysql-seleccion#orderby">&rarr; Order by</a><br>
+                            <a href="/mysql-seleccion#top">&rarr; Select top o limit</a><br>
+                            <a href="/mysql-seleccion#join">&rarr; Join</a><br>
+                            
+
+                            <a name="tabla"></a>
+                            <h2 class="section-heading">Ver una tabla en Mysql</h2>
+                            <p> En principio, nos logueamos, con nuestro nombre de usuario</p>
+                            <pre>mysql -u nombre_usuario -p</pre>
+                            <p> En el capítulo anterior, hemos creado una base de datos (Laboratorio_mysql) y una tabla (paises)</p>
+                            <p>Digamosle a mysql que vamos a trabajar con dicha base de datos</p>
+                            <pre>use Laboratorio_mysql</pre>
+                            <p>Finalmente, veamos nuestra tabla:</p>
+                            <pre>select * from paises;</pre>
+                            
+                            <a name="col"></a>
+                            <h2 class="section-heading">Ver una columna de una tabla</h2>
+                            
+<pre>
+    select pais from paises;
+</pre>
+<pre>
+    +----------------+
+    | pais           |
+    +----------------+
+    | España         |
+    | alemania       |
+    | italia         |
+    | reino unido    |
+    | francia        |
+    | estados unidos |
+    | japon          |
+    | china          |
+    | argentina      |
+    | España         |
+    | francia        |
+    | italia         |
+    +----------------+    
+</pre>
+
+                            <a name="distinct"></a>
+                            <h2 class="section-heading">Ver la columna sin campos repetidos</h2>   
+<pre>
+    select distinct pais from paises;
+</pre>
+<pre>
+    +----------------+
+    | pais           |
+    +----------------+
+    | España         |
+    | alemania       |
+    | italia         |
+    | reino unido    |
+    | francia        |
+    | estados unidos |
+    | japon          |
+    | china          |
+    | argentina      |
+    +----------------+
+</pre>
+
+<a name="count"></a>
+<h2 class="section-heading">Contando campos de una columna:  </h2> 
+<p> COUNT(COLUMNA) </p>
+
+<pre>    select count(pais) from paises;</pre>
+<pre>
++-------------+
+| count(pais) |
++-------------+
+|          12 |
++-------------+
+</pre>
+    
+<p> Contando campos no repetidos de una columna: count(distinct pais) from paises;</p>
+    <pre>    select count(distinct pais) from paises; </pre>
+<pre>    
++----------------------+
+| count(distinct pais) |
++----------------------+
+|                    9 |
++----------------------+
+</pre>
+
+<a name="where"></a>
+<h2 class="section-heading">Filtrar la query con where </h2> 
+<pre> mysql> select pais from paises
+    -> where promedio_edad&lt;40;
+</pre>
+<pre>
++----------------+
+| pais           |
++----------------+
+| estados unidos |
+| china          |
+| argentina      |
++----------------+
+</pre>
+<h2>Operadores: </h2>
+    <ul>
+        <li>&gt;= Mayor o igual </li>
+        <li>&lt;= Menor o igual</li>
+        <li>&lt; &gt; Menor que o mayor que</li>
+        <li>!= Desigual que </li>
+        <li>BETWEEN 	Entre cierto rango</li>
+        <li>LIKE 	búsqueda de un patron </li>
+        <li>IN 	Para especificar multiples valores de una columna</li>
+    </ul>      
+                	
+<a name="like"></a>
+<h2 class="section-heading">Filtrar usando like</h2> 	
+<p>Seleccion las filas cuyos paises comiencen con la letra c</p>
+<pre>select * from paises where pais like 'c%';</pre>
+<pre>
++-------+------------+---------------+------+
+| pais  | poblacion  | promedio_edad | año  |
++-------+------------+---------------+------+
+| china | 1412000000 |            39 | 2022 |
++-------+------------+---------------+------+
+</pre>
+
+<a name="in"></a>
+<h2 class="section-heading">Filtrar usando where in</h2> 	
+<p>Seleccion las filas cuyos paises comiencen con la letra c</p>
+<pre>select * from paises where pais like 'c%';</pre>
+<p>  Seleccion filas donde una columna tiene cierto valor de campo</p>
+    <pre> SELECT * FROM paises WHERE pais IN ('España','francia');  </pre>
+<pre>    
++---------+-----------+---------------+------+
+| pais    | poblacion | promedio_edad | año  |
++---------+-----------+---------------+------+
+| España  |  48000000 |            44 | NULL |
+| francia |  68000000 |            42 | NULL |
+| España  |  41000000 |          NULL | 2001 |
+| francia |  61000000 |          NULL | 2001 |
++---------+-----------+---------------+------+
+</pre>
+
+<a name="and"></a>
+<h2 class="section-heading">and, or, not</h2> 
+<pre>   SELECT * FROM paises WHERE pais='francia' AND (año=2001 OR pais=2022);</pre>
+<pre>
++---------+-----------+---------------+------+
+| pais    | poblacion | promedio_edad | año  |
++---------+-----------+---------------+------+
+| francia |  61000000 |          NULL | 2001 |
++---------+-----------+---------------+------+
+</pre>
+<p>Not es lo mismo que usar != por ejemplo:</p>
+<pre>select * from paises where not pais='francia' 
+    and pais !="italia" and not pais='españa';</pre>
+
+
+<a name="lr"></a>
+<h2 class="section-heading">Left y Right</h2> 
+<p>Seria mostrar solo los primeros n caracteres de una columna(left) o los ultimos(right)</p>
+
+<h2>Left</h2>
+
+<pre> mysql> select pais,left(pais,2) from paises;</pre>
+<pre>
++----------------+--------------+
+| pais           | left(pais,2) |
++----------------+--------------+
+| España         | Es           |
+| alemania       | al           |
+| italia         | it           |
+| reino unido    | re           |
+| francia        | fr           |
+| estados unidos | es           |
+| japon          | ja           |
+| china          | ch           |
+| argentina      | ar           |
+| España         | Es           |
+| francia        | fr           |
+| italia         | it           |
+| brasil         | br           |
+| brasil         | br           |
++----------------+--------------+
+</pre>
+
+<a name="orderby"></a>
+<h2 class="section-heading">Order by</h2> 
+<p>    Ordena alfabéticamente o numéricamente una query o de menor a mayor.
+        El [order by] va a lo ultimo de una query, por ejemplo:</p>
+
+<pre>        select * from paises where pais !='china' order by poblacion;</pre>
+<pre>
++----------------+-----------+---------------+------+
+| pais           | poblacion | promedio_edad | año  |
++----------------+-----------+---------------+------+
+| España         |  41000000 |          NULL | 2001 |
+| argentina      |  45000000 |            32 | NULL |
+| España         |  48000000 |            44 | NULL |
+| italia         |  59000000 |            47 | NULL |
+| italia         |  60000000 |          NULL | 2001 |
+| francia        |  61000000 |          NULL | 2001 |
+| reino unido    |  67000000 |            41 | NULL |
+| francia        |  68000000 |            42 | NULL |
+| alemania       |  83000000 |            48 | NULL |
+| japon          | 125000000 |            48 | NULL |
+| estados unidos | 333000000 |            39 | NULL |
++----------------+-----------+---------------+------+
+</pre>
+<h2>Descendiente seria igual agregando 'desc'</h2>
+<pre>select * from paises where pais !='china' order by poblacion desc;</pre>
+
+
+<a name="top"></a>
+<h2 class="section-heading">select top o limit</h2> 
+
+  <p>
+        Limita o pone tope a las salidas.</p>
+    <blockquote>
+        Sql server -> select top <br>
+        mysql -> limit, de esta manera:
+    </blockquote>
+
+<pre> select * from paises where pais='España' limit 1;   </pre>
+    <p>  "En este ejemplo muestra un solo resultado para España"   </p>
+<pre> 
++---------+-----------+---------------+------+
+| pais    | poblacion | promedio_edad | año  |
++---------+-----------+---------------+------+
+| España  |  48000000 |            44 | NULL |
++---------+-----------+---------------+------+
+</pre>  
+
+<a name="join"></a>
+<h2 class="section-heading">Join</h2> 
+<p> Es para hacer un capítulo aparte, en resumen: 
+       Dadas dos tablas con una columna igual, por ejemplo paises y la tabla autos:</p>
+
+
+<p>Dada la tabla 'autos' de esta forma:</p>
+<pre>mysql> select * from autos;</pre>
+<pre>
++-----------+----------+---------+------+
+| marca     | pais     | modelo  | año  |
++-----------+----------+---------+------+
+| volswagen | alemania | gol     | 1990 |
+| fiat      | italia   | uno     | 1995 |
+| renault   | francia  | chamade | 1998 |
++-----------+----------+---------+------+
+</pre>
+<p> Por ejemplo:</p>
+<pre>
+select paises.pais, autos.marca, paises.poblacion from paises inner join
+autos on paises.pais=autos.pais;
+</pre>
+<pre>
++----------+-----------+-----------+
+| pais     | marca     | poblacion |
++----------+-----------+-----------+
+| alemania | volswagen |  83000000 |
+| italia   | fiat      |  59000000 |
+| francia  | renault   |  68000000 |
+| francia  | renault   |  61000000 |
+| italia   | fiat      |  60000000 |
++----------+-----------+-----------+
+</pre>
+
+<p>        ej2: </p>
+<p>Mostrar marca y promedio de edad, a donde, el pais de la tabla autos sea el mismo que el pais de la tabla paises</p>
+<pre>
+   select autos.marca, paises.promedio_edad from autos inner join paises
+    on autos.pais=paises.pais;
+</pre>
+<pre>
++-----------+---------------+
+| marca     | promedio_edad |
++-----------+---------------+
+| volswagen |            48 |
+| fiat      |            47 |
+| renault   |            42 |
+| renault   |             0 |
+| fiat      |             0 |
++-----------+---------------+
+</pre>
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/mysql-destructivas'">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/mysql-constructivas"> Atras</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
