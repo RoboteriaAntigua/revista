@@ -1,0 +1,334 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Corriendo una aplicación nodejs en kubernetes">
+    <title> Corriendo una aplicación nodejs en kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Corriendo una aplicación nodejs en kubernetes</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Corriendo nuestra app en kubernetes</h2>
+
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+                            
+                            <h2 class="section-heading">La app que vamos a montar con minikube</h2>
+                            <pre>npm init</pre>
+                            <p>index.js</p>
+<pre>
+var fs = require('fs');
+var http = require('http');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  console.log("servidor corriendo");
+  res.write("aqui renderizando codigo html, 
+            fundamental para ello las cabeceras (writeHead) ");
+  res.end();
+}).listen(3000);
+</pre>
+
+<p>Si queres podes correr la app que vos quieras, no necesariamente debe ser nodejs</p>
+
+<h2 class="section-heading">Dockerhub</h2>
+<p>Es un sitio, similar a github, en el que vamos a encontrar o subir todo tipo de imagenes docker. 
+    Desde sistemas operativos con unas pocas dependencias, hasta aplicaciones completas. Aqui vamos a subir nuestra app, para luego poder correrla con kubernetes.</p>
+<p>Pasos a seguir:</p>
+
+    <a href="/kubernetes-exponer-app-node#dockerhub">        &rarr; Registrarse en dockerhub  </a><br>
+    <a href="/kubernetes-exponer-app-node#dockerfile">        &rarr; crear un archivo dockerfile </a><br>
+    <a href="/kubernetes-exponer-app-node#build">        &rarr; Construimos nuestra imagen (build a image)  </a><br>
+    <a href="/kubernetes-exponer-app-node#prueba">       &rarr; Una pequeña prueba, con nuestra imagen. </a><br>
+    <a href="/kubernetes-exponer-app-node#push ">        &rarr; Subimos nuestra imagen a dockerhub. (push)  </a><br>
+    <a href="/kubernetes-exponer-app-node#deployment ">  &rarr; Creamos nuestro deployment  </a><br>
+    <a href="/kubernetes-exponer-app-node#service">      &rarr; Creamos un servicio para exponerla  </a><br>
+    <a href="/kubernetes-exponer-app-node#deployar">     &rarr; Corremos nuestra app usando Kubernetes  </a><br>
+    
+
+<a name="dockerhub"></a>
+<h2 class="section-heading">Registrarse en dockerhub</h2>
+<p>Vamos a hacernos una cuenta gratuita en dockerhub. Fundamental hoy dia en la vida de todo programador:</p>
+<a href="https://hub.docker.com/signup">&rarr; Registrarce en dockerhub</a>
+<p>Una vez confirmado el usuario de dockerhub, vamos a crear un repositorio.</p>
+<p>En dockerhub, vamos a crear un repositorio, &rarr; repository/create a repository</p>
+<p>Elegimos un nombre: en vez de roboteriaantigua/nodeapp (que ya existe) podria ser
+    supersaya/nodeapp o como bien les venga en gana.</p>
+
+
+
+<a name="dockerfile"></a>
+<h2 class="section-heading">Creamos un archivo dockerfile</h2>
+<p>Este archivo usará docker para ejecutar ciertas acciones en la imagen que va a correr:</p>
+<p>creamos un archivo con este nombre en la carpeta de nuestra app: dockerfile (sin extension)</p>
+<p>Estructura del dockerfile</p>
+<pre>
+FROM node:alpine
+WORKDIR /usr/src/app
+COPY package.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["node", "index.js"]
+</pre>
+<p>Explicación:</p>
+<p>FROM node:alpine &rarr; Es una imagen linux muy ligera (180mb) con nodejs,  que docker va a buscar en dockerhub y descargar</p>
+<p>WORKDIR /usr/src/app &rarr; ruta en la imagen montada en la que vamos a trabajar.  </p>
+<p>COPY package.json ./  copio nuestro package.json en la ruta que definimos en el punto anterior </p>
+<p>RUN npm install &rarr; Instalo las dependencias de nuestro proyecto en la imagen alpine</p>
+<p>COPY . . &rarr; copio el contenido de esta ruta (.) en la ruta actual de la imagen</p>
+<p>EXPOSE 3000 &rarr; Abro el puerto 3000 de la app dockerizada</p>
+<p>CMD ["node","index.js"] &rarr; Corre el comando node index.js dentro de la imagen. (si tu app se llama distinto reemplazarla)</p>
+
+<a name="build"></a>
+<h2 class="section-heading">Construimos nuestra imagen <br>(build)</h2>
+<p>Creamos la imagen: </p>
+<pre>docker build -t nombre_imagen hubicacionDockerFile</pre>
+<blockquote>Esta imagen es una imagen alpine + nodejs + nuestra app y dependencias</blockquote>
+<p>Reemplazar hubicacionDockerFile por . o por la ruta a donde tengamos el dockerfile que ya hemos creado</p>
+
+
+<a name="prueba"></a>
+<h2 class="section-heading">Veamos si todo marcha bien</h2>
+<p>Veamos las imagenes que tenemos disponibles:</p>
+<pre>docker images</pre>
+<pre>
+    REPOSITORY                    TAG           SIZE
+    jenkins/jenkins               alpine        250MB
+    redis/redis-stack             latest        779MB
+    redis                         6.2-alpine    28MB
+    mongo                         latest        748MB
+    roboteriaantigua/nodeapp      latest        181MB
+    roboteriaantigua/prueba       latest        181MB
+    gcr.io/k8s-minikube/kicbase   v0.0.39       1.05GB
+</pre>
+<p>En este caso yo use el nombre roboteriaantigua/nodeapp que es el mismo nombre que el repositorio dockerhub, lo cual será necesario</p>
+<p>Tambien tengo otras imagenes creadas (jenkins, redis, mongo)</p>
+
+<p>Corremos el contenedor, redirigiendo el trafico del puerto 3000 de docker al 3001 de nuestra pc</p>
+<pre>docker run -d -p 3001:3000 roboteriaantigua/nodeapp </pre>
+<blockquote>Reemplaze roboteriaantigua/nodeapp por el nombre que ud ha escogido</blockquote>
+<p>Abri tu navegador y en la barra de navegación escribi: localhost:3001 </p>
+<pre style="background-color: white; color:black">
+    aqui renderizando codigo html, 
+    fundamental para ello las cabeceras (writeHead) 
+</pre>
+<p>Ese mensaje es el que muestra nuestra app web. y es el que veremos en el navegador</p>
+<p> Con esto podemos saber que hasta aqui, va todo bien. Tenemos nuestra imagen (node+linux+app), corriendo en docker.</p>
+<p>Una vez terminada la prueba y visto que funciona borramos el contenedor (no lo vamos a dejar corriendo 'al cuete' (cohete), como decimos en Córdoba)</p>
+<pre>docker ps</pre>
+<p>Obtenemos el container id (solo los 3 primeros caracteres)</p>
+<pre>docker rm -f container_id</pre>
+
+
+
+<a name="push"></a>
+<h2 class="section-heading">Subimos la imagen a dockerhub <br>(push)</h2>
+<pre>login -u tuUsuario -p tuClave></pre>
+<pre>docker push roboteriaantigua/nodeapp</pre>
+<p>Reemplaza roboteriaantigua/nodeapp por el nombre de tu imagen y de tu repositorio dockerhub</p>
+<p>Nuestra primer imagen en dockerhub!</p>
+
+<a name="deployment"></a>
+<h2 class="section-heading">Creamos nuestra deployment <br>(despliegue)</h2>
+<p>Si bien hemos visto otras formas de desplegar una app con el cli de kubernetes (kubectl create deployment) esta vez vamos a hacerlo de otra forma, 
+    creamos un archivo llamado deployment.yaml
+</p>
+<p>deployment.yml</p>
+<pre>
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nodeapp-deployment
+      labels:
+        app: nodeapp
+    spec:
+      replicas: 2
+      selector: 
+        matchLabels:
+          app: nodeapp
+      template: 
+        metadata: 
+          labels:
+            app: nodeapp
+        spec:
+          containers:
+          - name: nodeserver
+            image: roboteriaantigua/nodeapp:latest
+            ports:
+            - containerPort: 3000
+</pre>
+<p>reemplazamos el nombre de la imagen por el nombre del repo y de la imagen que ustedes han elegido.
+</p>
+<blockquote>note que el puerto de expose del deployment.yml debe coincidir con el de nuestra app (3000 en este caso)</blockquote>
+
+<a name="deployar"></a>
+<p>Aplicamos el despliegue (deployment)</p>
+<pre>
+    kubectl apply -f deployment.yml
+</pre>
+
+
+<a name="service"></a>
+<h2 class="section-heading">Creamos un servicio <br>para exponer la app</h2>
+<p>Esta vez en lugar de usar el CLI de kubernetes (kubectl create service) vamos a hacerlo de otra manera, creamos un archivo llamado 'myservice.yml'</p>
+<p>myservice.yml :</p>
+<pre>
+    apiVersion: v1
+    kind: Service
+    metadata: 
+      name: nodeapp-service
+    spec:
+      selector:
+        app: nodeapp
+      type: LoadBalancer
+      ports:
+      - protocol: TCP
+        port: 5000
+        targetPort: 3000
+        nodePort: 31110
+</pre>
+<blockquote>Note que el targetport debe coincidir con el del deployment.yml el 3000 en este caso</blockquote>
+<p>creo el servicio:</p>
+<pre>
+    kubectl apply -f myservice.yml
+</pre>
+
+<p>Vemos los servicios</p>
+<pre>kubectl get services</pre>
+<pre>
+    NAME              TYPE              PORT(S)         
+    kubernetes        ClusterIP         443/TCP         
+    nodeapp-service   LoadBalancer      5000:31110/TCP  
+</pre>
+
+<p>Ejecutamos el servicio con minikube:</p>
+<pre> minikube service nodeapp-service</pre>
+
+<p>El resultado en consola es este:</p>
+<pre>
+|-----------|-----------------|-------------|---------------------------|
+| NAMESPACE |      NAME       | TARGET PORT |            URL            |
+|-----------|-----------------|-------------|---------------------------|
+| default   | nodeapp-service |        5000 | http://192.168.49.2:31110 |
+|-----------|-----------------|-------------|---------------------------|
+ Opening service default/nodeapp-service in default browser...
+</pre>
+
+<p>y en el navegador:</p>
+<pre style="background-color: white; color:black">
+    aqui renderizando codigo html, 
+    fundamental para ello las cabeceras (writeHead) </pre>
+
+<p>Felicitaciones! veamos todo lo que has hecho: creaste una imagen docker con tu app, la desplegaste en kubernetes sin usar kubectl, lo que es mas automatizable y mejor practica, y de plus, observa una cosa:
+    el deployment.yml dice spec:replicas: 2 o sea, creaste dos pods!
+</p>
+<pre>kubectl get pods</pre>
+<pre>
+    NAME                                  READY   STATUS    
+    nodeapp-deployment-7499b6749d-d28w6   1/1     Running   
+    nodeapp-deployment-7499b6749d-klslb   1/1     Running   
+</pre>
+
+<p> Matemos un pod:</p>
+<pre>kubectl delete pod nombre_del_pod</pre>
+<p>En este caso podria ser:</p>
+<pre>kubectl delete pod nodeapp-deployment-7499b6749d-d28w6</pre>
+
+<p>Veamos que esta ocurriendo:</p>
+<pre>kubectl get pods</pre>
+<pre>
+    NAME                                  READY   STATUS       
+    nodeapp-deployment-7499b6749d-b5bhq   1/1     Running      
+    nodeapp-deployment-7499b6749d-d28w6   1/1     Terminating  
+    nodeapp-deployment-7499b6749d-klslb   1/1     Running      
+</pre>
+<p>Automáticamente cuando terminamos un pod, kubernetes crea uno nuevo! y como eran dos pods, el servicio nunca cayo.</p>
+<p>¿Vamos entendiendo para que es kubernetes?</p>
+<iframe src="https://giphy.com/embed/6ozwFj8FgXGAo" width="250px" margin-left="20%" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+<p>Limpiemos nuestras huellas:</p>
+<pre>   kubectl get deployments</pre>
+<pre>
+    kubectl delete deployment nodeapp-deployment
+</pre>
+<pre>   kubectl get services</pre>
+<pre>
+    kubectl delete service nodeapp-service
+</pre>
+<pre>   docker ps</pre>
+<pre>
+    docker stop container_id
+</pre>
+<pre>   minikube stop</pre>
+
+                             <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-solucionar-problemas">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-solucionar-problemas#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-introduccion"> Home</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
