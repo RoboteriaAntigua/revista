@@ -1,0 +1,212 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Como entrar a un contenedor en kubernetes. solucionar problemas en kubernetes. Troubleshooting on kubernetes. Ver logs. Ejecutar comandos en el terminal. ">
+    <title> Solucionar problemas en kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Como entrar a un contenedor en kubernetes. </h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Solucionar problemas (Troubleshooting)</h2>
+
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+
+                            <p>Vamos a crear un despliegue (deployment) en base a una imagen que he creado y subido a Dockerhub.  </p>
+                            <pre> kubectl create deployment prueba --image=roboteriaantigua/nodeapp:latest </pre>
+                            <blockquote>Puedes crear y subir una imagen con tu propia app. Para saber como: (<a href="https://old-robotics.com.ar/kubernetes-exponer-app-node#arriba">ver &rarr;</a> )</blockquote>
+
+                            <p>Vemos los pods:</p>
+                            <pre>kubectl get pods</pre>
+<pre>
+    NAME                     READY   STATUS    RESTARTS   AGE
+    prueba-bc9d59776-jmx48   1/1     Running   0          4m56s
+</pre>
+
+
+<p>Vamos a crear una variable con el nombre del contenedor</p>
+<pre> export POD_NAME="prueba-bc9d59776-jmx48" </pre>
+<blockquote>Reemplaza "prueba-bc9d59776-jmx48" por el NAME de tu pod</blockquote>
+
+<p>ver los detalles del pod:</p>
+<pre>
+    kubectl describe pod $POD_NAME
+</pre>
+<pre>
+    Name:             prueba-bc9d59776-jmx48
+    Namespace:        default
+    Priority:         0
+    Service Account:  default
+    Node:             minikube/192.168.49.2
+    Start Time:       Thu, 16 Nov 2023 11:34:29 -0300
+    Labels:           app=prueba
+                      pod-template-hash=bc9d59776
+    Annotations:      <none>
+    Status:           Running
+    IP:               10.244.0.54
+    IPs:
+      IP:           10.244.0.54
+    Controlled By:  ReplicaSet/prueba-bc9d59776
+    Containers:
+      nodeapp:
+        Container ID:   docker://2b9a363975b4e07dc4c1
+        Image:          roboteriaantigua/nodeapp:latest
+        ...
+</pre>
+
+<p>Ejecutar un comando en el contenedor de tu pod</p>
+<pre>
+    kubectl exec "$POD_NAME" -- echo hola borgs
+</pre>
+<pre>
+    hola borgs
+</pre>
+
+<p>Vemos el contenido de nuestro contenedor ejecutandoce en este pod</p>
+<pre>
+    kubectl exec -ti  $POD_NAME -- ls
+</pre>
+
+<pre>
+    dockerfile         notas-generales    package.json
+    index.js           package-lock.json
+</pre>
+
+<p>Vemos nuestro index.js</p>
+<pre>kubectl exec -ti  $POD_NAME -- cat index.js</pre>
+<pre>
+    var fs = require('fs');
+    var http = require('http');
+    
+    
+    http.createServer(function (req, res) {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      console.log("servidor corriendo");
+      res.write("aqui renderizando codigo html, 
+        fundamental para ello las cabeceras (writeHead) ");
+      res.end();
+    }).listen(3000);
+</pre>
+
+<p>Entramos al contenedor! </p>
+<pre>
+kubectl exec -ti  $POD_NAME -- su
+/usr/src/app # 
+</pre>
+
+<p>Instalamos vim y curl en el contenedor</p>
+<pre>   apk add vim
+</pre>
+<pre>   apk add curl</pre>
+<blockquote>apk add en linux alpine es similar a apt install de ubuntu o yum </blockquote>
+
+<p>Como ya esta en uso el puerto 3000 en este contenedor editamos el index.js y cambiamos el puerto al 3001 o al que te guste. También editamos la salida de texto.</p>
+<pre>  vim index.js</pre>
+<p>Debería verse asi:</p>
+<pre>
+    http.createServer(function (req, res) {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        console.log("servidor corriendo");
+        res.write("aqui hola desde el contenedor que esta adentro del pod");
+        res.end();
+      }).listen(3009);
+</pre>
+
+<p>Corremos la app adentro del contenedor:</p>
+<pre>
+    node index.js -&
+</pre>
+
+<blockquote> El -& es para seguir usando la consola mientras corre </blockquote>
+
+<p>Vemos nuestra app web con el comando curl (a falta de navegador)</p>
+<pre>   curl http://localhost:3009</pre>
+<pre>
+    aqui hola desde el contenedor que esta adentro del pod
+</pre>
+
+<p>Felicidades! ya sabes entrar y correr comandos en los pods de nuestros cluster kubernetes, lo que sera en extremo útil para solucionar todo tipo de problemas</p>
+
+<p>Salimos el pod</p>
+<pre>   exit</pre>
+
+<p>Limpiamos lo echo</p>
+<pre>   kubectl get deployments</pre>
+<pre> 
+    NAME     READY   UP-TO-DATE   AVAILABLE   AGE    
+    prueba   1/1     1            1           76m
+</pre>
+<pre>   kubectl delete deployment prueba</pre>
+<pre>   minikube stop</pre>
+
+                             <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-multiples-instancias#arriba">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-solucionar-problemas#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-exponer-app-node#arriba"> Atras</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
