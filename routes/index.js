@@ -63,7 +63,8 @@ router.get('/kubernetes-minikube'               , (req,res)=>{res.render('cursos
 router.get('/kubernetes-services'               , (req,res)=>{res.render('cursos/kubernetes/kub-services.ejs' ); });
 router.get('/kubernetes-exponer-app-node'       , (req,res)=>{res.render('cursos/kubernetes/kub-deploy-node.ejs'); });
 router.get('/kubernetes-solucionar-problemas'   , (req,res)=>{res.render('cursos/kubernetes/kub-solucionar.ejs' ); });
-router.get('/kubernetes-multiples-instancias'   , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-labels'                 , (req,res)=>{res.render('cursos/kubernetes/kub-alias.ejs' ); });
+router.get('/kubernetes-multiples-instancias'   , (req,res)=>{res.render('cursos/kubernetes/kub-multiples-instancias.ejs'); });
 router.get('/kubernetes-updates-no-down'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
 router.get('/kubernetes-deployment-pods'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
 /******************************** fin curso de kubernetes **************************************/

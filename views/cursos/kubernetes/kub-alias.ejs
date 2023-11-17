@@ -1,0 +1,118 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Labels en kubernetes. Como usar un alias para un pod. Agregar un label a un pod.">
+    <title> Labels en Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Que son las labels en Kubernetes</h1>
+                                <span class="meta">Actualizado en diciembre de 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Labels</h2>
+
+                            <p> En principio igual que siempre:
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+                            
+                            <p>Vamos a crear un despliegue (deployment) en base a una imagen que he creado y subido a Dockerhub.  </p>
+                            <pre> kubectl create deployment prueba --image=roboteriaantigua/nodeapp:latest </pre>
+                            <blockquote>Puedes crear y subir una imagen con tu propia app. Para saber como: (<a href="https://old-robotics.com.ar/kubernetes-exponer-app-node#arriba">ver &rarr;</a> )</blockquote>
+
+                            <p>Vemos los pods:</p>
+                            <pre>kubectl get pods</pre>
+<pre>
+    NAME                     READY   STATUS    RESTARTS   AGE
+    prueba-bc9d59776-jmx48   1/1     Running   0          4m56s
+</pre>
+
+
+<p>Vamos a crear una etiqueta a nuestro pod</p>
+<pre>   kubectl label pods prueba-bc9d59776-6zzrm etiqueta=l1</pre>
+<blockquote>Reemplaza "prueba-bc9d59776-jmx48" por el NAME de tu pod</blockquote>
+
+<p>Ahora podemos referenciar a nuestros pods con esa etiqueta</p>
+<pre>   kubectl get pods -l etiqueta=l1 </pre>
+<p>Tambien: </p>
+<pre>   kubectl describe pods -l etiqueta=l1</pre>
+
+<blockquote>Al contrario que los nombres y UIDs, las etiquetas no garantizan la unicidad. En general, se espera que muchos objetos compartan la(s) misma(s) etiqueta(s).</blockquote>
+
+<p>Las etiquetas facilitan la gestión de aplicaciones, pero no son obligatorias</p>
+
+<p>Limpiamos todo:</p>
+<pre>   kubectl delete deployment prueba</pre>
+
+
+
+
+
+                             <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-multiples-instancias#arriba">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-labels#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-solucionar-problemas#arriba"> Atras</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

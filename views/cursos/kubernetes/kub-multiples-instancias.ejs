@@ -1,0 +1,205 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Multiples instancias en kubernetes. Replicas. Escalamiento horizontal en kubernetes. Elasticidad">
+    <title> Corriendo multiples instancias</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Multiples instancias en Kubernetes</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Escalado horizontal</h2>
+                            <p> Es cuando en lugar de aumentar los recursos de un cpu, aumentamos el numero servidores. </p>
+                            <p>En conjunto con el concepto de elasticidad podemos aprovechar mejor nuestros recursos.</p> 
+                            <h3>Elasticidad</h3>
+                            <p>Se trata de la capacidad de aumentar o disminuir el numero de servidores acorde a la demanda que tengamos. De esta forma no desperdiciamos supercomputadoras en tareas simples, o servidores con poco tráfico.</p>
+                            <p>Es posible el tráfico de un sitio web, sea irregular. Ciertos días crece a decenas de miles de usuarios, y otros días baja un puñado de seres. El escalado horizontal con elasticidad nos soluciona este tipo de dificultades, creando o terminando nuevos pods. Tantos como hiciera falta. Llamemoslos replicas.</p>                         
+                            <div class="imgContainer">
+                                <img src="/img/escalado.jpeg">
+                            </div>
+
+                            <h2 class="section-heading">Scaling up</h2>
+                            <p>(aumentar el numero de replicas)</p>
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+
+                            <p>Vamos a crear un despliegue (deployment) en base a una imagen que he creado y subido a Dockerhub.  </p>
+                            <pre> kubectl create deployment prueba --image=roboteriaantigua/nodeapp:latest </pre>
+                            
+                            <p>Veamos en detalle:</p>
+                            <pre>   kubectl get deployments</pre>
+<pre>
+    NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+    prueba   1/1     1            0           9s
+</pre>
+
+<ul>
+    <li>NAME          - lists the names of the Deployments in the cluster.</li>
+    <li>READY         - muestra la proporción CURRENT/DESIRED(deseadas) replicas</li>
+    <li>UP-TO-DATE    - Muestra el numero de replicas que han sido actualizadas para lograr el estado deseado</li>
+    <li>AVAILABLE     - Cuantas replicas de la aplicación están disponibles para los usuarios</li>
+    <li>AGE           - hace cuanto esta corriendo la aplicación</li>
+</ul>
+
+<h2 class="section-heading">Replica set</h2>
+<p>Se usa para garantizar la disponibilidad de un número específico de Pods idénticos</p>
+<p>Veamos los replica sets</p>
+<pre>   kubectl get rs</pre>
+<pre>
+    NAME                DESIRED   CURRENT   READY   AGE
+    prueba-5d9bb7dcd6   1         1         1       4h18m 
+</pre>
+<ul>
+    <li>Desired: es el numero de replicadas deseadas el cual definimos cuando creamos la deployment </li>
+    <li>Current: muestra el numero de replicas que estan corriendo</li>
+</ul>    
+
+<h2 class="section-heading">scaling up (escalando la app a 4 instancias)</h2>    
+    <p>A continuacion vamos a aumentar el numero de ReplicaSet a 4.</p>
+<pre>
+    kubectl scale deployments/prueba --replicas=4
+</pre>
+<p>Veamos los pods</p>
+<pre>
+    kubectl get pods
+</pre>
+<pre>
+NAME                     READY   STATUS    RESTARTS   AGE
+prueba-bc9d59776-9lk4w   1/1     Running   0          8m58s
+prueba-bc9d59776-fxfwl   1/1     Running   0          106s
+prueba-bc9d59776-nql98   1/1     Running   0          106s
+prueba-bc9d59776-nskx5   1/1     Running   0          106s
+</pre>
+<p>Veamos los replica set</p>
+<pre>   kubectl get rs</pre>
+<pre>
+    NAME               DESIRED   CURRENT   READY   AGE
+    prueba-bc9d59776   4         4         4       9m52s
+</pre>
+
+<blockquote>Tenemos 4 servidores corriendo nuestra app web! Si se cae uno, seguimos brindando el servicio.</blockquote>
+
+<p>Creamos un servicio para exponer la app</p>
+<pre>
+    kubectl expose deployment prueba --type="LoadBalancer" --port 3000
+</pre>
+
+<blockquote> el correr multiples instancias requiere una forma de distribuir el trafico entre ellas.
+    Los servicios tienen un integrado "Load Balancer" que distribuirá el trafico por todos los pods.
+    El LoadBalancer va a monitorear a los pods para asegurar que solo enviara trafico a los pods que estén disponibles</blockquote>
+
+    <p>Usamos minikube para correr el servidor localmente</p>
+<pre>
+    minikube service prueba
+</pre>
+<pre>
+|-----------|--------|-------------|---------------------------|
+| NAMESPACE |  NAME  | TARGET PORT |            URL            |
+|-----------|--------|-------------|---------------------------|
+| default   | prueba |        3000 | http://192.168.49.2:32744 |
+|-----------|--------|-------------|---------------------------|
+🎉  Opening service default/prueba in default browser...
+</pre>
+
+<p>Ok, tenemos 4 servidores. O sea 4 pods</p>
+
+<p>Matemos un pod (recuerda que los pods son mortales)</p>
+<pre> kubectl get pods</pre>
+<pre> kubectl delete pod nombre_pod</pre>
+<p>Reemplaza el nombre por un nombre de pod que tengas</p>
+<pre>   kubectl get pods </pre>
+<pre>
+    NAME                     READY   STATUS        RESTARTS   AGE
+    prueba-bc9d59776-9lk4w   1/1     Terminating   0          32m
+    prueba-bc9d59776-fxfwl   1/1     Running       0          25m
+    prueba-bc9d59776-jrbvz   1/1     Running       0          32s
+    prueba-bc9d59776-nql98   1/1     Running       0          25m
+    prueba-bc9d59776-nskx5   1/1     Running       0          25m
+</pre>
+
+<p>En el navegador vemos que el servicio nunca 'cayó' y  aquí vemos que matamos un pod, y se crea otro en su lugar!</p>
+
+<h2 class="section-heading">Scale down</h2>
+<p>Vamos a bajar nuestro cluster a solo 2 servidores</p>
+<pre>   kubectl scale deployments/prueba --replicas=2 </pre>
+
+<p>Veamos los pods, los replica set y el deployment</p>
+<pre>   kubectl get deployments</pre>
+<pre>   kubectl get rs</pre>
+<pre>   kubectl get pods</pre>
+
+<p>En el siguiente capitulo vamos a correr una actualización de dependencias sin parar el servicio</p>
+<p>Ahora limpiemos todo lo que hicimos:</p>
+<pre>   kubectl delete service prueba</pre>
+<pre>   kubectl delete deployment prueba</pre>
+
+                             <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-minikube">Siguiente &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-conceptos#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-introduccion"> Home</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
