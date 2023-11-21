@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                             <div class="post-heading">
-                                <h1>Mejorando y midiendo el performance de nuestras querys</h1>
+                                <h1>Mejorando el performance de nuestras querys</h1>
                                 
                             </div>
                         </div>
@@ -35,11 +35,128 @@
 
                         <div class="principal">
                             <a name="arriba"></a>
-                            <h2 class="section-heading">Que son las views?</h2>
-                           <p>En construcción</p>
-
+                            <h2 class="section-heading">Vistas (views)</h2>
                             
-                            <!-- Pager -->
+                            <h2>¿Que es una view en mysql?</h2>
+                                <p>Es una tabla virtual que creamos con el fin de hacerle querys a esta tabla y no a la tabla original</p>
+                           
+                                <h2>¿Para que son las vistas en mysql?</h2>
+                                <p>Para millones de usuarios en una tabla, es indispensable mejorar
+                                    el rendimiento y la seguridad de un ("select"). Para ello se crean 
+                                    estas tablas virtuales (views) en la cual se muestran solo las columnas
+                                    que se quieran mostrar y se mejora en rendimiento y control de accesos.</p>
+                                <p>Entre sus ventajas, podemos reunir datos de diferentes tablas, con Join, y crear esta vista. Entonces ganamos rendimiento al evitar usar querys complejas. Una vez creada la vista con join, where, in, y mas complejidad, simplemente le haremos solo un select a la vista.</p>
+                                <p>Otra ventaja es la seguridad, a veces hay información de una tabla que no queremos que sea enviada, o que cierta api tenga permiso, ni siquiera de lectura. Ahi es a donde entran las vistas.</p>
+                            
+                            <h2 class="section-heading">Ejemplo y práctica de vista</h2>
+                                <p> En principio, nos logueamos, con nuestro nombre de usuario</p>
+                            <pre>mysql -u nombre_usuario -p</pre>
+                            <p> En capitulos anteriores, hemos creado una base de datos (Laboratorio_mysql) y una tabla (paises)</p>
+                            <p>Digamosle a mysql que vamos a trabajar con dicha base de datos</p>
+                            <pre>use Laboratorio_mysql</pre>
+                            <p>Finalmente, veamos nuestra tabla:</p>
+                            <pre>select * from paises;</pre>
+            
+        <pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | 2022 |
+    | alemania       |   83000000 |            48 | 2022 |
+    | reino unido    |   67000000 |            41 | 2022 |
+    | estados unidos |  333000000 |            39 | 2022 |
+    | japon          |  125000000 |            48 | 2022 |
+    | china          | 1412000000 |            39 | 2022 |
+    | argentina      |   45000000 |            32 | 2022 |
+    | España         |   41000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+        </pre>
+
+        <h2 class="section-heading">¿Como crear una view en mysql?</h2>
+<p>Vamos a crear una vista identica a la tabla paises:</p>
+<pre>
+    create view vista_paises as select * from paises;
+</pre>
+
+<blockquote>
+    CREATE VIEW nombrevista AS<br>
+    SELECT nombrecolumna(s)<br>
+    FROM nombretabla<br>
+    WHERE condición </blockquote>
+
+<p>Ok, hasta aqui fácil. Ahora vamos a crear una vista en base a una query compleja, pero primero, hay que crear una nueva tabla, la cual llamaremos autos</p>
+<pre>
+    create table autos (marca varchar(20), pais varchar(25), 
+    modelo varchar(25), vendidos int);
+</pre>   
+<p>Le insertamos datos:</p>
+<pre>
+    insert into autos (marca,pais,modelo,vendidos) 
+    values ('volswagen','alemania','gol',500000), 
+           ('renault','francia', 'clio', 100000),
+           ('ford','estados unidos','mondeo',50000),
+           ('alfa romeo','italia','nose',325000);
+</pre>                      
+
+<p>La tabla queda:</p>
+<pre>
+    select * from autos;
++------------+----------------+--------+----------+
+| marca      | pais           | modelo | vendidos |
++------------+----------------+--------+----------+
+| volswagen  | alemania       | gol    |   500000 |
+| renault    | francia        | clio   |   100000 |
+| ford       | estados unidos | mondeo |    50000 |
+| alfa romeo | italia         | nose   |   325000 |
++------------+----------------+--------+----------+
+</pre>
+
+<p>Ahora la query compleja. Queremos obtener algunos datos de ambas tablas (paises y autos) y los datos que queremos son pais (de la tabla paises), marca (de la tabla autos) y año (de la tabla paises)</p>
+<p>Para ello vamos a usar inner join</p>
+<pre>
+    select paises.pais, autos.marca, paises.año 
+    from autos inner join paises 
+    on autos.pais=paises.pais;
+</pre>
+<pre>
+    +----------------+------------+------+
+    | pais           | marca      | año  |
+    +----------------+------------+------+
+    | alemania       | volswagen  | 2022 |
+    | estados unidos | ford       | 2022 |
+    | italia         | alfa romeo | 2001 |
+    +----------------+------------+------+
+</pre>
+
+<p>Ok, ahora queremos solo cuyos años son mayores que 2001, con respecto a la tabla paises:</p>
+<pre>
+    select paises.pais, autos.marca, paises.año 
+    from paises inner join autos 
+    on paises.pais=autos.pais where paises.año>2001;
+</pre>
+<p>Ok, para simplificar dicha consulta, crearemos una vista con esta salida:</p>
+<pre>
+    create view pais_marca_nuevos 
+    as select paises.pais, autos.marca, paises.año 
+    from paises inner join autos
+    on paises.pais=autos.pais 
+    where paises.año>2001;
+</pre>
+<p>Siendo pais_marca_nuevos el nombre de la vista creada.</p>
+<p>Ahora dicha query la resolvemos tan facil como un select a la vista:</p>
+<pre>
+    select * from pais_marca_nuevos;
+    +----------------+-----------+------+
+    | pais           | marca     | año  |
+    +----------------+-----------+------+
+    | alemania       | volswagen | 2022 |
+    | estados unidos | ford      | 2022 |
+    +----------------+-----------+------+
+</pre>
+<blockquote>En tablas con millones de campos, una query compleja tiene un retardo mayor que el de una query sencilla.</blockquote>
+
+<!-- Pager -->
                             <ul class="pager">
                                 <li class="next">
                                     <a href="/mysql-abm#arriba">Siguiente &rarr;</a>
