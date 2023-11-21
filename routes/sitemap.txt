@@ -10,7 +10,10 @@ https://old-robotics.com.ar/mysql-instalacion
 https://old-robotics.com.ar/mysql-constructivas
 https://old-robotics.com.ar/mysql-seleccion 
 https://old-robotics.com.ar/mysql-destructivas
-https://old-robotics.com.ar/mysql-dba       
+https://old-robotics.com.ar/mysql-dba
+https://old-robotics.com.ar//mysql-backup
+https://old-robotics.com.ar//mysql-views 
+https://old-robotics.com.ar//mysql-abm       
 https://old-robotics.com.ar/mysql-relacion-1a1
 https://old-robotics.com.ar/mysql-relacion-1aM
 https://old-robotics.com.ar/mysql-relacion-MaM
@@ -23,4 +26,7 @@ https://old-robotics.com.ar/kubernetes-solucionar-problemas
 https://old-robotics.com.ar/kubernetes-labels
 https://old-robotics.com.ar/kubernetes-multiples-instancias
 https://old-robotics.com.ar/kubernetes-updates-no-down
-https://old-robotics.com.ar/kubernetes-deployment-pods
+
+
+
+   

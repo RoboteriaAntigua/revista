@@ -35,6 +35,7 @@
                     <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
 
                         <div class="principal">
+                            <a name="arriba"></a>
                             <h2 class="section-heading">Contenido</h2>
                             <a href="/mysql-seleccion#tabla">&rarr;     Ver una tabla completa</a><br>
                             <a href="/mysql-seleccion#col">&rarr;       Ver una columna </a><br>
@@ -327,10 +328,13 @@ autos on paises.pais=autos.pais;
                             <!-- Pager -->
                             <ul class="pager">
                                 <li class="next">
-                                    <a href="/mysql-destructivas'">Siguiente &rarr;</a>
+                                    <a href="/mysql-destructivas#arriba">Siguiente &rarr;</a>
                                 </li>
                                 <li class="next">
-                                    <a href="/mysql-constructivas"> Atras</a>
+                                    <a href="/mysql-seleccion#arriba"> Arriba &uarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/mysql-constructivas#arriba"> Atras</a>
                                 </li> 
                             </ul>
                         </div>

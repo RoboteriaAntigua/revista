@@ -1,0 +1,226 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Como hacer un backup en mysql?. How make a backup on mysql. mysqldump varias bases de datos. como hacer backup de varias bases de datos.">
+    <title> Backups en mysql</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Backups en  Mysql</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_mysql.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Contenido</h2>
+                            <a href="/mysql-backup#tabla1">Backup de tablas especificas</a><br>
+                            <a href="/mysql-backup#db">Backup de bases de datos</a>
+
+
+                            <a name="tabla1"></a>
+                            <h2 class="section-heading">Backup de tablas específicas</h2>
+                            <p>Hay muchas formas de hacer Backups de tablas, vamos a hacerlo de dos formas distintas: [create table + insert into] y [create table + select from]</p>
+                            
+                            <p>Primero nos logueamos:</p>
+                            <pre>   mysql -u nombre_usuario -p</pre>
+
+                            <p>Indicamos que base de datos vamos a usar. En este caso laboratorio_mysql, creada anteriormente, puedes usar la que gustes.</p>
+                            <pre>   use laboratorio_mysql;</pre>
+
+                            <h2 class="section-heading">create table + select into</h2>
+                           <p>Vemos las tablas disponibles</p>
+                           <pre>show tables;</pre>
+<pre>
+    +-----------------------------+
+    | Tables_in_laboratorio_mysql |
+    +-----------------------------+
+    | bacu                        |
+    | paises                      |
+    +-----------------------------+
+</pre>
+
+<p>Vemos la tabla paises:</p>
+<pre>select * from paises;</pre>
+<pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | 2022 |
+    | alemania       |   83000000 |            48 | 2022 |
+    | reino unido    |   67000000 |            41 | 2022 |
+    | estados unidos |  333000000 |            39 | 2022 |
+    | japon          |  125000000 |            48 | 2022 |
+    | china          | 1412000000 |            39 | 2022 |
+    | argentina      |   45000000 |            32 | 2022 |
+    | España         |   41000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre> 
+
+<p>Primero hay que crear una tabla nueva, igual a nuestra tabla:</p>
+<pre>create table bacaPaises like paises;</pre>
+
+<p>Vemos las tablas:</p>
+<pre>
+    +-----------------------------+
+    | Tables_in_laboratorio_mysql |
+    +-----------------------------+
+    | bacaPaises                  |
+    | bacu                        |
+    | paises                      |
+    +-----------------------------+
+</pre>
+
+<p>Como podemos observar esta nueva tabla no tiene información guardada:</p>
+<pre>
+    select * from bacaPaises;
+    Empty set (0,00 sec)
+</pre>
+
+<p>[insert into]</p>
+<pre>   insert into bacaPaises select * from paises;</pre>
+
+<p>listo, una tabla idéntica.</p>
+<pre>   select * from bacaPaises;</pre>
+<pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | 2022 |
+    | alemania       |   83000000 |            48 | 2022 |
+    | reino unido    |   67000000 |            41 | 2022 |
+    | estados unidos |  333000000 |            39 | 2022 |
+    | japon          |  125000000 |            48 | 2022 |
+    | china          | 1412000000 |            39 | 2022 |
+    | argentina      |   45000000 |            32 | 2022 |
+    | España         |   41000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre> 
+
+<h2 class="section-heading">[create table + select from]</h2>
+<p>En una sola linea también:</p>
+<pre>   CREATE table bacap2 select * from paises; </pre>
+<pre>   select * from bacap2 </pre>
+<pre>
+    +----------------+------------+---------------+------+
+    | pais           | poblacion  | promedio_edad | año  |
+    +----------------+------------+---------------+------+
+    | España         |   48000000 |            44 | 2022 |
+    | alemania       |   83000000 |            48 | 2022 |
+    | reino unido    |   67000000 |            41 | 2022 |
+    | estados unidos |  333000000 |            39 | 2022 |
+    | japon          |  125000000 |            48 | 2022 |
+    | china          | 1412000000 |            39 | 2022 |
+    | argentina      |   45000000 |            32 | 2022 |
+    | España         |   41000000 |          NULL | 2001 |
+    | italia         |   60000000 |          NULL | 2001 |
+    +----------------+------------+---------------+------+
+</pre>
+
+<a name="db"></a>
+<h2 class="section-heading">Respaldo de bases de datos</h2>
+<p>Otra forma es con el motor de backups que viene integrado con mysql: mysqldump</p>
+<p>Para ello salimos de nuestra sesion: </p>
+<pre>   exit</pre>
+
+<p>Y corremos el comando mysqldump</p>
+
+<p>Backup a una base de datos:</p>
+<pre>   mysqldump -u tuUser -p laboratorio_mysql > backuplabo.sql</pre>
+<p>esto crea un archivo llamado backuplabo.sql el cual contiene todas las instrucciones para volver a crear nuestra base de datos</p>
+
+<h2 class="section-heading">Reponer base de datos</h2>
+<p>Con el siguiente comando mysql nos va a crear una base de datos identica a la original, siguiendo las instrucciones del .sql que creamos</p>
+<pre>   mysql -u tuUser -p &lt; backuplabo.sql</pre>
+
+<h2 class="section-heading">Respaldo a todas las bases de datos:</h2>
+<pre>   mysqldump -u tuUsuario -p --all-databases  > respaldo_full_sep_2023.sql </pre>
+
+<h2 class="section-heading">Respaldo a varias bases de datos</h2>
+<p> Respaldo completo de base de datos artículos y users </p>
+
+<pre>
+    mysqldump -u tuUsuario -p 
+    --databases articulos users > respaldo_art_usr_sep_2011.sql   
+</pre>
+
+<h2 class="section-heading">Comprimiendo el respaldo</h2>
+<p>Podemos hacer el respaldo y comprimidlo en un solo comando, usando una pipe (tuberia):</p>
+<pre>   mysqldump -u myUsuario -p 
+    --all-databases | gzip > respaldo_2011.sql.gz</pre>
+
+<h2 class="section-heading">Automatizar el backup</h2>
+<p>Podemos crear un archivo llamado respaldo.sh</p>
+<p>Respaldo.sh</p>
+<pre>
+    #!/usr/bin/bash
+    mysqldump -u myUsuario -p secreto 
+    --all-databases | gzip > respaldo_2011.sql.gz
+</pre>
+<p>En una sola pasada, hasta aquí, será suficiente introducción a los backups en mysql.</p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/mysql-views#arriba">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/mysql-dba"> Atras &larr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/mysql-backup#arriba"> Arriba &uArr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

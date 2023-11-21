@@ -44,12 +44,15 @@ router.get('/buenas-practicas-js', (req,res)=>{
 /********************** Finde varios ******************************************************************* */
 
 /******************************** curso de mysql **************************************/
-router.get('/mysql-introduccion', (req,res)=>{ res.render('cursos/mysql/mysql-introduccion');   })
-router.get('/mysql-instalacion',  (req,res)=>{ res.render('cursos/mysql/mysql-instalacion');    })
+router.get('/mysql-introduccion', (req,res)=>{ res.render('cursos/mysql/mysql-introduccion' );  })
+router.get('/mysql-instalacion',  (req,res)=>{ res.render('cursos/mysql/mysql-instalacion'  );  })
 router.get('/mysql-constructivas',(req,res)=>{ res.render('cursos/mysql/mysql-constructivas');  })
-router.get('/mysql-seleccion',    (req,res)=>{ res.render('cursos/mysql/mysql-seleccion');      })
-router.get('/mysql-destructivas', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
-router.get('/mysql-dba',          (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
+router.get('/mysql-seleccion',    (req,res)=>{ res.render('cursos/mysql/mysql-seleccion'    );  })
+router.get('/mysql-destructivas', (req,res)=>{ res.render('cursos/mysql/mysql-destructivas' );  })
+router.get('/mysql-dba',          (req,res)=>{ res.render('cursos/mysql/mysql-dba'          );  })
+router.get('/mysql-backup',       (req,res)=>{ res.render('cursos/mysql/mysql-backups'       );  })
+router.get('/mysql-views',       (req,res)=>{ res.render ('cursos/mysql/mysql-views'       );  })
+router.get('/mysql-abm' ,       (req,res)=>{ res.render('cursos/mysql/mysql-abm'          );  })
 router.get('/mysql-relacion-1a1', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
 router.get('/mysql-relacion-1aM', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
 router.get('/mysql-relacion-MaM', (req,res)=>{ res.render('about.ejs',{enconstruccion:'Pagina en construccion'} );  })
@@ -65,8 +68,8 @@ router.get('/kubernetes-exponer-app-node'       , (req,res)=>{res.render('cursos
 router.get('/kubernetes-solucionar-problemas'   , (req,res)=>{res.render('cursos/kubernetes/kub-solucionar.ejs' ); });
 router.get('/kubernetes-labels'                 , (req,res)=>{res.render('cursos/kubernetes/kub-alias.ejs' ); });
 router.get('/kubernetes-multiples-instancias'   , (req,res)=>{res.render('cursos/kubernetes/kub-multiples-instancias.ejs'); });
-router.get('/kubernetes-updates-no-down'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
-router.get('/kubernetes-deployment-pods'        , (req,res)=>{res.render('about.ejs',{enconstruccion:'Pagina en construccion'} ); });
+router.get('/kubernetes-updates-no-down'        , (req,res)=>{res.render('cursos/kubernetes/kub-updates.ejs'); });
+
 /******************************** fin curso de kubernetes **************************************/
 
 

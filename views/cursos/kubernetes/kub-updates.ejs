@@ -1,0 +1,178 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Actualizaciones de app en Kubernetes. Updates Kubernetes. Correr actualizaciones de dependencias y codigo en nuestras apps con Kubernetes Alta disponibilidad. Corriendo una actualizacion en mi app con kubernetes.">
+    <title> Updates de app en Kubernetes</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Updates en app en Kubernetes</h1>
+                                <span class="meta">Correr actualizaciones de dependencias y código en nuestras apps con Kubernetes.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Updates</h2>
+                            <p>En capítulos anteriores vimos el concepto de alta disponibilidad. Ahora vamos a cambiar el código de nuestra app sin que el servicio caiga ni un segundo.</p>
+                            <p>Iniciamos el daemon de docker</p>
+                            <pre>systemctl start docker </pre>
+
+                            <p> iniciamos minikube para pruebas locales en kubernetes </p>    
+                            <pre>minikube start (Si no esta instalado lo instala) </pre>
+
+                            <p>Creamos una implementación(deployment)/instancia llamada prueba</p>
+                            <blockquote>(en este caso voy a usar la imagen de prueba que provee kubernetes (pero podemos usar una propia)</blockquote>
+<pre>
+    kubectl create deployment prueba
+    --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+</pre>
+<blockquote>Notemos que es la version 1 de esta imagen v:1</blockquote>
+
+<p>Vemos los pods</p>
+<pre>   kubectl get pods</pre>
+<pre>
+    NAME                      READY   STATUS    RESTARTS   AGE
+    prueba-5d9bb7dcd6-24hb7   1/1     Running   0          56s
+</pre>
+
+<p>Creamos un servicio para exponer la app:</p>
+<pre>
+    kubectl expose deployment prueba --type="LoadBalancer" --port 8080
+</pre>
+<p>Corremos el servicio:</p>
+<pre>
+    minikube service prueba
+</pre>
+<pre>
+|-----------|--------|-------------|---------------------------|
+| NAMESPACE |  NAME  | TARGET PORT |            URL            |
+|-----------|--------|-------------|---------------------------|
+| default   | prueba |        8080 | http://192.168.49.2:30739 |
+|-----------|--------|-------------|---------------------------|
+🎉  Opening service default/prueba in default browser...
+</pre>
+<p>En el navegador vemos:</p>
+<pre style="background-color: aliceblue; color:black">
+    Hello Kubernetes bootcamp! | Running on: prueba-5d9bb7dcd6-vsvp5 | v=1
+</pre>
+
+<h2 class="section-heading">Corremos la actualización</h2>
+<pre>
+    kubectl set image deployments/prueba 
+    kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+</pre>
+<p>Inmediatamente veamos que es lo que paso con los pods:</p>
+<pre>
+    kubectl get pods
+</pre>
+<pre>
+    NAME                      READY   STATUS              RESTARTS   AGE
+    prueba-5d9bb7dcd6-24hb7   1/1     Running             0          2m19s
+    prueba-795d5fb564-b9zdw   0/1     ContainerCreating   0          9s
+</pre>
+<p>Como vemos esta creando un contenedor con la nueva app con nuestras actualizaciones, mientras que sigue corriendo la vieja.</p>
+<p>Un rato despues, listo nuestra nueva versión:</p>
+<pre>
+    kubectl get pods
+</pre>
+
+<pre>
+    NAME                      READY   STATUS    RESTARTS   AGE
+    prueba-795d5fb564-b9zdw   1/1     Running   0          2m54s
+</pre>
+
+<p>En que estado esta la actualización:</p>
+<pre>
+    kubectl rollout status deployments/prueba
+</pre>
+<pre>   deployment "prueba" successfully rolled out</pre>
+<p>Refrescamos el navegador y vemos que nuestra app web se ha actualizado:</p>
+<pre style="background-color: white; color: black;">
+    Hello Kubernetes bootcamp! | Running on: prueba-795d5fb564-jlqtm | v=2
+</pre>
+
+<h2 class="section-heading">Deshacer una actualizacion (Rollout undo)</h2>
+<p>Vamos a volver atras la ultima actualizacion </p>
+
+<pre>kubectl rollout undo deployments/prueba</pre>
+
+<p>Al cabo de un rato (lleva tiempo tranquilos)</p>
+<pre>
+    kubectl rollout status deployments/prueba
+</pre>
+<pre>
+    deployment "prueba" successfully rolled out
+</pre>
+<p>Volvemos al navegador y corroboramos que volvimos a la version 1</p>
+<pre style="background-color: aliceblue; color:black">
+    Hello Kubernetes bootcamp! | Running on: prueba-5d9bb7dcd6-vsvp5 | v=1
+</pre>
+
+<p>¿Se va entendiendo porque Kubernetes? Imagina que la actualización de tu app incluye nuevas dependencias, codigo y archivos estáticos nuevos. ¿Cuanto tiempo estaría abajo el servidor mientras ejecutas dichas tareas? A los mas viejitos nos ha tocado hacer estas tareas a la antigua, yendo de madrugada a correr actualizaciones! Kubernetes con Docker resuelven muchos problemas </p>
+
+<p>Limpiamos todo hasta aqui:</p>
+<pre>    kubectl delete deployments/prueba services/prueba</pre>
+
+<!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-multiples-instancias#arriba">Atras &larr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-updates-no-down#arriba">ir arriba &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-introduccion"> Home</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>
