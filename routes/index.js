@@ -4,20 +4,17 @@ var fs = require('fs');             //para el sitemap
 
 
 router.get('/', (req,res)=>{
-    res.render('./index');
+    res.render('index');
 })
 
 router.get('/index', (req,res)=>{
-    res.render('index');
+    res.redirect('/');
 })
 
 router.get('/about', (req,res)=>{
     res.render('about.ejs',{enconstruccion:''});
 })
 
-router.get('/post', (req,res)=>{
-    res.render('post');
-})
 
 router.get('/contact', (req,res)=>{
     res.render('contact');
