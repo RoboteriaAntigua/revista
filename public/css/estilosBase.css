@@ -568,6 +568,10 @@ pre {
     width: 180px;
   }
 }
+.navegador {
+  background-color: white;
+  color: #777777;
+}
 /* las blockquotes */
 @media (max-width: 700px) {
   blockquote {

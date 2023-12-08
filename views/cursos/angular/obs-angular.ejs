@@ -1,0 +1,274 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Observables en angular. Curso de observables en angular. Patron de diseño observer en angular.">
+    <title> Observer en angular</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Observables en angular</h1>
+                                <span class="meta">Desde cero</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                           <a name="arriba"></a>
+                            <p>En el capitulo anterior vimos los conceptos necesarios para comprender el patron de diseño Observer. El cual vamos a desarrollar con un ejemplo en angular, como siempre desde cero.</p>
+                            <p>Link al capitulo anterior: <a href="/observer-patron">Patron de diseño Observer</a></p>
+
+                            <h2>Iniciando con un ejemplo base</h2>
+                            <p>Como siempre en roboteria antigua iniciamos desde cero los ejemplos:</p>
+                            <pre>ng new observables</pre>
+                            <p>Vamos a ocupar 2 componentes y un servicio, a ello:</p>
+                            <pre> ng generate component componente1</pre>
+                            <p>Mas rápido:</p>
+                            <pre>ng g c componente2</pre>
+                            <p>y el servicio llamado sujeto:</p>
+                            <pre>ng g s sujeto</pre>
+
+                            <p>Por cuestiones didácticas vamos simplificar un typescript, anulando un típico error de iniciación de variables:</p>
+                            <p>Para ello cambiamos true por false en el tsconfig.json:</p>
+                            <pre>"strict": false,</pre>
+                            
+                            <p>En el app.component.html borramos todo lo que viene y simplemente llamamos a los componentes1 y componente2</p>
+<pre>
+    &lt;app-componente1&gt;&lt;/app-componente1&gt;
+
+    &lt;app-componente2&gt;&lt;/app-componente2&gt;
+
+</pre>
+<p>Podríamos ver en el navegador que todo marche bien y continuar.</p>
+<br>
+<h2>Un servicio para el observable</h2>
+                            <p>En el servicio, importamos de RxJs </p>
+<pre>
+    import { Injectable } from '@angular/core';
+    import { Subject } from 'rxjs';
+    import { Observable } from 'rxjs';
+</pre>
+                            <p>sujeto.service.ts :</p>
+<pre>
+    export class SujetoService {
+
+        private sujeto$ = new Subject();
+      
+        constructor() {
+          this.sujeto$.next( "inicializado" );
+        }
+      
+        obtener():Observable<any> {
+          return this.sujeto$.asObservable();
+        }
+      
+        cambiarNombre(parametro1:string){
+          this.sujeto$.next(parametro1);    
+        }
+      }
+</pre>
+<p>Explicación:</p>
+<p>Instanciamos la clase Subject en una variable llamada sujeto$</p>
+<blockquote>Se suele llamar a los sujetos con un signo $ al final</blockquote>
+
+<p>En el constructor llamamos al método next() de la clase Subject. Next se refiere al siguiente estado que tendrá el sujeto en cuestión</p>
+
+<blockquote>Recordemos que los sujetos serán los observados por el resto de los componentes suscritos</blockquote>
+<p>Luego vemos 2 métodos, obtener()  y cambiarNombre():</p>
+<p>&rarr; Obtener() : es quien genera el observable</p>
+<p>&rarr; cambiarNombre(parámetro): recibe un parametro y lo guarda en el sujeto$. </p>
+<blockquote>Un cambio en el sujeto es un nuevo estado del observable. </blockquote>
+
+<p>El servicio quedaría listo, ahora vamos al componente1:</p>
+<h2>Componente que usa el servicio</h2>
+<p>componente1.component.ts :</p>
+<p>Importamos el servicio y la clase Observable</p>
+<pre>
+    import { Component } from '@angular/core';
+    import { SujetoService } from '../sujeto.service';
+    import { Observable } from 'rxjs';
+</pre>
+<p>La clase:</p>
+<pre>
+    export class Componente1Component {
+
+        recuperado$: Observable<string>;
+        prueba = '';
+      
+        constructor ( private inyectado:SujetoService){}
+
+        ngOnInit(){
+          this.recuperado$ = this.inyectado.obtener();
+          this.recuperado$.subscribe( (value) => {
+            console.log('Observable emitted the next value: ' + value);
+           this.prueba = value;
+          });
+        }
+      
+      cambiar_estado(){
+        this.inyectado.cambiarNombre( "Juan Bautista" );
+      }
+      }   
+</pre>
+<p>&rarr;Iniciamos 2 variables que usaremos: recuperado$ y prueba</p>
+<p>&rarr;En el constructor inyectamos el servicio</p>
+<p>&rarr;En ngOnInit() Creamos la suscripcion a los eventos del observable y obtenemos su valor en tiempo real.</p>
+<blockquote>ngOnInit() es una funcion que se ejecuta al iniciarse el componente, es parte del ciclo de vida de todo componente angular</blockquote>
+<p>&rarr;El metodo cambiar_estado() usa el metodo cambiarNombre() del servicio.</p>
+
+<p>El componente1.component.html :</p>
+<pre >
+    &lt;p>componente1 works!&lt;/p>
+
+    &lt;button (click)="cambiar_estado()">Cambiar el estado del objeto &lt;/button>
+
+    &lt;p> {{prueba }}&lt;/p>
+</pre>
+
+<p>En el template html de componente1 simplemente usamos un boton para cambiar el estado del observable y vemos con la variable 'prueba' como cambia</p>
+ 
+<p>Vamos al navegador:</p>
+<pre>   ng serve </pre>
+
+<p>Deberiamos ver que al tocar el boton cambia el estado del observable y vemos "juan Bautista"</p>
+
+<pre class="navegador">
+componente1 works!
+<button>Cambiar el estado del objeto</button>
+Juan Bautista
+</pre>
+
+<p>Hasta aquí nada del otro mundo, pero sigamos, supongamos que en componente2 también queremos trabajar con la misma variable sujeto$</p>
+
+<h2>Componente2 </h2>
+<p>component2.component.html</p>
+<pre>
+    &lt;p&gt;componente2 works!&lt;/p&gt;
+&lt;button (click)="cambiarEstado()"&gt; Cambiar estado desde comp2 &lt;/button&gt;
+
+&lt;p&gt;{{prueba2}}&lt;/p&gt;
+
+</pre>
+
+<p>Componente2.component.ts </p>
+<p>Aclaro que el decorador &#64;component no tocamos, dejamos tal cual es </p>
+<pre>
+import { Component } from '@angular/core';
+import { SujetoService } from '../sujeto.service';
+import { Observable } from 'rxjs';
+
+export class Componente2Component {
+
+  recuperado$: Observable&lt;string>;
+  prueba2:string='';
+  constructor ( private inyectado:SujetoService){}
+
+  ngOnInit(){
+    this.recuperado$ = this.inyectado.obtener();
+    this.recuperado$.subscribe( (value) => {
+      console.log('Observable emitted the next value: ' + value);
+     this.prueba2 = value;
+    });
+  }
+
+  cambiarEstado(){
+    this.inyectado.cambiarNombre('Erizalde Beatriz Solomon');
+  }
+}
+</pre>
+
+<p>Repetimos los pasos de componente1, inyectamos el servicio en el constructor, suscribimos al observable definido en dicho servicio, y un metodo para cambiar el estado</p>
+
+<h2>Programación reactiva en angular</h2>
+<p>Uno de los pilares de Angular es el que acabamos de hacer. Note que tanto de componente1 o de componente2 podemos tanto cambiar como obtener el valor actualizado de una variable u objeto.</p>
+<p>Si tocamos el boton del componente 1</p>
+<pre class="navegador">
+    componente1 works!
+    <button> Cambiar estado desde comp 1</button>
+    Juan Bautista<br>
+    componente2 works!
+    <button> Cambiar estado desde comp 2</button>
+    Juan Bautista<br>
+</pre>
+<p>Si tocamos el boton del componente 2</p>
+<pre class="navegador">
+    componente1 works!
+    <button> Cambiar estado desde comp 1</button>
+    Erizalde Beatriz Solomon<br>
+    componente2 works!
+    <button> Cambiar estado desde comp 2</button>
+    Erizalde Beatriz Solomon<br>
+</pre>
+
+<h2 class="section-heading">Conclusion</h2>
+<p>&rarr; sujeto.service.ts tiene un observable <br>
+
+&rarr; componente1 puede ver en tiempo real el valor y modificarlo<br>
+
+&rarr; componente2 puede ver el tiempo real el valor y modificarlo.<br>
+&rarr; Cualquier componente que se suscriba al servicio puede ver y modificar. </p>
+
+<p>Gracias y no dejes de chusmear mis cursos completos de Kubernetes, mysql y los post de fundamentos de Angular y Laravel </p>
+<a href="/https://old-robotics.com.ar/kubernetes-introduccion">Kubernetes completo en Español &rarr;</a> <br>
+<a href="/https://old-robotics.com.ar/mysql-introduccion">Curso de mysql para DBAs &rarr;</a><br>
+
+                        <!-- Pager -->
+                            <ul class="pager">
+                                
+                                <li class="next">
+                                    <a href="/observables-angular#arriba">Arriba &uarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/"> home </a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/observer-patron"> atras &larr;</a>
+                                </li>   
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

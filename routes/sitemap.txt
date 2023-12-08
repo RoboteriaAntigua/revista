@@ -26,7 +26,8 @@ https://old-robotics.com.ar/kubernetes-solucionar-problemas
 https://old-robotics.com.ar/kubernetes-labels
 https://old-robotics.com.ar/kubernetes-multiples-instancias
 https://old-robotics.com.ar/kubernetes-updates-no-down
-
+https://old-robotics.com.ar/observer-patron
+https://old-robotics.com.ar/observables-angular
 
 
    

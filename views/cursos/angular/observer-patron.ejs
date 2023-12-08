@@ -1,0 +1,99 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Patron observer. Observables en angular. Curso de observables en angular. Patron de diseño observer en angular.">
+    <title> Observer Patron</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" style="padding: 50px 0 20px">
+                                <h1>Patron de diseño Observer </h1>
+                                <span class="meta">Programación reactiva</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                           <a name="arriba"></a>
+                            <h2 class="section-heading">Patron de diseño Observer</h2>
+                            <p>Es uno de los pilares sobre los cuales se construyen los frameworks Javascript como Angular o React.</p>
+                            <p>Consiste en lograr que el valor de una variable u objeto este actualizado en tiempo real en toda la aplicación.</p>
+                           <p>Supongamos que tenemos un objeto que podría ser un carrito de compras por ejemplo, en la medida que el usuario va agregando productos el objeto va cambiando. Ahora bien, este objeto se utiliza en varios componentes, por ende, dichos componentes deben estar actualizados. Supongamos que sea 1 componente mas, bueno, sencillo, le enviamos el valor mediante un servicio. ¿Pero si son 19 componentes? ¿o 190 componentes? Y la otra cuestión, si estos componentes también tienen la facultad de cambiar el valor del objeto carrito de compras, es una anarquía.   </p>
+                            <blockquote>Observer es un patron de diseño, en el cual un objeto notifica automáticamente el cambio de su estado a sus subscriptores</blockquote>
+                            
+                            <div class="imgContainer">
+                                <img style="width: 90%;" src="img/observer.png">
+                            </div>
+                            
+                            
+                            
+                            <p>Observer define una dependencia de uno a muchos entre un objeto y otros objetos dependientes. Cuando el objeto cambia de estado, notifica a los dependientes.</p>
+                            <blockquote>Existen 3 tipos de patrones (creación, estructurales y comportamiento, Observer es un patron  de comportamiento</blockquote>
+                            <h2>Algunas definiciones:</h2>
+                            <p><b>Sujeto: </b> El sujeto es el objeto en cuestión. El malabarista de la imagen. Permite agregar (attach) y eliminar (deAttach) observadores. El sujeto conoce a todos sus observadores</p>
+                            <p><b>Observable: </b>Es el flujo de datos, una colección de eventos que puede ser emitida. (emmit)</p>
+                            <p><b>Subscriptores: </b>Son los observadores del objeto malabarista en cuestión. Para estar pendiente de los cambios en el estado de dicho objeto, debemos suscribirnos</p>
+                            
+                            <div class="imgContainer">
+                                <img style="width: 90%;" src="img/observer2.jpg">
+                            </div>
+
+                            <p>Continuemos con un ejemplo desde cero, en Angular</p>
+
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/observer-patron#arriba">Arriba &uarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/observables-angular"> Observables en angular &rarr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+                <!-- jQuery -->
+                <script src="vendor/jquery/jquery.min.js"></script>
+
+                <!-- Bootstrap Core JavaScript -->
+                <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+                <!-- Contact Form JavaScript -->
+                <script src="js/jqBootstrapValidation.js"></script>
+                <script src="js/contact_me.js"></script>
+
+                <!-- Theme JavaScript -->
+                <script src="js/clean-blog.min.js"></script>
+
+    </body>
+
+    </html>

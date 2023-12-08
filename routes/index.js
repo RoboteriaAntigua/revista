@@ -72,6 +72,11 @@ router.get('/kubernetes-updates-no-down'        , (req,res)=>{res.render('cursos
 
 /******************************** fin curso de kubernetes **************************************/
 
+/**********************************Angular ****************************************************/
+router.get('/observer-patron'                , (req,res)=>{res.render('cursos/angular/observer-patron.ejs' ); });
+router.get('/observables-angular'                , (req,res)=>{res.render('cursos/angular/obs-angular.ejs' ); });
+
+
 
 module.exports = router;
 
