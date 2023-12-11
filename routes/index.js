@@ -16,9 +16,6 @@ router.get('/about', (req,res)=>{
 })
 
 
-router.get('/contact', (req,res)=>{
-    res.render('contact');
-})
 
 //Sitemap
 router.get('/sitemap', (req,res)=>{   

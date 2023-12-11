@@ -570,7 +570,7 @@ pre {
 }
 .navegador {
   background-color: white;
-  color: #777777;
+  color: black;
 }
 /* las blockquotes */
 @media (max-width: 700px) {

@@ -13,9 +13,6 @@ https://old-robotics.com.ar/mysql-dba
 https://old-robotics.com.ar/mysql-backup
 https://old-robotics.com.ar/mysql-views 
 https://old-robotics.com.ar/mysql-abm       
-https://old-robotics.com.ar/mysql-relacion-1a1
-https://old-robotics.com.ar/mysql-relacion-1aM
-https://old-robotics.com.ar/mysql-relacion-MaM
 https://old-robotics.com.ar/kubernetes-introduccion      
 https://old-robotics.com.ar/kubernetes-conceptos       
 https://old-robotics.com.ar/kubernetes-minikube       
