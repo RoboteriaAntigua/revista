@@ -15,7 +15,9 @@ router.get('/about', (req,res)=>{
     res.render('about.ejs',{enconstruccion:''});
 })
 
-
+router.get('/post' ,(req,res)=>{
+    res.render('post.ejs');
+})
 
 //Sitemap
 router.get('/sitemap', (req,res)=>{   
