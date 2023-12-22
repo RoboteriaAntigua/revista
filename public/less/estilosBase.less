@@ -498,6 +498,15 @@ body {
 	-webkit-tap-highlight-color: @theme-primary;
 }
 
+/******************************** Responsive casero ****************************************/
+
+:root {
+	--ancho:100vw;
+	--alto:calc(var(--ancho)*9/16);
+}
+
+
+
 /************************* Acomodando con flex**************************/
 .flecha {  
 	display: flex;
@@ -618,24 +627,30 @@ body {
 pre {
 	background-color: rgb(24, 24, 24); 
 	color:@verdematrix;
-	width:80%;
+	max-width: 750px;
+  	margin: auto;
+	
 	font-size: smaller;
-	overflow-x: scroll;
-	overflow-y:scroll;
-	@media(max-width:700px) {
-		width: 500px;
+	overflow: scroll;
+	@media(max-width:767px){
+		max-width:600px;
+		margin:auto;
 	}
-	@media(max-width:500px) {
-		width: 400px;
+	@media(max-width:560px){
+		max-width:420px;
+		margin:auto;
 	}
-	@media(max-width:400px) {
-		width: 300px;
+	@media(max-width:430px){
+		max-width:300px;
+		margin:auto;
 	}
-	@media(max-width:300px) {
-		width: 220px;
+	@media(max-width:320px){
+		max-width:250px;
+		margin:auto;
 	}
-	@media(max-width:220px) {
-		width: 180px;
+	@media(max-width:270px){
+		max-width:230px;
+		margin:auto;
 	}
 }
 

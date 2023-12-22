@@ -1,0 +1,245 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="">
+    <title> Http Client en Angular</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Http Client en Angular</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Http Client en Angular</h2>
+                           <p>Es un servicio que nos va a permitir manejar las solicitudes http (get, post, put).</p>
+                            <p>Una de las principales tareas a llevar a cabo en nuestras app orientadas a microservicios, va a ser pedirle data al servidor de backend. (Fetch data)</p>
+                            <p>Angular mejora el fetch de javascript y como siempre lo complica un poco.</p>
+                            <h2 class="section-heading">En javascript hacemos Fetch</h2>
+                            <p>Código que consulta una api de datos falsos, y retorna una promesa.</p>
+<pre>
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+        .then(response => response.json())
+        .then(json => console.log(json))
+</pre>
+                        
+                        <p>En angular en lugar de promesas usamos observables, lo cual nos permite tener una 'suscripción' en tiempo
+                            real, del valor recuperado. </p>
+                        <p>Para mas información sobre observables te recomiendo que construyas sólidos conocimientos en estos links: </p>
+                        <a href="/observer-patron">Patron de diseño Observer &rarr;</a> <br>
+                        <a href="/observables-angular">Observables en Angular &rarr;</a>
+
+
+
+                        <h2 class="section-heading">Ejemplo práctico de HttpClient en Angular</h2>
+                        <p>En principio vamos a crear una aplicación, si estas usando versiones recientes de Angular:</p>
+<pre>
+    ng new nombre_proyecto --no-standalone
+</pre>
+<p>Si tenemos una versión mas viejita de angular:</p>
+<pre>
+    ng new nombre_proyecto
+</pre>
+
+<p>Luego borremos el contenido del app.component.html</p>
+<p>Luego vamos a crear un servicio para nuestras solicitudes http:</p>
+<pre>
+    ng g service http
+</pre>
+<p>También para no ensuciar el app.component.ts vamos a crear un componente para nuestras pruebas:</p>
+<pre>
+    ng g c pruebasHttp
+</pre>
+
+<p>En dicho componente vamos a realizar 2 tareas: Una obtener una lista de usuarios y la otra hacer un Login.</p>
+<p>Para dichas tareas vamos a usar un sitio que nos retorna fake data: https://reqres.in/api/  </p>
+
+
+<h2 class="section-heading">Resultados esperados:</h2>
+<p>    Para una solicitud de tipo POST '/login' 
+    El request es: </p>
+<pre class="navegador"> 
+    {
+    "email": "eve.holt@reqres.in",
+    "password": "cityslicka"
+    }
+</pre>
+<p>y su response será un token.</p>
+<p>En cambio para una solicitu GET '/list', el response es una lista de usuarios</p>
+
+<h2 class="section-heading">Continuamos</h2>
+<p> Importar el import { HttpClientModule } from '@angular/common/http' en el app.module.ts y agregar en en el arreglo de imports
+</p>
+<pre>
+    imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+</pre>
+<p>En nuestro servicio http.service.ts: (Omitiendo lo que no es relevante)</p>
+<pre>
+    import { Injectable } from '@angular/core';
+    import {HttpClient} from '@angular/common/http';
+    import { Observable } from 'rxjs';
+
+    export class httpService {
+
+    constructor(private http:HttpClient) {   }
+
+    listar():Observable<any>{
+      return this.http.get("https://reqres.in/api/users?page=2");
+        }
+    }
+
+</pre>
+<p>Solicitud de tipo get al endpoint, esperamos que retorne un listado de usuarios fakes</p>
+
+
+<p>Ahora en el componente pruebasHttp:</p>
+
+
+<p> Vamos a agregar un boton que llame al metodo listar() y vamos a mostrar el resultado en pantalla</p>
+<pre>
+    &lt;button (click)="listar()">listar usuarios&lt;/button>
+    &lt;p>{{resultado1 | json }}&lt;/p>
+</pre>
+<p>El pruebasHttp.component.ts:</p>
+<pre>
+    import {  httpService } from '../http.service';
+    ...
+    export class PruebasHttpComponent {
+
+    resultado1={};
+    
+    constructor(private http:httpService){}
+
+    listar(){
+      this.http.listar().subscribe(
+        (data)=>{
+          this.resultado1=data;
+        }
+      );
+    }
+    }
+
+</pre>
+<h3>Explicacion:</h3>
+<ul>
+<li>Importamos el servicio http y lo inyectamos en el constructor.</li>
+<li>Nos suscribimos al metodo del servicio 'listar()'</li>
+<li>Guardamos el valor que nos retorna dicho metodo en un objeto llamado resultado1={}</li>
+</ul>
+<p>Luego vamos al navegador y comprobamos el funcionamiento: (haz click)</p>
+
+<!-- ver que este texto no arruine el formato!-->
+<pre class="navegador" >
+    <button onclick="listar()">Listar usuarios</button>
+    <p id="idListado">{}</p>
+</pre>
+<p>Al hacer click llamamos al endpoint y conseguimos dicha lista de usuarios!</p>
+
+<script>
+    const objeto = { "page": 2, "per_page": 6, "total": 12, "total_pages": 2, "data": [ { "id": 7, "email": "michael.lawson@reqres.in", "first_name": "Michael", "last_name": "Lawson", "avatar": "https://reqres.in/img/faces/7-image.jpg" }, { "id": 8, "email": "lindsay.ferguson@reqres.in", "first_name": "Lindsay", "last_name": "Ferguson", "avatar": "https://reqres.in/img/faces/8-image.jpg" }, { "id": 9, "email": "tobias.funke@reqres.in", "first_name": "Tobias", "last_name": "Funke", "avatar": "https://reqres.in/img/faces/9-image.jpg" }, { "id": 10, "email": "byron.fields@reqres.in", "first_name": "Byron", "last_name": "Fields", "avatar": "https://reqres.in/img/faces/10-image.jpg" }, { "id": 11, "email": "george.edwards@reqres.in", "first_name": "George", "last_name": "Edwards", "avatar": "https://reqres.in/img/faces/11-image.jpg" }, { "id": 12, "email": "rachel.howell@reqres.in", "first_name": "Rachel", "last_name": "Howell", "avatar": "https://reqres.in/img/faces/12-image.jpg" } ] };
+    const cadena = JSON.stringify(objeto);
+    function listar(){
+        document.getElementById("idListado").innerHTML= cadena}
+</script>
+
+<h3>Httpclient para una solicitud POST</h3>
+
+<p>Como prometimos ahora usamos el modulo para una solicitud POST.</p>
+<p>Para ello agregamos en el servicio, el metodo 'login', http.services.ts :</p>
+<pre>
+    login(user:any):Observable&lt;any>{
+        return this.http.post("https://reqres.in/api/login", user);
+      }   
+</pre>
+<blockquote>Explicacion: El endpoint recibe un parametro que es el objeto user, y retornará un token.</blockquote>
+
+<p>En el PruebasHttpComponent tambien, inicializamos 2 variables user y token, creamos un metodo:</p>
+<pre>
+    user1= {
+        "email": "eve.holt@reqres.in",
+        "password": "cityslicka"
+      };
+    token={};
+    login(){
+        this.http.login( this.user1 )
+                                      .subscribe(
+                                        (data)=>{
+                                          this.token = data.token;
+                                        }
+                                      )
+      }
+</pre>
+<blockquote>Explicación: Al llamar al servicio le pasamos como parametro el objeto user1 y recibimos el token, dicho token lo guardamos en nuestra variable token.</blockquote>
+
+<p>Comprobemos que funciona agregandolo al template, o sea, al PruebasHttpComponent.html</p>
+<pre>
+    &lt;button (click)="login()">Login&lt;/button>
+    &lt;p> {{token | json}}&lt;/p>
+</pre>
+
+<p>Resultado: (haz click)</p>
+<pre class="navegador">
+    <br>
+<button onclick="mostrarToken()">Login</button>
+<p id="idtoken"> {}</p>
+</pre>
+<script>
+    const token="QpwL5tke4Pnpja7X4";
+    function mostrarToken(){
+        document.getElementById("idtoken").innerHTML=token;
+    }
+</script>
+
+<p>Ok, hemos visto como hacer una solicitud GET y POST, tambien como manejar las respuestas. Para ello fué fundamental un buen manejo de los Observables y Servicios, en la siguiente entrega seguimos profundizando con los "GUARDS".</p>
+
+<!-- Pager -->
+                            <ul class="pager">
+                                
+                                <li class="next">
+                                    <a href="/HttpClient#arriba"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/observables-angular"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          
