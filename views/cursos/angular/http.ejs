@@ -1,6 +1,6 @@
 <%- include('../../plantillas/cabecera.ejs') %>
 
-    <meta name="description" content="">
+    <meta name="description" content="http client angular en español. que es http client en angular">
     <title> Http Client en Angular</title>
     </head>
 
@@ -47,9 +47,19 @@
         .then(response => response.json())
         .then(json => console.log(json))
 </pre>
-                        
-                        <p>En angular en lugar de promesas usamos observables, lo cual nos permite tener una 'suscripción' en tiempo
-                            real, del valor recuperado. </p>
+                        <br>
+                    <ul>
+                        <li>En angular en lugar de promesas usamos observables, nuestro método listar() retornará un 'observable' </li>
+                        <li>También hacemos inyección de dependencias del modulo HttpClient en cuestión, para luego llamar al método get.</li>
+                        <li>Como parámetro le indicamos el url del backend que nos va a retornar una lista de usuarios.</li>
+                    </ul><br>
+<pre>
+    constructor(private http:HttpClient) {   }
+
+    listar():Observable&lt;any>{   
+      return this.http.get("https://reqres.in/api/users?page=2");
+        }
+</pre>
                         <p>Para mas información sobre observables te recomiendo que construyas sólidos conocimientos en estos links: </p>
                         <a href="/observer-patron">Patron de diseño Observer &rarr;</a> <br>
                         <a href="/observables-angular">Observables en Angular &rarr;</a>
@@ -111,7 +121,7 @@
 
     constructor(private http:HttpClient) {   }
 
-    listar():Observable<any>{
+    listar():Observable&lt;any>{
       return this.http.get("https://reqres.in/api/users?page=2");
         }
     }
@@ -218,13 +228,15 @@
     }
 </script>
 
-<p>Ok, hemos visto como hacer una solicitud GET y POST, tambien como manejar las respuestas. Para ello fué fundamental un buen manejo de los Observables y Servicios, en la siguiente entrega seguimos profundizando con los "GUARDS".</p>
+<p>Ok, hemos visto como hacer una solicitud GET y POST, también como manejar las respuestas. Para ello fué fundamental un buen manejo de los Observables y Servicios, en la siguiente entrega seguimos profundizando con los "GUARDS".</p>
 
 <!-- Pager -->
                             <ul class="pager">
-                                
                                 <li class="next">
-                                    <a href="/HttpClient#arriba"> Arriba &uarr;</a>
+                                    <a href="/guards">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#arriba"> Arriba &uarr;</a>
                                 </li> 
                                 <li class="next">
                                     <a href="/observables-angular"> Atras &larr;</a>

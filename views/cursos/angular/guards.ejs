@@ -1,0 +1,206 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Guards en angular. Guards en angular completo en español.">
+    <title> Guards en angular</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Guards en Angular desde cero</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Que son los Guards en Angular?</h2>
+                           
+                            <p>Es una forma de hacer algo, antes de que se cargue una ruta. Lo que podría ser ver si hay usuario logueado, si el usuario es mayor de edad, etc. </p>
+                            <p>Viniendo de otros frameworks trabaja de manera similar a los middlewares. </p>
+<pre>
+    if( ! http.autenticado()){
+        router.navigateByUrl('/login');
+        return false;
+      }
+      return true;
+</pre>
+    <blockquote>Si el usuario no esta autenticado, el guard redirige a la ruta login</blockquote>
+
+
+
+    <h3>Ejemplo practico de Guards desde cero</h3>
+    <p>Requisitos previos:</p>
+    <ul>
+        <li>Uso de servicios, y por consiguiente inyección de dependencias</li>
+        <li>Rutas basicas en Angular</li>
+        <li>Modulo Http de angular</li>
+    </ul>
+    <p>Si tenes dudas sobre el modulo http de Angular, te sugiero este link: <br>
+        <a href="/HttpClient">Http Client en Angular &rarr;</a> </p>
+
+        <h3>Comenzamos</h3>
+        <p>En principio vamos a crear una aplicación, si estas usando versiones recientes de Angular:</p>
+        <pre>
+            ng new nombre_proyecto --no-standalone
+        </pre>
+        <p>Si tenemos una versión mas viejita de angular:</p>
+        <pre>
+            ng new nombre_proyecto
+        </pre>
+        
+        <p>Luego borremos el contenido del app.component.html</p>
+      <p>Luego creamos 3 componentes: componente1, componente2 y login</p>
+<pre>
+    ng g c componente1
+    ng g c componente2
+    ng g c componente3
+</pre>
+
+<p>Generamos un Guard:</p>
+<pre>
+    ng g guard login
+</pre>
+    <p>Los tipos de guards existentes son:</p>
+    <ul>
+        <li>(CanActivate) Antes de cargar los componentes de la ruta.  </li>
+        <li>(CanLoad) Antes de cargar los recursos (assets) de la ruta.</li>
+        <li>(CanDeactivate) Antes de intentar salir de la ruta actual (usualmente utilizado para evitar salir de una ruta, si no se han guardado los datos).</li>
+        <li>(CanActivateChild) Antes de cargar las rutas hijas de la ruta actual.</li>
+    </ul>
+
+
+<p>Un modulo para nuestras rutas</p>
+<pre>
+    ng g m router
+</pre>
+<p>En el router-routing.module.ts:</p>
+<pre>
+    import { NgModule } from '@angular/core';
+    import { RouterModule, Routes } from '@angular/router';
+    import { Componente2Component } from '../componente2/componente2.component';
+    import { Componente1Component } from '../componente1/componente1.component';
+    import { loginGuard } from '../login.guard';
+    import { LoginComponent } from '../login/login.component';
+
+    const routes: Routes =  [
+      { path: 'componente1',  component:Componente1Component, canActivate:[loginGuard] },
+      { path: 'componente2',  component:Componente2Component, canActivate:[loginGuard]},
+      { path:'login', component:LoginComponent}
+      ];
+
+    @NgModule({
+      imports: [RouterModule.forRoot(routes)],
+      exports: [RouterModule]
+    })
+    export class RouterRoutingModule { }
+</pre><br>
+    
+
+<ul>
+    <li>Importamos el modulo RouterModule y Routes</li>
+    <li>Importamos los componentes que vamos a usar</li>
+    <li>Importamos el guard</li>
+    <li>Definimos el arreglo de rutas pero esta vez con un tercer parametro, en él indicamos que protegemos las rutas con nuestro guard</li>
+</ul><br>
+
+
+
+<p>Ahora definimos un guard muy simple:</p>
+<p>La idea es que al ingresar a la url '/componente1' el guard deja pasar o no.</p>
+    <p>Lo mismo con el componente 2, y en caso de que no deje pasar redirige a la ruta '/login'. </p>
+<pre>
+    import { CanActivateFn, Router } from '@angular/router';
+    import { httpService } from './http.service';
+    import { inject } from '@angular/core';
+
+    export const loginGuard: CanActivateFn = (route, state) => {
+
+      const http= true;
+      const router = inject(Router);
+
+      if( ! http){
+        router.navigateByUrl('/login');
+        return false;
+      }
+      return true;
+    };
+
+</pre>
+        <p>Explicación:</p>
+        <blockquote>Noté que definimos una variable http=true, en la realidad esto seria un servicio que nos diga si el usuario esta autenticado o no. Esto lo vamos a hacer mas adelante, en principio lo dejamos mas simple para su mejor comprensión.</blockquote>                     
+        <ul>
+            <li>Injectamos el router para poder redirigir con el metodo .navigateByUrl()</li>
+            <li>En el if, basicamente preguntamos si hay usuario autenticado, y si no lo hay redirige a la ruta 'login'</li>
+        </ul>   
+
+        <p>ng serve y vamos al navegador, note que al ingresar la ruta '/componente1' o '/componente2' esta todo en orden</p>
+<pre class="navegador">
+    componente1 works!
+</pre>
+    <p>Ahora bien, en el guard, cambiemos a false, el valor de la constante:</p>
+<pre>
+    const http= false;    
+</pre>
+    <p>En el navegador notemos que al ingresar las rutas '/componente1' y '/componente2' nos redirige a '/login'</p>
+<pre class="navegador">
+    login works!
+</pre>
+
+    <p>Ok, ya vamos comprendiendo como funcionan los guards, entonces vamos a darle un uso mas real.</p>
+    <p>Para ello vamos a crear un servicio: </p>
+    <ul>
+        <li>1 en dicho servicio vamos a hacer una solicitud post a un BackEnd de fake data</li>
+        <li>2 el BackEnd nos va a retornar un token</li>
+        <li>Vamos a guardar el token en las cookies del navegador.</li>
+        <li>Luego podemos preguntar si hay token y este coincide el guard retorna true, si nó redirige a login.</li>
+    </ul>    
+    <blockquote>En el siguiente Post vamos a hacer un login completo aprobechando lo ya hecho hasta aqui.</blockquote>
+        
+        <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/login-angular">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#arriba"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/HttpClient"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

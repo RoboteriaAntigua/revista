@@ -1,0 +1,196 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Login completo en Angular">
+    <title> Login completo en Angular</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Login completo en Angular</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <p>En este post vamos a hacer un login completo en Angular. Para ello vamos a usar el modulo HttpClient, Guards y Cookies. Todos ellos son entregas anteriores de este curso.</p>
+                            <p>Empezamos desde cero, con un ng new, pero en el post anterior. Y aquí continuamos.</p>
+                            <a href="/guards">Guards en Angular &rarr;</a><br>
+                            <p>Luego de terminar el post 'Guards' volvemos aquí. En los posts anteriores hemos de comprender tanto como usar el HttpClient para hacer solicitudes al backend como el uso correcto de los Guards.</p>
+                            <h2 class="section-heading">Uso de cookies en Angular</h2>
+                            <p>Las cookies son un variable guardada en el navegador del usuario. Por lo general, un token, que nos va a permitir saber si dicho usuario ya ha ingresado, si esta logueado, etc.</p>
+                            <p>Para ello existen muchas formas, en este ejemplo la hacemos simple y usamos el modulo: ngx-cookie-service</p>
+        <pre>
+            npm install ngx-cookie-service@16
+        </pre>
+        <p>Le damos una version, que debe ser igual a la version de nuestro @angular-common. Si es superior vamos a tener problemas de dependencias</p>
+        <blockquote>El ngx-cookie-service tiene varios metodos, entre ellos get() y set() para obtener y establecer el cookie</blockquote>
+        <p>Continuando con el ejemplo:</p>
+        <p>Agregamos los metodos getCookie() y setCookie al servicio http que creamos</p>
+        <p>http.service.ts:</p>
+<pre>
+    setToken(token: string) {
+       this.cookies.set("token", token);
+      }
+    getToken() {
+        return this.cookies.get("token");
+      }
+</pre><br>
+    <blockquote>Previamente importamos e inyectamos en el constructor: </blockquote>
+<pre>
+    import {CookieService } from 'ngx-cookie-service';
+</pre>
+<p>Constructor del http.service.ts:</p>
+<pre>
+    export class httpService {
+
+        constructor(private http:HttpClient, private cookies:CookieService) {   }
+    ...
+</pre>
+
+<h2 class="section-heading">Modificamos el post.component.ts</h2>
+<pre>
+    login(){
+        this.http.login( this.user1 )
+                                      .subscribe(
+                                        (data)=>{
+                                          this.token = data.token;
+                                          //establesco cookies
+                                          this.http.setToken(data.token);
+                                        }
+                                      );
+      
+      }
+      
+</pre><br>
+<blockquote>En realidad al metodo ya existente 'login()' le decimos que guarde esa cookie en el navegador</blockquote>
+
+<p>Ahora cuando en el navegador hacemos click en el boton 'login' se guarda el token obtenido del backend en las cookies del navegador.</p>
+
+<h3>Editar nuestro metodo autenticado() en el servicio http</h3>
+<p>http.service.ts:</p>
+<pre>
+    token='';
+
+    autenticado(){
+        this.login( {
+          "email": "eve.holt@reqres.in",
+          "password": "cityslicka"
+        } )
+                                      .subscribe(
+                                        (data)=>{
+                                          this.token = data.token;
+                                        }
+                                      );
+                                      
+        if(this.cookies.get("token")==this.token) {
+              return true;
+            } else {
+            return false; 
+        }
+    }
+</pre>
+<p>Explicación:</p>
+<ul>
+    <li>Cuando desde el guard llamaos a este metodo, va a dejar pasar cuando retorne true, caso contrario, redirige a 'login'</li>
+    <li>Recuperamos el token, preguntandole al backend cual es token: this.token = data.token;</li>
+    <li>Recuperamos el token guardado en el navegador: this.cookies.get('token')</li>
+    <li>Preguntamos si coinciden ambos token, caso cierto retornamos true, caso contrario false.</li>
+</ul>
+<blockquote>Por conciguiente el Guard ahora va a trabajar con el metodo autenticado() y bloqueando el paso a ciertas urls de usuarios que no esten logueados</blockquote>    
+
+<pre>
+  if( ! http.autenticado()){
+    router.navigateByUrl('/login');
+    return false;
+  }
+  return true;
+</pre>
+
+<p>Lo probamos en el navegador, hacemos click en 'login()' lo cual, estable un cookie.</p>
+<p>Luego en las anclas nos dirigimos a /componente1 y comprobamos que el guard nos deja pasar.</p>
+<pre class="navegador">
+    componente1 works!
+</pre>
+<br>
+<blockquote>Si algo no funciona como corresponde te invito a agregar 2 console.log() en el metodo autenticado() del http.service.ts:</blockquote>
+<pre>
+    autenticado(){
+        this.login( {
+          "email": "eve.holt@reqres.in",
+          "password": "cityslicka"
+        } )
+                                      .subscribe(
+                                        (data)=>{
+                                          this.token = data.token;
+                                        }
+                                      );
+                                      console.log(this.cookies.get('token')+"este es el token de cookies");
+                                      console.log(this.token + 'este es el token obtenido del backend');
+        if(this.cookies.get("token")==this.token){
+          return true;
+        }else{
+        return false;}
+    }
+</pre>
+<p>Luego observa en consola del navegador como obtienes el token y la cookie.</p>
+<blockquote> console.log(this.cookies.get('token')+"este es el token de cookies");<br>
+    console.log(this.token + 'este es el token obtenido del backend');</blockquote>
+
+<p>Un login casi completo. Restaría unos input en la vista con email y password. Como usamos un backend Fake que solo admite un email valido,  dicha información la hicimos simple con un objeto en el post.component.ts:</p>
+<pre>
+    user1= {
+        "email": "eve.holt@reqres.in",
+        "password": "cityslicka"
+      };
+</pre>
+<br>
+<blockquote>Para dicha tarea podes usar ngModel, o cualquier otra forma.</blockquote>
+<p>Gracias por leer y espero que sigan con mis cursos.</p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                
+                                <li class="next">
+                                    <a href="#arriba"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/guards"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          
