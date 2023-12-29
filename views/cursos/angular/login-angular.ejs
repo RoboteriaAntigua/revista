@@ -43,14 +43,12 @@
                             <h2 class="section-heading">Uso de cookies en Angular</h2>
                             <p>Las cookies son un variable guardada en el navegador del usuario. Por lo general, un token, que nos va a permitir saber si dicho usuario ya ha ingresado, si esta logueado, etc.</p>
                             <p>Para ello existen muchas formas, en este ejemplo la hacemos simple y usamos el modulo: ngx-cookie-service</p>
-        <pre>
-            npm install ngx-cookie-service@16
-        </pre>
+        <pre>   npm install ngx-cookie-service@16 </pre>
         <p>Le damos una version, que debe ser igual a la version de nuestro @angular-common. Si es superior vamos a tener problemas de dependencias</p>
         <blockquote>El ngx-cookie-service tiene varios metodos, entre ellos get() y set() para obtener y establecer el cookie</blockquote>
         <p>Continuando con el ejemplo:</p>
-        <p>Agregamos los metodos getCookie() y setCookie al servicio http que creamos</p>
-        <p>http.service.ts:</p>
+        <p>Vamos a crear un servicio con los metodos getCookie() y setCookie()</p>
+        <p>Ejemplo de uso de cookies:</p>
 <pre>
     setToken(token: string) {
        this.cookies.set("token", token);
@@ -59,39 +57,84 @@
         return this.cookies.get("token");
       }
 </pre><br>
-    <blockquote>Previamente importamos e inyectamos en el constructor: </blockquote>
+
+<p>Para ello creamos el servicio:</p>
+<pre>   ng g s http </pre>
+<p>En el incluimos este código:</p>
+<p>http.service.ts:</p>
 <pre>
+export class httpService {
+
+  constructor(private http:HttpClient, private cookies:CookieService) {   }
+  
+  listar():Observable<any>{
+    return this.http.get("https://reqres.in/api/users?page=2");
+  }
+  
+  
+  login(user:any):Observable<any>{
+    return this.http.post("https://reqres.in/api/login", user);
+  }
+  
+  setToken(token: string) {
+    this.cookies.set("token", token);
+  }
+  getToken() {
+    return this.cookies.get("token");
+}
+
+
+}
+</pre>
+    <blockquote>Previamente hacemos las importaciones</blockquote>
+<pre>
+    import { Injectable } from '@angular/core';
+    import {HttpClient} from '@angular/common/http';
+    import { Observable } from 'rxjs';
     import {CookieService } from 'ngx-cookie-service';
 </pre>
-<p>Constructor del http.service.ts:</p>
-<pre>
-    export class httpService {
 
-        constructor(private http:HttpClient, private cookies:CookieService) {   }
-    ...
-</pre>
+<p>creamos el componente post.component</p>
+<pre>   ng g c post</pre>    
 
-<h2 class="section-heading">Modificamos el post.component.ts</h2>
+<p>post.component.ts :</p>
 <pre>
+export class PostComponent {
+    user1= {
+      "email": "eve.holt@reqres.in",
+      "password": "cityslicka"
+    };
+    token='';
+    
+    constructor(private http:httpService ){}     
+    
     login(){
-        this.http.login( this.user1 )
-                                      .subscribe(
-                                        (data)=>{
-                                          this.token = data.token;
-                                          //establesco cookies
-                                          this.http.setToken(data.token);
-                                        }
-                                      );
-      
-      }
-      
+      this.http.login( this.user1 )
+                                    .subscribe(
+                                      (data)=>{
+                                        this.token = data.token;
+                                        //establesco cookies
+                                        this.http.setToken(data.token);
+                                      }
+                                    );
+    
+    }
+    }
+        
 </pre><br>
-<blockquote>En realidad al metodo ya existente 'login()' le decimos que guarde esa cookie en el navegador</blockquote>
+    <blockquote>Desde este componente usamos el servicio creado (http), lo inyectamos en el constructor y usamos sus métodos</blockquote>
 
-<p>Ahora cuando en el navegador hacemos click en el boton 'login' se guarda el token obtenido del backend en las cookies del navegador.</p>
+<p>El template de nuestro componente post, de post.component.html</p>
+<pre>
+    &lt;button (click)="login()">Login&lt;/button>
+    &lt;p> {{token }}&lt;/p>
+</pre>
+    <p>Ahora cuando en el navegador hacemos click en el botón 'login' se guarda el token obtenido del backend en las cookies del navegador.</p>
+    
+    <blockquote>Recordemos que estamos usando un Backend que nos retorna cierta data Fake con este 'email' y 'password'</blockquote>
 
-<h3>Editar nuestro metodo autenticado() en el servicio http</h3>
-<p>http.service.ts:</p>
+    <h3>Agregar el método autenticado() en el servicio http</h3>
+    <p>http.service.ts:</p>
 <pre>
     token='';
 
@@ -113,15 +156,15 @@
         }
     }
 </pre>
-<p>Explicación:</p>
-<ul>
-    <li>Cuando desde el guard llamaos a este metodo, va a dejar pasar cuando retorne true, caso contrario, redirige a 'login'</li>
-    <li>Recuperamos el token, preguntandole al backend cual es token: this.token = data.token;</li>
-    <li>Recuperamos el token guardado en el navegador: this.cookies.get('token')</li>
-    <li>Preguntamos si coinciden ambos token, caso cierto retornamos true, caso contrario false.</li>
-</ul>
-<blockquote>Por conciguiente el Guard ahora va a trabajar con el metodo autenticado() y bloqueando el paso a ciertas urls de usuarios que no esten logueados</blockquote>    
-
+    <p>Explicación:</p>
+    <ul>
+        <li>Cuando desde el guard llamaos a este metodo, va a dejar pasar cuando retorne true, caso contrario, redirige a 'login'</li>
+        <li>Recuperamos el token, preguntandole al backend cual es token: this.token = data.token;</li>
+        <li>Recuperamos el token guardado en el navegador: this.cookies.get('token')</li>
+        <li>Preguntamos si coinciden ambos token, caso cierto retornamos true, caso contrario false.</li>
+    </ul>
+    <blockquote>Por consiguiente el Guard ahora va a trabajar con el método autenticado() y bloqueando el paso a ciertas urls de usuarios que no esten logueados</blockquote>    
+    
 <pre>
   if( ! http.autenticado()){
     router.navigateByUrl('/login');
@@ -129,14 +172,14 @@
   }
   return true;
 </pre>
-
-<p>Lo probamos en el navegador, hacemos click en 'login()' lo cual, estable un cookie.</p>
-<p>Luego en las anclas nos dirigimos a /componente1 y comprobamos que el guard nos deja pasar.</p>
-<pre class="navegador">
-    componente1 works!
-</pre>
-<br>
-<blockquote>Si algo no funciona como corresponde te invito a agregar 2 console.log() en el metodo autenticado() del http.service.ts:</blockquote>
+    
+    <p>Lo probamos en el navegador, hacemos click en 'login()' lo cual, establece un cookie.</p>
+    <p>Luego nos dirigimos a /componente1 y comprobamos que el guard nos deja pasar.</p>
+    <pre class="navegador">
+        componente1 works!
+    </pre>
+    <br>
+    <blockquote>Si algo no funciona como corresponde te invito a agregar 2 console.log() en el método autenticado() del http.service.ts:</blockquote>
 <pre>
     autenticado(){
         this.login( {
@@ -156,20 +199,20 @@
         return false;}
     }
 </pre>
-<p>Luego observa en consola del navegador como obtienes el token y la cookie.</p>
-<blockquote> console.log(this.cookies.get('token')+"este es el token de cookies");<br>
-    console.log(this.token + 'este es el token obtenido del backend');</blockquote>
-
-<p>Un login casi completo. Restaría unos input en la vista con email y password. Como usamos un backend Fake que solo admite un email valido,  dicha información la hicimos simple con un objeto en el post.component.ts:</p>
+    <p>Luego observa en consola del navegador como obtienes el token y la cookie.</p>
+<pre>   console.log(this.cookies.get('token')+"este es el token de cookies");</pre>
+<pre>   console.log(this.token + 'este es el token obtenido del backend'); </pre>
+    
+    <p>Un login casi completo. Restaría unos input en la vista con email y password. Como usamos un backend Fake que solo admite un email valido,  dicha información la hicimos simple con un objeto en el post.component.ts:</p>
 <pre>
     user1= {
         "email": "eve.holt@reqres.in",
         "password": "cityslicka"
       };
 </pre>
-<br>
-<blockquote>Para dicha tarea podes usar ngModel, o cualquier otra forma.</blockquote>
-<p>Gracias por leer y espero que sigan con mis cursos.</p>
+    <br>
+    <blockquote>Para dicha tarea podes usar ngModel, o cualquier otra forma.</blockquote>
+    <p>Gracias por leer y espero que sigan con mis cursos.</p>
 
                             <!-- Pager -->
                             <ul class="pager">
