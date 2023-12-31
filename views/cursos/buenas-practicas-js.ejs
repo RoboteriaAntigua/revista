@@ -46,13 +46,13 @@
                             <p>El operador == convierte los tipos antes de la comparación</p>
                             <p>El operador === compara tipos y valores</p>
 
-<pre>
-    0 == "";        // true 
-    1 == "1";       // true 
-    1 == true;      // true
-    0 === "";       // false   
-    1 === "1";      // false   
-    1 === true;     // false   
+<pre class="prettyprint lang-js">
+0 == "";        // true 
+1 == "1";       // true 
+1 == true;      // true
+0 === "";       // false   
+1 === "1";      // false   
+1 === true;     // false   
 
 </pre>
                             <br>
@@ -63,132 +63,126 @@
                             
                             <!--codigo-->
                             
-<pre>
-    if ( funcion1 () ) {   
-       if ( funcion2() ) {   
-            if ( funcion3 () ) {   
-                if( funcion4 () ){
-                    /*                      
-                    Codigo que procede a hacer algo 
-                    */
-                }
-                else {
-                    error= "error en la funcion4";
-                }
-            }                       
-            else {                  
-                error = "error en funcion3";    
-            }                                  
-        } 
-        else {
-            error = "error en funcion2";   
-        }
+<pre class="prettyprint lang-js">
+if ( funcion1 () ) {   
+   if ( funcion2() ) {   
+        if ( funcion3 () ) {   
+            if( funcion4 () ){
+                /*                      
+                Codigo que procede a hacer algo 
+                */
+            }
+            else {
+                error= "error en la funcion4";
+            }
+        }                       
+        else {                  
+            error = "error en funcion3";    
+        }                                  
     } 
     else {
-        error = "error en funcion1";
+        error = "error en funcion2";   
     }
+} 
+else {
+    error = "error en funcion1";
+}
 </pre>
                             <p> En su lugar, negamos!</p>
-<pre class="highlight javascript">
-    if( ! funcion1 () ) {
-        return "error en funcion1";
-    }
+<pre class="prettyprint lang-js">
+if( ! funcion1 () ) {
+    return "error en funcion1";
+}
     
-    if ( ! funcion2 () ) {
-        return "error en funcion2";
-    }
+if ( ! funcion2 () ) {
+    return "error en funcion2";
+}
     
-    if( ! funcion3 () ) {
-        return "error en funcion3";
-    }
+if( ! funcion3 () ) {
+    return "error en funcion3";
+}
 
-    if( ! funcion4 () ) {
-        return "error en funcion4";
-    } 
-    //Codigo que procede a hacer algo
+if( ! funcion4 () ) {
+    return "error en funcion4";
+} 
+//Codigo que procede a hacer algo
+
 </pre>
                             <h2 class="section-heading">Declaracion de variables en javascript</h2>
 
                             <p>Deben ser al principio del script y si es posible inicializarlas </p>
-<pre>
-    let cadena="";          //string vacio
-    let numero=0;           //un entero
-    const miArreglo = [];   //arreglo
-    const miObjeto = {};    //objeto
+<pre class="prettyprint lang-js">
+let cadena="";          //string vacio
+let numero=0;           //un entero
+const miArreglo = [];   //arreglo
+const miObjeto = {};    //objeto
 </pre>
 
                             <h2 class="section-heading">Evita los switch en javascript</h2>
                             <p>Los switch recorren todos los casos hasta encontrar un return, tambien las estructuras de tipo if else if obligan al codigo a recorrer todos 
                                 los loops. Es ilegible, ineficiente y podemos evitarlo
                             </p>
-<pre>
-    switch (casos) {
-        case 'Monitor':
-          console.log('El precio es 5000 creditos');
-          break;
-        case 'CPU':
-          console.log('El precio es 11000 creditos');
-          break;
-        case 'Teclado':
-          console.log('El precio es500 creditos');
-          break;
-        case 'Mouse':
-          console.log('El precio es 500 creditos');
-          break;
-        case 'Chorizos':
-          console.log('El precio es 50 creditos');
-          break;
-        default:
-          console.log('Lo lamentamos, por el momento no disponemos de ...);
-      }
+<pre class="prettyprint lang-js">
+switch (casos) {
+    case 'Monitor':
+      console.log('El precio es 5000 creditos');
+      break;
+    case 'CPU':
+      console.log('El precio es 11000 creditos');
+      break;
+    case 'Teclado':
+      console.log('El precio es500 creditos');
+      break;
+    case 'Mouse':
+      console.log('El precio es 500 creditos');
+      break;
+    case 'Chorizos':
+      console.log('El precio es 50 creditos');
+      break;
+    default:
+      console.log('Lo lamentamos, por el momento no disponemos de ...);
+  }
 </pre>
                             <p> En su lugar podemos crear un objeto con los casos y llamarlo!</p>
-<pre>
-    const productos = {
-        "Monitor": 5000,
-        "CPU": 11000,
-        "Teclado":500,
-        "Mouse": 500,
-        "Chorizo": 50
-    }
-    console.log("El precio es: "+productos.Monitor);
-    //imprime "El precio es: 5000"
+<pre class="prettyprint lang-js">
+const productos = {
+    "Monitor": 5000,
+    "CPU": 11000,
+    "Teclado":500,
+    "Mouse": 500,
+    "Chorizo": 50
+}
+console.log("El precio es: "+productos.Monitor);
+//imprime "El precio es: 5000"
 </pre>
 
                             <h2 class="section-heading">Sobre los buckles for y la fuga de memoria</h2>
                             <p>Cuando hagas un buckle de este tipo, declara la variable de iteracion (en general) "i" antes 
                                 del for, para que se declare una vez y no se redeclare en cada iteracion, 
                             </p>
-<pre>
-    for(let i=0; i&lt;longitud; i++) {
-        /*
-            codigo aqui 
-           */
-    }
+<pre class="prettyprint lang-js">
+for(let i=0; i&lt;longitud; i++) {
+    /*
+        codigo aqui 
+       */
+}
 
 // En su lugar:
-    let i=0;
-        for(i=0; i&lt;longitud; i++) {
-            /*
-            codigo aqui
-            */
-        }
+let i=0;
+    for(i=0; i&lt;longitud; i++) {
+        /*
+        codigo aqui
+        */
+    }
 </pre>  
-<!--
-                <h2 class="section-heading">Mejora tu programacion orientada a objetos</h2>
-                            <p>Aplica los principios SOLID a tu POO, para ello sigue este enlace:
-                            </p>
-    -->                        
+                     
 
                             <!-- Pager -->
                             <ul class="pager">
                                 <li class="next">
                                     <a href="/">Todos los Posts &rarr;</a>
                                 </li>
-                                <!--
-                                <li class="next">
-                                    <a href="/cursos/solid"> SOLID en la programacion orientada a objetos</a>
-                                </li>--> 
+                               
                             </ul>
                         </div>
                         <!--Columna derecha reservada para algo-->

@@ -53,39 +53,39 @@
                             <pre>"strict": false,</pre>
                             
                             <p>En el app.component.html borramos todo lo que viene y simplemente llamamos a los componentes1 y componente2</p>
-<pre>
-    &lt;app-componente1&gt;&lt;/app-componente1&gt;
+<pre class="prettyprint lang-html">
+&lt;app-componente1&gt;&lt;/app-componente1&gt;
 
-    &lt;app-componente2&gt;&lt;/app-componente2&gt;
+&lt;app-componente2&gt;&lt;/app-componente2&gt;
 
 </pre>
 <p>Podríamos ver en el navegador que todo marche bien y continuar.</p>
 <br>
 <h2>Un servicio para el observable</h2>
                             <p>En el servicio, importamos de RxJs </p>
-<pre>
-    import { Injectable } from '@angular/core';
-    import { Subject } from 'rxjs';
-    import { Observable } from 'rxjs';
+<pre class="prettyprint lang-js">
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 </pre>
                             <p>sujeto.service.ts :</p>
-<pre>
-    export class SujetoService {
+<pre class="prettyprint lang-js">
+export class SujetoService {
 
-        private sujeto$ = new Subject();
+private sujeto$ = new Subject();
       
-        constructor() {
-          this.sujeto$.next( "inicializado" );
-        }
+constructor() {
+  this.sujeto$.next( "inicializado" );
+}
       
-        obtener():Observable<any> {
-          return this.sujeto$.asObservable();
-        }
+obtener():Observable<any> {
+  return this.sujeto$.asObservable();
+}
       
-        cambiarNombre(parametro1:string){
-          this.sujeto$.next(parametro1);    
-        }
-      }
+cambiarNombre(parametro1:string){
+    this.sujeto$.next(parametro1);    
+  }
+}
 </pre>
 <p>Explicación:</p>
 <p>Instanciamos la clase Subject en una variable llamada sujeto$</p>
@@ -103,32 +103,32 @@
 <h2>Componente que usa el servicio</h2>
 <p>componente1.component.ts :</p>
 <p>Importamos el servicio y la clase Observable</p>
-<pre>
-    import { Component } from '@angular/core';
-    import { SujetoService } from '../sujeto.service';
-    import { Observable } from 'rxjs';
+<pre class="prettyprint lang-js">
+import { Component } from '@angular/core';
+import { SujetoService } from '../sujeto.service';
+import { Observable } from 'rxjs';
 </pre>
 <p>La clase:</p>
-<pre>
-    export class Componente1Component {
+<pre class="prettyprint lang-js">
+export class Componente1Component {
 
-        recuperado$: Observable<string>;
-        prueba = '';
+recuperado$: Observable<string>;
+prueba = '';
       
-        constructor ( private inyectado:SujetoService){}
+constructor ( private inyectado:SujetoService){}
 
-        ngOnInit(){
-          this.recuperado$ = this.inyectado.obtener();
-          this.recuperado$.subscribe( (value) => {
-            console.log('Observable emitted the next value: ' + value);
-           this.prueba = value;
-          });
-        }
+ngOnInit(){
+  this.recuperado$ = this.inyectado.obtener();
+  this.recuperado$.subscribe( (value) => {
+    console.log('Observable emitted the next value: ' + value);
+   this.prueba = value;
+  });
+}
       
-      cambiar_estado(){
-        this.inyectado.cambiarNombre( "Juan Bautista" );
-      }
-      }   
+cambiar_estado(){
+  this.inyectado.cambiarNombre( "Juan Bautista" );
+}
+}   
 </pre>
 <p>&rarr;Iniciamos 2 variables que usaremos: recuperado$ y prueba</p>
 <p>&rarr;En el constructor inyectamos el servicio</p>
@@ -136,19 +136,19 @@
 <blockquote>ngOnInit() es una funcion que se ejecuta al iniciarse el componente, es parte del ciclo de vida de todo componente angular</blockquote>
 <p>&rarr;El metodo cambiar_estado() usa el metodo cambiarNombre() del servicio.</p>
 
-<p>El componente1.component.html :</p>
-<pre >
-    &lt;p>componente1 works!&lt;/p>
+<p>El template, componente1.component.html :</p>
+<pre class="prettyprint lang-html">
+&lt;p>componente1 works!&lt;/p>
 
-    &lt;button (click)="cambiar_estado()">Cambiar el estado del objeto &lt;/button>
+&lt;button (click)="cambiar_estado()">Cambiar el estado del objeto &lt;/button>
 
-    &lt;p> {{prueba }}&lt;/p>
+&lt;p> {{prueba }}&lt;/p>
 </pre>
 
 <p>En el template html de componente1 simplemente usamos un boton para cambiar el estado del observable y vemos con la variable 'prueba' como cambia</p>
  
 <p>Vamos al navegador:</p>
-<pre>   ng serve </pre>
+<pre>ng serve </pre>
 
 <p>Deberiamos ver que al tocar el boton cambia el estado del observable y vemos "juan Bautista"</p>
 
@@ -162,8 +162,8 @@ Juan Bautista
 
 <h2>Componente2 </h2>
 <p>component2.component.html</p>
-<pre>
-    &lt;p&gt;componente2 works!&lt;/p&gt;
+<pre class="prettyprint lang-js">
+&lt;p&gt;componente2 works!&lt;/p&gt;
 &lt;button (click)="cambiarEstado()"&gt; Cambiar estado desde comp2 &lt;/button&gt;
 
 &lt;p&gt;{{prueba2}}&lt;/p&gt;
@@ -172,7 +172,7 @@ Juan Bautista
 
 <p>Componente2.component.ts </p>
 <p>Aclaro que el decorador &#64;component no tocamos, dejamos tal cual es </p>
-<pre>
+<pre class="prettyprint lang-js">
 import { Component } from '@angular/core';
 import { SujetoService } from '../sujeto.service';
 import { Observable } from 'rxjs';
@@ -231,6 +231,7 @@ export class Componente2Component {
 <p>Gracias y no dejes de chusmear mis cursos completos de Kubernetes, mysql y los post de fundamentos de Angular y Laravel </p>
 <a href="/kubernetes-introduccion">Kubernetes completo en Español &rarr;</a> <br>
 <a href="/mysql-introduccion">Curso de mysql para DBAs &rarr;</a><br>
+<p>Sinó continua con los post del curso de Angular avanzado, los cuales tienen una linea pedagógica que van de simples a complejos</p>
 
                         <!-- Pager -->
                             <ul class="pager">
@@ -239,7 +240,7 @@ export class Componente2Component {
                                     <a href="/observables-angular#arriba">Arriba &uarr;</a>
                                 </li>
                                 <li class="next">
-                                    <a href="/"> home </a>
+                                    <a href="/HttpClient"> Siguiente &rarr; </a>
                                 </li> 
                                 <li class="next">
                                     <a href="/observer-patron"> atras &larr;</a>
