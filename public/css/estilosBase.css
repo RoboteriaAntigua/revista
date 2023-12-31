@@ -547,17 +547,20 @@ pre {
   margin: auto;
   font-size: smaller;
   overflow: scroll;
+  padding-left: 40px;
 }
 @media (max-width: 767px) {
   pre {
     max-width: 90vw;
     margin: auto;
+    padding-left: 5vw;
   }
 }
 @media (max-width: 400px) {
   pre {
     width: 240px;
     margin: auto;
+    padding-left: 10px;
   }
 }
 .navegador {
