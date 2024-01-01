@@ -1,0 +1,230 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Interceptors en Angular. Ejemplo de interceptors en angular">
+    <title> Interceptors en angular</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Interceptors en Angular</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Interceptors</h2>
+                           <p>Como su nombre lo indica, es un servicio que intercepta solicitudes http, y les modifica. Lo que puede ser agregar un header o un token, o parámetros.</p>
+                           <p>Supongamos una aplicación que consulta a un backend una docena de veces en distintos puntos de la aplicación. Si hay una modificación en el backend, tenemos un problema. Supongamos que ahora el backend solicita un token, ¿Editamos nuestra aplicación 12 veces?</p>
+                           <p>Los interceptors se encargan de esa tarea, y de manera centralizada.</p>
+
+
+<pre class="prettyprint lang-js">
+
+export class Inter1Interceptor implements HttpInterceptor {
+
+  constructor() {}
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
+    console.log('aqui estamos interceptando todo');
+
+    const modificada = request.clone();
+    
+    return next.handle(modificada);
+  }
+}    
+</pre>
+<br>
+<ul>
+    <li>Nuestro interceptor implementa la interfaz HttpInterceptor</li>
+    <li>Recibe la solicitud http y opera en ella.</li>
+    <li>Retorna la solicitud modificada.</li>
+</ul>
+
+<h2 class="section-heading">Ejemplo práctico de interceptors en Angular</h2>
+<p>Como siempre los ejemplo en Roboteria Antigua, comienzan con un ng new</p>
+<pre>
+ng new pruebaInterceptors --no-standalone
+</pre>
+
+<p>Primero creamos un componente, el cual va a hacer uso del modulo HttpClient para solicitar cierta data al backend.</p>
+<pre>
+ng g c consumidor
+</pre>
+<p>También hacemos uso del cli para crear un interceptor:</p>
+<pre>
+ng g interceptor inter1
+</pre>
+<p>Agregamos en el modulo principal de la aplicación: app.module.ts</p>
+<pre class="prettyprint lang-js">
+    imports: [
+    BrowserModule,
+    HttpClientModule
+  ],
+  providers: [
+    {provide:HTTP_INTERCEPTORS,
+    useClass:Inter1Interceptor,
+    multi:true}
+  ],
+</pre>
+
+<p>El template de nuestro componente: consumidor.component.html :</p>
+<pre class="prettyprint lang-html">
+&lt;p>consumidor works!&lt;/p>
+
+
+&lt;button (click)="listar()">listar&lt;/button>
+&#123;&#123;resultado | json &#125;&#125;
+
+</pre>
+<p>consumidor.component.ts</p>
+<pre class="prettyprint lang-js">
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+    
+@Component({
+  selector: 'app-consumidor',
+  templateUrl: './consumidor.component.html',
+  styleUrls: ['./consumidor.component.css']
+})
+export class ConsumidorComponent {
+    
+  constructor(private http:HttpClient ){}
+      
+  resultado={};
+      
+  consumirLista():Observable<any>{
+    return this.http.get("https://reqres.in/api/users?page=2");
+  }
+      
+  listar(){
+    this.consumirLista().subscribe(
+      (data)=>{
+        this.resultado=data;
+      }
+    );
+  }
+}   
+</pre>
+<br>
+<blockquote>En el componente hacemos solicitud http (GET) a un backend de datos falsos, como retorna un observable, nos suscribimos a él con el metodo listar()</blockquote>
+<blockquote>Si te mareas un poco, ve hacia atrás en mis entregas y construye solidos conocimientos en Observables y modulo HttpClient</blockquote>
+<p>En app.component.html , borramos todo lo que viene por defecto y dejamos asi:</p>
+<p>app.component.html:</p>
+<pre class="prettyprint lang-html">
+    &lt;app-consumidor>&lt;/app-consumidor>
+</pre>
+
+<p>Ahora si podemos trabajar con las solicitudes de forma centralizada, vamos a nuestro interceptor: Inter1.Interceptorts :</p>
+<pre class="prettyprint lang-js">
+import { Injectable } from '@angular/core';
+import {
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+  HttpInterceptor
+} from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable()
+export class Inter1Interceptor implements HttpInterceptor {
+
+  constructor() {}
+
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
+    console.log('aqui estamos interceptando todo');
+
+    return next.handle(request);
+  }
+}
+</pre>
+<br>
+<blockquote>Corroboremos que al hacer click en el boton listar que hemos recibido la data y que por consola del navegador salga nuestro mensaje</blockquote>
+
+<pre class="navegador">
+aqui estamos interceptando todo  
+</pre>
+
+<h3>Agregar headers a las solicitudes, por ejemplo un token:</h3><br>
+<pre class="prettyprint lang-js">
+intercept(request: HttpRequest&lt;unknown>, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown>> &#123;
+    const token="123abac";
+
+    console.log('aqui estamos interceptando todo');
+    const aver = request.clone({
+      setHeaders: {
+        authorization: `Bearer ${ token }`
+      }
+    });
+    return next.handle(aver);
+</pre>
+
+<h3>Agregar parametros a las solicitudes</h3><br>
+<pre class="prettyprint lang-js">
+intercept(request: HttpRequest&lt;unknown>, next: HttpHandler): Observable&lt;HttpEvent&lt;unknown>> {
+
+    const token="123abac";
+
+    console.log('aqui estamos interceptando todo');
+    const aver = request.clone({
+      setHeaders: {
+        authorization: `Bearer ${ token }`
+      },
+      setParams: {
+        parametro1: 'aqui parametro1'
+      }
+    });
+    return next.handle(aver);
+  }
+</pre>
+<p>Un porotito mas en tu lista de conocimientos de Angular, falta poco, hemos avanzado mucho hasta ahora, en las siguientes entregas vamos a ver un tema muy crucial, el patron de diseño Flux, mejor conocido como 'Manejadores de estado'.</p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/login-angular"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

@@ -75,7 +75,7 @@ router.get('/observables-angular', (req, res) => { res.render('cursos/angular/ob
 router.get('/HttpClient', (req, res) => { res.render('cursos/angular/http.ejs'); });
 router.get('/guards', (req, res) => { res.render('cursos/angular/guards.ejs'); });
 router.get('/login-angular', (req, res) => { res.render('cursos/angular/login-angular.ejs'); });
-
+router.get('/interceptors', (req, res) => { res.render('cursos/angular/interceptors.ejs'); });
 
 /******************************************* fin de angular avanzado */
 
