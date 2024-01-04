@@ -657,7 +657,6 @@ blockquote {
 		overflow-x: scroll;
 		overflow-y:scroll;
 		width: 90%;
-
 	}
 	
 }
@@ -669,6 +668,16 @@ blockquote {
 .imgContainer img {
 	border-radius: 12px;
 	box-shadow: 1px 1px 10px @blanco;
+	@media(max-width:767px){
+		max-width: 90vw;
+		margin:auto;
+		
+	}
+	@media (max-width:400px){
+		width:240px;
+		margin:auto;
+		
+	}
 	
 }
 

@@ -1,0 +1,178 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Inyección de dependencias en Angular. Que es la Inyección de dependencias?">
+    <title> Inyección de dependencias</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Inyección de dependencias</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Inyección de dependencias</h2>
+                           
+                            <p>Es una forma de mejorar nuestro código, ampliamente usada. Corresponde a los principios de programación orientada a objetos 'Solid'.</p>
+                            <p>Cuando una clase depende de otra para funcionar, tenemos una dependencia y mas aún acoplamiento.</p>
+                            <p>Con la Inyección de dependencias vamos a buscar desacoplar nuestras clases. Con un ejemplo es mas claro:</p>
+                            <h2 class="section-heading">Ejemplo de Inyección de dependencias Javascript</h2>
+<p>En este ejemplo vamos a tener 2 clases, clase1 y clase2. Clase2 usa los métodos y funciones de clase1, por ende, depende de clase1.</p>
+<p>Clase1.ts</p>
+<pre class="prettyprint lang-js">
+    export class Clase1 {
+        private atributo1= 33;
+      
+        get(){
+          return this.atributo1;
+        }
+      
+        set(par1:number){
+          this.atributo1 = par1;
+        }
+      }      
+</pre>
+<p>Clase2.ts</p>
+<pre class="prettyprint lang-js">
+import { Clase1 } from "./clase1";
+
+export class Clase2 {
+    
+  private doble:number=0;
+    
+  constructor (){  }
+    
+  duplicar(){
+    let clase1 = new Clase1();
+    this.doble = clase1.get() *2;
+    return this.doble;
+    }
+  }
+</pre>
+<br>
+<blockquote>El método duplicar() de la clase2 necesita de la clase1, por ende la instancia y la usa.</blockquote>
+<p>Bueno, desde otro parte de nuestra app para hacer uso de clase2, haríamos asi: </p>
+<pre class="prettyprint lang-js">
+import { Clase2 } from './clase2';
+
+let clase2 = new Clase2();
+console.log( clase2.duplicar() );
+
+</pre>
+<p>¿Que hay de malo en esto? En principio funciona, pero hay acoplamiento y es invisible. Instanciamos a Clase2 y nunca nos 
+    enteramos de que dicha clase tiene como dependencia a clase1. Por ende si clase1 cambia, o falla, se rompe.
+</p>
+<h3>Ahora el mismo ejemplo con Inyección de dependencias</h3>
+<p>Para ello vamos a ver clase3 y clase4, clase4 depende de los métodos y atributos de clase3. Ambas clases son casi idénticas a clase1 y clase2.</p>
+<p>Clase3.ts</p>
+<pre class="prettyprint lang-js">
+export class Clase3 {
+    private atributo1= 33;
+  
+    get(){
+      return this.atributo1;
+    }
+  
+    set(par1:number){
+      this.atributo1 = par1;
+    }
+  }
+</pre>
+
+<p>Clase4.ts</p>
+<pre class="prettyprint lang-js">
+import { Clase3 } from "./clase3";
+
+export class Clase4 {
+
+  private doble:number=0;
+
+  constructor ( private inyectada:Clase3 ) {  }
+
+  duplicar(){
+    this.doble = this.inyectada.get() *2;
+    return this.doble;
+  }
+}
+</pre>
+<p>Igual que en el ejemplo anterior clase4 tiene un método duplicar() el cual cual usa los atributos y métodos de clase3.</p>
+<p>Pero esta vez, en lugar de instancias a clase3 adentro de clase4, la inyectamos en el constructor.</p>
+<pre class="prettyprint lang-js"> 
+constructor ( private inyectada:Clase3 ) {  }
+</pre>
+<p>Podriamos haber dicho:</p>
+<pre class="prettyprint lang-js"> 
+constructor ( private cualquierNombre:Clase3 ) {  }
+</pre> 
+<p>Y luego usarla:</p>
+<pre class="prettyprint lang-js"> 
+duplicar(){
+    this.doble = this.cualquierNombre.get() *2;
+    return this.doble;
+  }
+</pre>
+
+<p>Ahora veamos como usariamos a clase4 desde otro punto de nuestra app:</p>
+<pre class="prettyprint lang-js">
+import { Clase3 } from './clase3';
+import { Clase4 } from './clase4';
+
+let clase4 = new Clase4( new Clase3() );
+console.log( clase4.duplicar() );
+
+</pre>
+    <blockquote> Ahora hay acoplamiento débil, y visible. Las clases que se usan estan a la vista, y no ofuscamos a ninguna dependencia.</blockquote>
+
+    <p>En el capítulo siguiente vamos a ver un ejemplo en Angular, uno de los pilares de Angular: Servicios.</p>
+    <p>En capitulos posteriores construiremos conocimientos sobre patrones de diseño, programación reactiva y las aristas de este poderoso framework. En español y reduciendo la curva de aprendizaje con ejemplos simples.</p>
+
+
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                  <a href="/servicios"> Siguiente &rarr;</a>
+                              </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

@@ -582,6 +582,18 @@ pre {
   border-radius: 12px;
   box-shadow: 1px 1px 10px #ddc8c8;
 }
+@media (max-width: 767px) {
+  .imgContainer img {
+    max-width: 90vw;
+    margin: auto;
+  }
+}
+@media (max-width: 400px) {
+  .imgContainer img {
+    width: 240px;
+    margin: auto;
+  }
+}
 .containerK8 {
   background-color: #ddc8c8;
   border-radius: 12px;

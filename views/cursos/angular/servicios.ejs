@@ -1,0 +1,214 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Servicios en angular. Comunicacion entre componentes en angular. Inyeccion de dependencias en angular">
+    <title> Servicios </title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Servicios en angular</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Servicios en Angular</h2>
+                           <p>Servicio es una categoría amplia que abarca cualquier valor, función o característica que necesite una aplicación. </p>
+                            
+                           <p> Idealmente, el trabajo de un componente es permitir la experiencia del usuario y nada más. Un componente debe presentar propiedades y métodos para el enlace de datos, para mediar entre la vista (representada por la plantilla) y la lógica de la aplicación (que a menudo incluye alguna noción de modelo ).</p>
+                            
+                           <p> Para todo lo que no sea concerniente con la vista y la experiencia del usuario, un componente puede delegar las tareas a los servicios, como obtener datos del servidor, validar la entrada del usuario o registrar información directamente en la consola.</p>
+
+
+
+                            <h2 class="section-heading">Decoradores</h2>
+                            <p>En programación un decorador es una función que recibe otra función como parámetro, le añade cosas y retorna una función diferente. </p>
+                            <p>En javascript es similar, pero envuelve una clase, le agrega funcionalidad y nos oculta cierta complejidad que el framework maneja.</p>
+                            <p>Cuando creamos un servicio:</p>
+                            <pre class="prettyprint lang-js">ng g s servicio1</pre>
+                            <p>Angular le agrega al servicio el decorador @inyectable</p>
+<pre class="prettyprint lang-js">
+import { Injectable } from '@angular/core';
+
+&#64;Injectable({
+  providedIn: 'root'
+})
+
+export class Servicio1Service {
+    //Codigo aquí
+}
+</pre>
+<p>El proceso de inyección de "HeroService" se parece a esto.</p>
+
+<div class="imgContainer">
+<img  src="img/injector-injects.png"></div>
+
+<p>Poniendolo mas claro, si creamos una clase regular, podemos inyectarla en el constructor de cualquier componente, pero esta crearía una nueva instancia, entonces al modificar cierto atributo de dicha clase, se modifica en la instancia y las otras instancias no se enteran. No sirve para comunicar data entre componentes. </p>  
+<p>Angular resuelve esto otorgándonos, entre otras cosas, la capacidad de comunicar data entre componentes cualesquiera.</p>
+<blockquote>Los servicios son ampliamente usados en Angular, y en este curso vamos a requerirlos en casi todas las entregas.</blockquote> 
+
+<h2 class="section-heading">Ejemplo de Comunicación entre componentes usando servicios </h2>
+
+<p>Creamos el proyecto, un servicio y 2 componentes.</p>
+<pre>ng new serviciosEjemplo</pre>
+<pre>ng g s servicio1</pre>
+<pre>ng g c componente1</pre>
+<pre>ng g c componente2</pre>
+<br>
+<blockquote>Componente uno va a enviar data al componente2, para ello vamos a inyectar el servicio1 en ambos componentes</blockquote>
+
+
+<p>El servicio Servicio1Service.ts tiene un metodo set() que sirve para establecer el valor de la variable variable1:</p>
+<pre class="prettyprint lan-js">
+import { Injectable } from '@angular/core';
+@Injectable({
+  providedIn: 'root'
+})
+export class Servicio1Service {
+
+  variable1='';
+
+  constructor() { }
+
+  set(par1:string){
+    this.variable1=par1;
+  }
+}
+</pre>
+<p>En componente1 con un boton enviamos el valor de la variable varComp1, al componente2 pero a travez del servicio.</p>
+<p>Componente1.component.ts :</p>
+<pre class="prettyprint lang-js">
+import { Component } from '@angular/core';
+import { Servicio1Service } from '../servicio1.service';
+
+@Component({
+  selector: 'app-componente1',
+  templateUrl: './componente1.component.html',
+  styleUrls: ['./componente1.component.css']
+})
+export class Componente1Component {
+
+  varComp1='Soy un atributo del componente1';
+
+  constructor(private inyectado:Servicio1Service){  }
+
+  enviar(){
+    this.inyectado.set( this.varComp1 );
+  }
+
+}
+</pre>
+
+<br>
+<blockquote>Note que los servicios se inyectan en el constructor del componente, y luego podemos acceder a sus métodos y atributos</blockquote>
+<div class="imgContainer">
+    <img  src="img/dependency-injection.png">
+</div>
+
+<p>Y su template, componente1.html</p>
+<pre class="prettyprint lang-html">
+&lt;p>componente1 works!&lt;/p>
+
+&lt;button (click)="enviar()">Enviar data al componente 2&lt;/button>
+</pre>
+
+<p>En el componente que recibe la data, simplemente inyectamos el servicio:</p>
+<p>componente2.component.ts :</p>
+<pre class="prettyprint lang-js">
+import { Component } from '@angular/core';
+import { Servicio1Service } from '../servicio1.service';
+
+@Component({
+  selector: 'app-componente2',
+  templateUrl: './componente2.component.html',
+  styleUrls: ['./componente2.component.css']
+})
+export class Componente2Component {
+
+  constructor( public inyectado:Servicio1Service){    }
+  
+}
+</pre>
+
+<p>Y en template del componente2 accedemos al valor de la variable del servicio</p>
+<p>componente2.component.html :</p>
+<pre class="prettyprint lang-html">
+&lt;p>componente2 works!&lt;/p>
+&lt;p>recibimos:&lt;/p>
+&lt;p> {{ inyectado.variable1 }}&lt;/p>
+</pre>
+
+<p>En el root app.componente.html, borramos el contenido que viene por defecto y llamamos a los componentes componente1 y componente2:</p>
+<pre class="prettyprint lang-html">
+
+&lt;app-componente1>&lt;/app-componente1>
+&lt;app-componente2>&lt;/app-componente2>
+    
+</pre>
+
+
+<p>Y el resultado en pantalla del navegador será (haz click):</p>
+<pre class="navegador">
+componente1 works!
+<button onclick="enviar()">Enviar data al componente 2</button>
+componente2 works!
+Recibimos:
+<p id="id1"></p>
+</pre>
+<script>
+    function enviar(){
+        document.getElementById('id1').innerHTML='Soy un atributo del componente1';
+    }
+</script>
+
+<p>En las siguientes entregas volveras a usar un millar de veces los servicios, con diferentes fines, siendo cada vez un poco mas claro.</p>
+<p>También vamos a ver los pilares de la programación reactiva y cavar profundo en Angular. </p>
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/observer-patron">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/inyeccion"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

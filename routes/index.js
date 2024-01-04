@@ -70,6 +70,8 @@ router.get('/kubernetes-updates-no-down', (req, res) => { res.render('cursos/kub
 /******************************** fin curso de kubernetes **************************************/
 
 /**********************************Angular ****************************************************/
+router.get('/inyeccion', (req, res) => { res.render('cursos/angular/inyeccion.ejs'); });
+router.get('/servicios', (req, res) => { res.render('cursos/angular/servicios.ejs'); });
 router.get('/observer-patron', (req, res) => { res.render('cursos/angular/observer-patron.ejs'); });
 router.get('/observables-angular', (req, res) => { res.render('cursos/angular/obs-angular.ejs'); });
 router.get('/HttpClient', (req, res) => { res.render('cursos/angular/http.ejs'); });
