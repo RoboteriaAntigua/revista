@@ -23,9 +23,12 @@ https://old-robotics.com.ar/kubernetes-labels
 https://old-robotics.com.ar/kubernetes-multiples-instancias
 https://old-robotics.com.ar/kubernetes-updates-no-down
 https://old-robotics.com.ar/inyeccion
+https://old-robotics.com.ar/servicios
 https://old-robotics.com.ar/observer-patron
 https://old-robotics.com.ar/observables-angular
 https://old-robotics.com.ar/httpClient
 https://old-robotics.com.ar/guards
 https://old-robotics.com.ar/login-angular
-https://old-robotics.com.ar/interceptors  
+https://old-robotics.com.ar/interceptors
+https://old-robotics.com.ar/flux
+https://old-robotics.com.ar/flux-ejemplo

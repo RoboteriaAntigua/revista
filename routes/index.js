@@ -78,6 +78,8 @@ router.get('/HttpClient', (req, res) => { res.render('cursos/angular/http.ejs');
 router.get('/guards', (req, res) => { res.render('cursos/angular/guards.ejs'); });
 router.get('/login-angular', (req, res) => { res.render('cursos/angular/login-angular.ejs'); });
 router.get('/interceptors', (req, res) => { res.render('cursos/angular/interceptors.ejs'); });
+router.get('/flux', (req, res) => { res.render('cursos/angular/flux.ejs'); });
+router.get('/flux-ejemplo', (req, res) => { res.render('cursos/angular/flux-ejemplo.ejs'); });
 
 /******************************************* fin de angular avanzado */
 

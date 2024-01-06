@@ -1,0 +1,215 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Ejemplo redux en Angular. Ejemplo practico desde cero de storejs. Ejercicio ngrx. Ejemplo redux. Ejemplo manejadores de estado desde cero.">
+    <title> Redux ejemplo</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Ejemplo de patron Redux / Flux.</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Ejemplo de patron Redux / Flux en Angular</h2>
+                           <p>En la entrega anterior vimos los aspectos teóricos de Redux / manejadores de estado. Que corresponden al patron de comportamiento Flux. Como prometí aquí va un ejemplo práctico desde cero:</p>
+                            <pre >ng new flux --no-standalone</pre>
+                            <p>Creamos un componente que usaremos mas tarde:</p>
+                            <pre>ng g c componente1</pre>
+                            
+                            <p>Vamos a instalar el store de rxjs, para ello hay 2 formas :</p>
+                            <pre>npm i ngrx/store --save</pre>
+                            <p>O agrego en el package.json "@ngrx/store": "^16.3.0" y luego: </p>
+                            <pre>npm install</pre>
+                            <blockquote>Intenta instalar una version similar a tu angular common, en mi caso es:</blockquote>
+                            <pre class="prettyprint lang-js">"@angular/common": "^16.1.0"</pre>
+<h2 class="section-heading">Manos a la obra:</h2>
+<blockquote><b>Objetivo:</b> Guardar una string/cadena en el storejs y acceder a ella desde componente1 y desde la raíz app.module.ts</blockquote>
+<p>Creamos el interfaz action en principio, icadenaAction.ts:</p>
+<pre class="prettyprint lang-js">
+export interface icadenaAction {
+    type:string;
+    cadenaNombre:string;
+  }</pre>
+
+<p>Creamos la función pura que será encargada de establecer los nuevos estados en el store. O sea nuestro reducer (dispatcher).</p>
+<p>cadena.reducer.ts</p>
+<pre class="prettyprint lang-js">
+import { icadenaAction } from "./icadenaAction";
+
+export const textoInicial:string='texto default';
+
+export function cadenaReducer (state=textoInicial, action:icadenaAction){
+
+  if(action.type==="cambiarNombre"){
+    return action.cadenaNombre;
+  }
+
+  return state;
+}
+</pre>
+<p>En el app.module.ts le decimos de la existencia de este reducer:</p>
+<pre class="prettyprint lang-js">
+  imports: [
+  BrowserModule,
+  StoreModule.forRoot( {cadenaNombre:cadenaReducer})
+  ],
+</pre>
+
+<p>Nuestro app.component.ts tiene un método por el cual despachamos nuestra cadena (guardoCadena()):</p>
+<pre class="prettyprint lang-js">
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { icadenaAction } from './reducers/icadenaAction';
+
+export class AppComponent {
+
+
+  cadena:string;
+
+  //Inyecto el store y me suscribo a él
+  constructor (private store:Store&lt;icadenaAction>){
+    this.store.subscribe( (data)=>{
+      console.log( data );
+      this.cadena= data.cadenaNombre;
+    });
+
+  }
+
+  guardoCadena(){
+    this.store.dispatch(
+      {
+        type:'cambiarNombre',
+        cadenaNombre:"soy una cadena lala"
+    });
+  }
+}
+    
+</pre>
+<p>RxJs utiliza Observables para tener un estado (valor de la variable) actualizado en tiempo real en toda la app. Para saber mas de Observables comienza con este curso desde cero! <a href="/observer-patron">Observer patron &rarr;</a></p>
+
+<p>En el template app.component.html:</p>
+<pre class="prettyprint lang-html">
+&lt;h1>Guardo en el store una cadena&lt;/h1>
+&lt;button (click)="guardoCadena()">GuardoCadena&lt;/button>
+&lt;p>estado: {{cadena}}&lt;/p>
+&lt;app-componente1>&lt;/app-componente1>
+</pre>
+<br>
+<blockquote>Usamos el botón para llamar a nuestro método despachador, y también mostramos en pantalla el valor rescatado del store.</blockquote>
+
+
+<p>En principio nuestra salida muestra el state de la variable cadenaNombre por default, y al hacer click le cambiamos el nombre:</p>
+<pre class="navegador">
+<h3>Guardo en el store una cadena</h3>
+<button onclick="guardoCadena()">guardoCadena</button>
+estado: <p id="idcadena">texto default</p>
+componente1 works!
+</pre>
+<script>
+    function guardoCadena(){
+        document.getElementById("idcadena").innerHTML= "soy una cadena lala";
+    }
+</script>
+
+<p>Primer uso del storejs! no es poca cosa, ahora veamos si es verdad que podemos acceder a dicho estado desde cualquier parte de nuestra app.</p>
+<p>Nos suscribimos al store desde el componente1.component.ts :</p>
+<pre class="prettyprint lang-js">
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { icadenaAction } from '../reducers/icadenaAction';
+
+&#123;Component ({
+  selector: 'app-componente1',
+  templateUrl: './componente1.component.html',
+  styleUrls: ['./componente1.component.css']
+})
+
+export class Componente1Component {
+
+    cadena2:string;
+
+    constructor (private store:Store&lt;icadenaAction>){
+      store.subscribe( (data)=>{
+        this.cadena2=data.cadenaNombre;
+      })
+    }
+
+}
+</pre>
+
+<p>Y el componente1.component.html :</p>
+<pre class="prettyprint lang-html">
+    &lt;p>componente1 works!&lt;/p>
+    &lt;h1>En el componente 1 accedo al store&lt;/h1>
+    &lt;p>{{cadena2}}&lt;/p>
+</pre>
+
+<p> El resultado en navegador es:</p>
+
+<pre class="navegador">
+<h3>Guardo en el store una cadena</h3>
+<button onclick="guardoCadena2()">guardoCadena</button>
+estado: <p id="idcadena2">texto default</p>
+componente1 works!
+<p id="idComponente1">texto default</p>
+</pre>
+
+<script>
+    function guardoCadena2(){
+        document.getElementById("idcadena2").innerHTML= "soy una cadena lala";
+        document.getElementById("idComponente1").innerHTML= "soy una cadena lala";
+    }
+</script>
+<br>
+<blockquote>Combinando el patrón de comportamiento Observer con el patron estructural Flux, hemos comprendido los pilares de la programación reactiva. Y ahora Angular lo miramos desde arriba de la curva de aprendizaje. </blockquote>
+<p>Sigamos prácticando en las próximas entregas.</p>
+
+                    <!-- Pager -->
+                            <ul class="pager">
+                               
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/flux"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

@@ -1,0 +1,213 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Que es el patron redux?. Patron de diseño Redux. Patron de diseño Flux.">
+    <title> Patron Flux</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Patron de diseño Flux / Redux</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_angular.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Patron de diseño Flux / Redux</h2>
+                            <p>En esta entrega vamos a ver y comprender uno de los principios de la programación reactiva. El patron de diseño Flux, mejor conocido como Redux o manejadores de estado.</p>
+                            <p>Es un tema que puede ser complicado, pero en este curso lo vamos a hacer simple, a traves de aproximaciones. Lo que implica que si algo no lo comprendes, no te quedes, continua leyendo, que se volvera a pasar otra vez, sobre los mismos temas</p>
+                            <p>Debo decir que muchos programadores, sobre todo autodidactas, cuando llegamos a este punto nos dimos la cabeza con el teclado, a ti no te va a pasar debido al método didáctico empleado.</p>
+
+                            <blockquote>Al final, después de las aproximaciones vamos a hacer un ejemplo práctico desde cero.</blockquote>
+                            <h2 class="section-heading">¿Que es el patron Flux? (Redux)</h2>
+                            <p>Asi como hemos visto el patron de comportamiento <a href="/observer-patron">Observer &rarr;</a> , el patron Flux es un patron estructural. Los hay patrones de comportamiento y estructurales.</p>
+                            <p>Con Flux vamos a comunicar la data entre los componentes de nuestra app de manera centralizada. También llamado manejadores de estado, con dicho patron estructural evitamos comunicar data entre componentes con servicios, o con @input y @output</p>
+                            <p>Resumiendo, es una implementación de una estructura en donde un 'store' sera la fuente de verdad para toda comunicación dentro de nuestra app</p>
+                            
+                            <div class="imgContainer">
+                            <img src="img/fluxSinflux.png">
+                            </div>
+                            <br>
+                            <blockquote>En nuestras app, la comunicación entre componentes se puede convertir en una anarquía, un desarrollador va a usar servicios, otro le va a pasar data de un componente hijo al padre, y otro de un componente al padre de su padre. La aplicación se convertirá en un zoológico de servicios.</blockquote>
+                            
+                            <h2 class="section-heading">Primera aproximación</h2>
+                            <p>Para comunicar data desde un componente a cualquier parte de nuestra app, primero le almacenamos en el store.</p>
+                            <p>Metodo dispatch() del store:</p>
+<pre class="prettyprint lang-js">
+
+this.store.dispatch(
+    {
+      type:'guardarObjeto',
+      objeto: { nombre:'juan', edad:1 }
+    }
+  )
+</pre>
+<p>Mas completo:</p>
+<pre class="prettyprint lang-js">
+  import { Store } from '@ngrx/store';
+
+  export class AppComponent {
+  
+    constructor (private store:Store){}
+    
+    this.store.dispatch(
+      {
+        type:'guardarObjeto',
+        objeto: { nombre:'juan', edad:1 }
+      }
+    )
+    }
+</pre>
+
+<p>Bueno hasta aquí simple, pero se complica un poco mas. </p>
+
+<h2 class="section-heading">Reducers/dispatchers</h2>
+<p>La única forma de establecer o cambiar el estado, o sea, el valor de un objeto en el store, es a traves de un reducer. </p>
+<p>Un reducer es una función que solamente cumple esa tarea. Llamada función pura.</p>
+<p>Ademas de despachar el objeto con el metodo store.dispatch() debemos definir este dispatcher. (Reducer en Angular)</p>
+<pre class="prettyprint lang-js">
+export const InitialState={ nombre:'defaultNombre',edad:27};
+export function objetoReducer (state=InitialState, type_y_data){
+
+  if( type==="guardarObjeto" ){
+    state=data;
+    return state;
+  }
+    return state;
+  }
+</pre>
+<br>
+<blockquote>Los reducers reciben 2 parámetros, uno el estado por default y el otro algo que nos dará la data y como procesarla</blockquote>
+
+<p>El código anterior es meramente ilustrativo, el segundo parametro es lo que se llama un Action</p>
+<h2 class="section-heading">Action</h2>
+<p>Un action es una simple interfaz que vamos a definir, en la cual vamos a guardar un atributo de tipo de nombre 'type' que nos va a indicar como procesar la data, y otros tantos atributos que sirven para despachar la data en cuestión.</p>
+<p>(Por las dudas, recordemos que estamos tratando de comunicar data entre componentes)</p>
+<pre class="prettyprint lang-js">
+
+export interface idataAction {
+    type:string;
+    data:any;
+  }
+  
+</pre>
+<p>O bien:</p>
+<pre class="prettyprint lang-js">
+export interface idataAction {
+    type:string;
+    data:any;
+    data2:any;
+    cadena:string;
+    unNumero:number;
+  }
+  
+</pre>
+
+<h2 class="section-heading">Segunda aproximación </h2>
+<p>Nuestro patron estructural va quedando asi:</p>
+<div class="imgContainer">
+    <img src="img/fluxDiagram.png">
+</div>
+
+<h3>Reducers (2da aprox)</h3>
+<p>Un reducer es una funcion pura que nos va a servir para despachar nuestra data. Toma 2 parámetros. Uno el estado inicial, y otro una interfaz Action.</p>
+
+<pre class="prettyprint lang-js">
+import { idataAction } from "./idataAction";
+
+export const InitialState={ nombre:'defaultNombre',edad:27 };
+
+
+export function objetoReducer ( state=InitialState, action:idataAction ) {
+
+  if( action.type==="guardarObjeto" ){
+    state=action.objeto;
+    return action.objeto;
+  }
+  return state;
+}
+</pre>
+
+<p>Podemos tener mas de un type:</p>
+<pre class="prettyprint lang-js">
+    import { idataAction } from "./idataAction";
+    
+    export const InitialState={ nombre:'defaultNombre',edad:27 };
+    
+    
+    export function objetoReducer ( state=InitialState, action:idataAction ){
+    
+      if( action.type==="guardarObjeto" ) {
+        state=action.objeto;
+        return action.objeto;
+      }
+      if( action.type==="otra Cosa" ) {
+        //Hacemos otra cosa
+      }
+      return state;
+    }
+    </pre>
+<p>El típico ejemplo de un reducer es un contador:</p>
+<pre class="prettyprint lang-js">
+function counter(state = 0, action) {
+    switch (action.type) {
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      return state;
+    }
+  }
+</pre>
+     
+<p>En el siguiente capítulo vamos a ver un ejemplo práctico desde cero.</p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/flux-ejemplo">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/interceptors"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          
