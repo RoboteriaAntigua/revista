@@ -32,3 +32,5 @@ https://old-robotics.com.ar/login-angular
 https://old-robotics.com.ar/interceptors
 https://old-robotics.com.ar/flux
 https://old-robotics.com.ar/flux-ejemplo
+https://old-robotics.com.ar/iptables
+https://old-robotics.com.ar/icmp

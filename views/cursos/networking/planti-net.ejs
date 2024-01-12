@@ -1,0 +1,80 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Curso de networking gratis y en español.">
+    <title> Networking curso</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/espacio-monta.jpg.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Curso de Networking</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_networking.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Crear base de datos</h2>
+                           
+                            <pre class="prettyprint lang-sh"></pre>
+
+                            <a name="mapear"></a>
+                            <h2 class="section-heading">Mapear</h2>
+
+                            <a name="dns"></a>
+                            <h2 class="section-heading">Protocolo TCP/UDP</h2>
+
+                            <a name="http"></a>
+                            <h2 class="section-heading">Protocolo HTTP</h2>
+
+                            <a name="nat"></a>
+                            <h2 class="section-heading">NAT</h2>
+
+                            
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

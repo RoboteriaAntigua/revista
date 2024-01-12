@@ -1,0 +1,168 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="que es protocolo icmp?. Uso de iptables.">
+    <title> Networking curso</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/espacio-monta.jpg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Curso de Networking</h1>
+                                <p>Segunda entrega.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_networking.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Continuamos con el curso de IPTABLES</h2>
+
+
+                            
+                           
+
+                            
+
+                            
+                            
+                            <a name="icmp"></a>
+                            <h2 class="section-heading">Protocolo ICMP</h2>
+                            <p>Hay dos aplicaciones basadas en ICMP que se usan ampliamente: Ping y Traceroute.
+                                <ul>
+                                    <li><b>Ping:</b> usa los mensajes ICMP Echo y Echo Reply 
+                                        para determinar si un host se puede alcanzar. </li>
+                                    <li><b>Traceroute:</b> envía datagramas IP para determinar las rutas que toman los paquetes hasta alcanzar cierto destino.</li>
+                                </ul>
+                                
+                                </p>
+                            <h3>Ejemplo:</h3>
+                            <p>Vamos a negar todo paquete de salida y luego vamos a habilitar nuestra placa de red a que salgan solo paquetes a travez del protocolo icmp (ping)</p>
+                            
+                            <p>Negamos la salida.</p>
+                            <pre>iptables -A OUTPUT -j DROP</pre>
+                            <p>Intentamos hacer un ping:</p>
+                            <pre>ping -c 4 8.8.8.8</pre>
+                            <p>Resultado:</p>
+<pre>PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+ping: sendmsg: Operación no permitida
+ping: sendmsg: Operación no permitida
+ping: sendmsg: Operación no permitida
+ping: sendmsg: Operación no permitida</pre>
+
+<p>Como saber el nombre de mi interfaz de red:</p>
+<pre>ip ad</pre>
+<p>Resultado:</p>
+<pre>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP> ...
+2: enp3s0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP> ...
+3: wlp2s7: &lt;BROADCAST,MULTICAST,UP,LOWER_UP> ...
+</pre>
+<p>
+    <ul>
+        <li>1 es el loop interno.</li>
+        <li>2 Es una placa de red cableada que no uso.</li>
+        <li>3 Es la placa wifi que si uso para salir a internet. (Comienza con w)</li>
+    </ul>
+</p>
+<blockquote>Elije el nombre de tu placa acorde a tu conexión.</blockquote>
+<p>Aceptamos entrada y salida de paquetes en la placa de red con el protocolo icmp (pings):</p>
+<pre>
+# entrada:
+sudo iptables -A INPUT -i wlp2s7 -p icmp -j ACCEPT
+# Salida:
+sudo iptables -A OUTPUT -o wlp2s7 -p icmp -j ACCEPT
+</pre>
+<p>Probamos el ping y vemos que no anda!</p>
+<blockquote>Tenemos una regla al comienzo que niega los paquetes de salida.</blockquote>
+<p>Por ende debemos agregar estas reglas al comienzo con -I y no con -A (al final). De esta forma decimos que esta regla es mas importante.</p>
+<pre>
+# entrada:
+sudo iptables -I INPUT -i wlp2s7 -p icmp -j ACCEPT
+# Salida:
+sudo iptables -I OUTPUT -o wlp2s7 -p icmp -j ACCEPT 
+</pre>
+<p>Hacemos el ping:</p>
+<pre>ping -c 4 8.8.8.8</pre>
+<p>Resultado:</p>
+<pre>
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=147 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=34.0 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=112 time=36.3 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=112 time=38.7 ms
+</pre>
+
+<p>Como quedaron las reglas de salida:</p>
+<pre>sudo iptables -L --line-numbers</pre>
+<pre>
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+1    ACCEPT     icmp --  anywhere             anywhere            
+2    DROP       all  --  anywhere             anywhere 
+</pre>
+<p>Ahora digamos que queremos borrar la regla numero 2:</p>
+<pre>sudo iptables -D OUTPUT 2</pre>
+<p>Resultado:</p>
+<pre>
+Chain OUTPUT (policy ACCEPT)
+num  target     prot opt source               destination         
+1    ACCEPT     icmp --  anywhere             anywhere            
+</pre>
+
+<blockquote>Estas sin internet en este momento! volvamos todo a la normalidad:</blockquote>
+<pre>sudo iptables -F</pre>
+<blockquote>Los numeros 8.8.8.8 representan la dirección la dirección IP de los DNS de Google. </blockquote>
+<p>En el siguiente capítulo vamos a ver como trabajar con el protocolo tcp/udp (dns)</p>
+
+
+                           
+
+
+
+                           
+                            
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/iptables">Atras &larr;</a>
+                                </li>
+                                
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          

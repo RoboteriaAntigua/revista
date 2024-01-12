@@ -83,6 +83,12 @@ router.get('/flux-ejemplo', (req, res) => { res.render('cursos/angular/flux-ejem
 
 /******************************************* fin de angular avanzado */
 
+/**********************************Networking ****************************************************/
+router.get('/iptables', (req, res) => { res.render('cursos/networking/iptables.ejs'); });
+router.get('/icmp', (req, res) => { res.render('cursos/networking/icmp.ejs'); });
+
+
+/**********************************Fin Networking ****************************************************/
 
 module.exports = router;
 

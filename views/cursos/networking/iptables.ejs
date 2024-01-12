@@ -1,0 +1,246 @@
+<%- include('../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Que es iptables?">
+    <title> Networking curso</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/espacio-monta.jpg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Curso de Networking</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../plantillas/acordeon_cursos_networking.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">¿Que es IPtables?</h2>
+
+                            <p>Iptables es una herramienta avanzada de filtrado de paquetes en Linux. Ampliamente usada desde servidores empresariales a computadoras personales. Suele venir incluida en casi toda instalación Linux.</p>
+
+                            <p>De lo que se encarga iptables, dicho de una forma sencilla, es de analizar cada uno de los paquetes del tráfico de red entra en una máquina y decidir, en función de un conjunto de reglas, qué hacer con ese paquete.</p>
+                           
+                            <h3>Casos de uso</h3>
+                            <ul>
+                                <li>Gracias a esa capacidad de analizar el tráfico podemos bloquear o redirigir el acceso los puertos de nuestro equipo, entre otros usos.                                </li>
+                                <li>Permite utilizar NAT, tecnología de traduccion de ips.</li>
+                                <li>También permite hacer cosas más avanzadas como por ejemplo marcar y modificar paquetes. Normalmente marcar paquetes se hace mediante iptables para después pasar esos paquetes a otros programas, que en función de las etiquetas o marcas que tenga, decide hacer una cosa u otra con ellos.</li>
+                                <li>Permite crear logs con cada uno de los paquetes que atraviesen. Esto es muy interesante para hacer análisis, para tener un control del tráfico, para depurar el funcionamiento de la red, puede incluir aspectos de seguridad y se pueden hacer una gran cantidad de cosas con iptables.                                </li>
+                            </ul>
+                            <h3>Requisitos previos</h3>
+                            <p>Comenzamos de lo simple a lo complejo, antes que nada, necesitas tener algunos conocimientos básicos de Linux y su uso en el terminal.</p>
+                            <p>Ademas de un linux para pruebas. En mi caso las pruebas las he hecho en Ubuntu y Debian. En otras distribuciones es muy similar, también te va a servir este curso.</p>
+
+                            <pre class="prettyprint lang-sh">iptables -I INPUT -i wlp4g5 -p tcp --sport 443 -j ACCEPT</pre>
+
+                            <h2 class="section-heading">Contenido:</h2>
+                            <ul>
+                                <p>En esta entrega:</p>
+                                <li><a href="#conceptos">Conceptos previos</a></li>
+                                <li><a href="#basico">Borrar, ver, aceptar, denegar políticas</a></li>
+                                <li><a href="#agregar">Agregar reglas</a></li>
+                                <p>En las proximas entregas:</p>
+                                <li><a href="/icmp">Protocolo ICMP</a></li>
+                                <li><a href="#">Mapear: Redirigir tráfico por puertos. </a></li>
+                                <li><a href="#">Protocolo TCP/UDP</a></li>
+                                <li><a href="#">Protocolo HTTP</a></li>
+                                <li><a href="#">NAT, traduccion de ip</a></li>
+                            </ul>
+
+                            
+                            <a name="conceptos"></a>
+                            <h2 class="section-heading">Conceptos previos</h2>
+                            <blockquote>A continuación leamos estos conceptos previos, si algo no lo entiendes, continuemos, ya lo volveremos a ver y a practicar en detalle.</blockquote>
+                            <blockquote>No intentes digerir todo a la vez. Leamos y continuemos con las prácticas. Y luego volvamos a leer.</blockquote>
+                            <h3>Firewall (cortafuegos)</h3>
+                            <p> Un firewall es un dispositivo de seguridad de la red que monitorea el tráfico de red —entrante y saliente— y decide si permite o bloquea tráfico específico en función de un conjunto definido de reglas de seguridad.</p>
+                                
+                            <p>Establecen una barrera entre las redes internas protegidas y controladas en las que se puede confiar y redes externas que no son de confianza, como Internet. </p>
+                                
+                            <p>Un firewall puede ser hardware, software o ambos. </p>
+
+                            <h3>Gateway (Puerta de enlace)</h3>
+                            El término «gateway» se refiere a un componente tecnológico esencial que actúa como punto de acceso o salida entre dos redes o sistemas que operan utilizando protocolos de comunicación distintos. 
+                            <!--Imagen-->
+                            
+                            <h3>¿Que es NAT?</h3>
+                            <p>Con decirte que es son las siglas del inglés network address translation no te explico mucho.</p>
+                            <p>Veras, la dirección ip de tu pc es del tipo 192.168.11.44. o no? Falso te han engañado. Bueno no tanto asi, este tipo de direcciones ip son ipv4, y en un comienzo se creyó que esto alcanzaria para todos los dispositivos del planeta: 255 mil millones de direcciones posibles. Pues no alcanzo.  </p>
+                            <p>Es ahi adonde entran las direcciones privadas y públicas. En una red privada podemos tener tantisimas ips privadas pero la salida a internet va a ser una ip pública.</p>
+                            <p>Nat es el encargado de que muchos equipos de una casa (telefonos, tvs, notebooks, pcs, artefactos inteligentes) salgan a internet con una sola ip pública, la de nuestro router que nos provee internet. El router sabe por medio de nat como y a quien corresponde cada paquete.</p>
+                            <h3>Tablas</h3>
+                            <p>Iptables tiene 5 tablas por defecto (filter, NAT, mangle, raw o security), se pueden crear nuevas tablas también.</p>
+                            <p>En este curso vamos a ver principalmente las tablas Filter y NAT.</p>
+                            <ul><li>Filter Table</li></ul>
+                            <p>La tabla filter es usada para permitir o bloquear tráfico, y contiene 3 Chains (cadenas) - INPUT, OUTPUT, FORWARD</p>
+
+                            <ul><li>Nat table</li></ul>
+                            <p>La tabla de NAT es utilizada para crear reglas de traducción de direcciones, y permitir que un paquete con ip privada, pueda salir a Internet con una IP pública, o que un paquete pueda alcanzar un puerto de una IP privada.</p>
+                            <p>La tabla NAT tiene 3 Chains (cadenas) PREROUTING, POSTROUTING, OUTPUT</p>
+                            <ul>
+                                <li>PREROUTING: Reglas para modificar paquetes entrantes antes del enrutamiento.
+                                </li>
+                                <li>POSTROUTING: Reglas para modificar paquetes justo antes de que salgan del equipo</li>
+                                <li>OUTPUT (nat): Reglas para modificar paquetes generados por el propio equipo después de enrutarlos</li>
+                            </ul>
+                            <h3>Cadenas</h3>
+                            <p>Las Rules (reglas) en iptables están agrupadas en Chains (cadenas). Una Chain (cadena) es un conjunto de reglas utilizadas para determinar que hacer con los paquetes que entran, salen o traspasan nuestro firewall/gateway. </p>
+                            <p>Tenemos 3 tipos de cadenas, input, output y forward. </p>
+<ul>
+    <li>
+INPUT: reglas para filtrar paquetes que tienen como destino la máquina local.
+</li>
+    <li>OUTPUT: Reglas para filtrar paquetes creados en la máquina local y con destino otra máquina.
+</li>
+    <li>FORWARD: Reglas para los paquetes que pasan el sistema, muy utilizado en Routers o Gateways.</li>
+</ul>
+
+
+                            <a name="basico"></a>
+                            <h2 class="section-heading">Borrar, ver, aceptar y denegar políticas</h2>
+                            <p>Comencemos practicando en nuestro terminal Linux, con la tabla filter.</p>
+<p>Ver nuestras cadenas:</p>
+<pre >sudo iptables -L</pre>
+<p>Las reglas que vemos configuradas, las han colocado aplicaciones como Docker. Si es que las hay, se generan automáticamente, vamos a borrarlas sin miendo:</p>
+<p>Borrar todas las reglas:</p>
+<pre ">
+sudo iptables -F
+</pre>
+<p>Resultado:</p>
+<pre class="prettyprint lang-sh">
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy DROP)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+</pre>       
+
+<p>Ver las reglas con pocas columnas. Muestra sólo si se acepta el tráfico (accept) o no (drop) </p>
+<pre >sudo iptables -S</pre>
+<p>Resultado:</p>
+<pre >
+-P INPUT ACCEPT
+-P FORWARD DROP
+-P OUTPUT ACCEPT</pre>
+
+<p>Denegar el tráfico entrante (nos quedamos sin internet)</p>
+<pre >iptables -P INPUT DROP </pre>
+<p>Como quedo: </p>
+<pre>
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT ACCEPT
+</pre>
+<p>Tambien podemos denegar el tráfico saliente</p>
+<pre > sudo iptables -P OUTPUT DROP</pre>
+<p>Como quedaron las cadenas:</p>
+<pre>
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT DROP
+</pre>
+
+<p>Ok estas sin internet y me quieres matar, volvamos a aceptar el tráfico entrante y el saliente:</p>
+<pre>sudo iptables -P INPUT ACCEPT</pre>
+<pre>sudo iptables -P OUTPUT ACCEPT</pre>
+<p>Como quedamos:</p>
+<pre>
+-P INPUT ACCEPT
+-P FORWARD DROP
+-P OUTPUT ACCEPT    
+</pre>
+<a name="agregar"></a>
+<h2 class="section-heading">Agregar reglas:</h2>
+<p>Por ejemplo, aceptar todos los paquetes de salida:</p>
+<pre>sudo iptables -A OUTPUT -j ACCEPT</pre>
+<p>Parametros:</p>
+<ul>
+    <li>(-A es append para insertarlas al final, y -I para insertarla al final)    </li>
+    <li>        [-p protocolo]        </li>
+    <li>[-s ip de origen]       </li>
+    <li> [-d ip de destino]   </li>
+    <li>[-i interfaz de entrada]</li>
+    <li>[-o interfaz de salida] </li>
+    <li>[-j si queremos que los paquetes en esta regla sean ACCEPT/DROP aceptados o denegados]</li>
+</ul>
+
+<p>Veamos como quedaron las cadenas despues del ejemplo anterior, esta vez veamos las cadenas con mas columnas, y con enumeración:</p>
+<pre>
+sudo iptables -L -nv --line-numbers
+</pre>
+
+<p>Vamos a agregar 2 reglas sobre la cadena forward, la primera acepta el tráfico y la segunda lo niega.</p>
+<pre>sudo iptables -A FORWARD -j ACCEPT</pre>
+<pre>sudo iptables -A FORWARD -j DROP</pre>
+
+<p>Vemos las cadenas, en especial forward:</p>
+<pre>sudo iptables -L --line-numbers</pre>
+<pre class="prettyprint lang-sh">
+Chain FORWARD (policy DROP)
+num  target     prot opt source               destination         
+1    ACCEPT     all  --  anywhere             anywhere            
+2    DROP       all  --  anywhere             anywhere            
+</pre>
+<blockquote>Agregamos 2 reglas nuevas en la cadena forward, con el parametro -A, por ende se insertan al final.</blockquote>
+<blockquote>Vemos que la segunda regla niega el tráfico, y eso anula la primer regla. </blockquote>
+<blockquote>Tambien las vemos enumeradas con el comando --line-numbers</blockquote>
+
+<p>Volvemos todo a la normalidad borrando todas las reglas:</p>
+<pre>sudo iptables -F</pre>
+
+
+
+                           
+                            
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/icmp">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <li class="next">
+                                    <a href="/"> Home </a>
+                                </li> 
+                                
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../plantillas/pies.ejs') %>
+
+          
