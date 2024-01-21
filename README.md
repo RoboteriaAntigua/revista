@@ -6,4 +6,5 @@
     ns1.donweb.com
     ns2.donweb.com
 
-# 4 
+# 4 Habilitar scripts en windows:
+     Set-ExecutionPolicy Unrestricted
