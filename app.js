@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const path = require('path');
 
@@ -16,6 +17,8 @@ app.use('/users', usersRouter);
 //Para poder usar los archivos estaticos en la carpeta public, express.static('ruta'):
 app.use('/',express.static(__dirname+'/public'));
 
+// Enable gzip compression
+app.use(compression());
 
 
 app.listen(3000,(req,res)=>{
