@@ -89,6 +89,7 @@ router.get('/icmp', (req, res) => { res.render('cursos/networking/icmp.ejs'); })
 
 /**********************************Fin Networking ****************************************************/
 // Apply gzip compression to text-based responses
+/*
 router.use((req, res, next) => {
     // Check if the response is text-based
     const contentType = res.get('Content-Type');
@@ -103,7 +104,7 @@ router.use((req, res, next) => {
     }
     next();
 });
-
+*/
 module.exports = router;
 
 
