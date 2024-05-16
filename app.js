@@ -1,5 +1,5 @@
 const express = require('express');
-//const compression = require('compression');
+const compression = require('compression');
 const app = express();
 const path = require('path');
 
@@ -18,7 +18,7 @@ app.use('/users', usersRouter);
 app.use('/',express.static(__dirname+'/public'));
 
 // Enable gzip compression
-//app.use(compression());
+app.use(compression());
 
 
 app.listen(3000,(req,res)=>{
