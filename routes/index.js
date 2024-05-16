@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');             //para el sitemap
-
+var zlib = require('zlib'); // Import zlib for gzip compression
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -89,6 +88,21 @@ router.get('/icmp', (req, res) => { res.render('cursos/networking/icmp.ejs'); })
 
 
 /**********************************Fin Networking ****************************************************/
+// Apply gzip compression to text-based responses
+router.use((req, res, next) => {
+    // Check if the response is text-based
+    const contentType = res.get('Content-Type');
+    if (contentType && contentType.startsWith('text')) {
+        const gzip = zlib.createGzip();
+        res.set('Content-Encoding', 'gzip'); // Set Content-Encoding header to gzip
+        res.removeHeader('Content-Length'); // Remove Content-Length header
+        res.on('finish', () => {
+            // Pipe response through gzip stream
+            res.body = res.body.pipe(gzip);
+        });
+    }
+    next();
+});
 
 module.exports = router;
 
