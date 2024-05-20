@@ -1,0 +1,241 @@
+<%- include('../../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Que es el patron redux?. Patron de diseño Redux. Patron de diseño Flux.">
+    <title> Patron Flux</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Patron de diseño Flux / Redux</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../../plantillas/acordeon_cursos_vue.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Ejemplo Flux / Redux</h2>
+                            
+                           
+                            <div class="imgContainer">
+                            <img style="max-width: 100%;
+                                        height: auto;
+                                        width: 100%;
+                                        max-width: 500px;" 
+                              src="img/fluxSinflux.png">
+                            </div>
+                            <br>
+                            <blockquote>En nuestras app, la comunicación entre componentes se puede convertir en una anarquía, un desarrollador va a usar servicios, otro le va a pasar data de un componente hijo al padre, y otro de un componente al padre de su padre. La aplicación se convertirá en un zoológico.</blockquote>
+                            
+                          
+
+
+                            <h2 class="section-heading">Desde cero</h2>
+
+                            <p>En este ejemplo, el objetivo va a ser modificar el estado de una variable almacenada en el store.js y poder ver dichos cambios desde otros componentes de manera reactiva.
+                              Especificamente vamos a crear un contador que modifique una variable (count) y vamos a acceder a dicho valor desde otro componente.
+                            </p>
+
+                            <p>Creamos un nuevo proyecto,
+                               e instalamos Vuex:</p>
+                            <pre>
+    npm init vue@latest
+    cd proyecto
+    npm install
+    npm i vuex
+    npm run dev
+                            </pre>
+                            
+
+                            <h2 class="section-heading">main.js</h2>
+                            <p> En nuestro main.js, vemos que solo usaremos 2 componentes, y comunicaremos un string de uno a otro, tan simple como eso. </p>
+                            
+<pre class="prettyprint lang-js">
+import { createApp } from 'vue'
+import App from './App.vue'
+
+import store from './store';
+
+import componente1 from './components/componente1.vue';
+import componente2 from './components/componente2.vue';
+
+const app = createApp(App);
+app.component('componente1',componente1);
+app.component('componente2',componente2);
+
+app.use(store);
+app.mount('#app');
+</pre>
+        
+<h2 class="section-heading">app.vue</h2>
+                            
+<pre class="prettyprint lang-js">
+  &lt;template>
+    &lt;h1>vuex&lt;/h1>
+  
+    &lt;componente1>&lt;/componente1>
+  
+    &lt;componente2>&lt;/componente2>
+    
+    &lt;/template>
+</pre>           
+                            <h2 class="section-heading">Creamos un store.js</h2>
+<p></p>
+<pre class="prettyprint lang-js">
+  import { createStore } from 'vuex';
+
+  export default createStore({
+    state: {
+      count: 0
+    },
+    mutations: {
+      increment(state) {
+        state.count++;
+      }
+    },
+    actions: {
+      incrementAsync({ commit }) {
+        setTimeout(() => {
+          commit('increment');
+        }, 1000);
+      }
+    },
+    getters: {
+      getCount: state => state.count
+    }
+  });
+
+</pre>
+
+
+<h3>Explicacion: </h3> 
+
+<p>Mutations:</p>
+<ul>
+<li>Modifican las variables del store (state). Es de hecho la unica forma de cambiar el estado del store. (el valor de dichas variables)</li>
+<li>Para usos simples y sincronicos</li>
+</ul>  
+    
+
+<p> Actions </p>
+<ul>
+  <li>Actions son despachadas usando el metodo dispatch en los componentes: this.$store.dispatch('incrementAsync');</li>
+  <li>Para cambiar el estado, los actions usan "commit" en  "mutations":</li>
+  <li>Las actions se usan en funciones mas complejas, asincronicas y etc. </li>
+  <li>En este ejemplo el Action espera 1 Segundo antes de cambiar el valor de 'count'</li>
+</ul>
+
+
+
+
+<h2 class="section-heading">Creamos 2 componentes.</h2>
+
+<h3 >componente1.vue</h3>
+<p>Este componente modifica el estado de una variable (count) por medio de Actions y Mutators </p>
+
+<pre class="prettyprint lang-js">
+&lt;template>
+  &lt;h2>Componente 1&lt;/h2>
+  
+  &lt;div>
+  &lt;p>Count: {{ count }}&lt;/p>
+      &lt;button @click="increment">Increment&lt;/button>
+      &lt;button @click="incrementAsync">Increment Async&lt;/button>
+      &lt;/div>
+
+&lt;/template>
+  
+&lt;script>
+    export default {
+      computed: {
+        count() {
+          return this.$store.state.count;
+        }
+      },
+      methods: {
+        increment() {
+          this.$store.commit('increment');
+        },
+        incrementAsync() {
+          this.$store.dispatch('incrementAsync');
+        }
+      }
+    };
+&lt;/script>
+</pre>
+     
+<p>Note que el metodo increment() es un mutator del store.js y el metodo incrementAsync() es un Action del store.js</p>
+
+
+<h3>Componente2.vue</h3>
+<p>Este componente solamente accede al valor actualizado y de manera reactiva de la variable 'count'. Cualquier componente de la aplicacion puede hacerlo!</p>
+
+<pre class="prettyprint lang-js">
+
+&lt;template>
+  &lt;h2>Componente 2 &lt;/h2>
+  &lt;p>count: {{ count }} &lt;/p>
+&lt;/template>
+
+&lt;script>
+  export default {
+    computed: {
+        count(){
+            return this.$store.state.count;
+        }
+    }
+  }
+&lt;/script>
+</pre>
+
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                              <!--
+                                <li class="next">
+                                    <a href="/redox-ejemplo-vue">Siguiente &rarr;</a>
+                                </li>
+                                -->
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                
+                                <li class="next">
+                                    <a href="/redox-vue"> Atras &larr;</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../../plantillas/pies.ejs') %>
+
+          

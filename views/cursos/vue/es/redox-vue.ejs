@@ -1,0 +1,244 @@
+<%- include('../../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Que es el patron redux?. Patron de diseño Redux. Patron de diseño Flux.">
+    <title> Patron Flux</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                
+                                <h1>Patron de diseño Flux / Redux</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../../plantillas/acordeon_cursos_vue.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Patron de diseño Flux / Redux</h2>
+                            <p>En esta entrega vamos a ver y comprender uno de los principios de la programación reactiva. El patron de diseño Flux, mejor conocido como Redux o manejadores de estado.</p>
+                            <p>Es un tema que puede ser complicado, pero en este curso lo vamos a hacer simple, a traves de aproximaciones. Lo que implica que si algo no lo comprendes, no te quedes, continua leyendo, que se volvera a pasar otra vez, sobre los mismos temas</p>
+                            <p>Debo decir que muchos programadores, sobre todo autodidactas, cuando llegamos a este punto nos dimos la cabeza con el teclado, a ti no te va a pasar debido al método didáctico empleado.</p>
+
+                            <blockquote>Al final, después de las aproximaciones vamos a hacer un ejemplo práctico desde cero.</blockquote>
+                            <h2 class="section-heading">¿Que es el patron Flux? (Redux)</h2>
+                            <p>Asi como hemos visto el patron de comportamiento <a href="/observer-patron">Observer &rarr;</a> , el patron Flux es un patron estructural. Los hay patrones de comportamiento y estructurales.</p>
+                            <p>Con Flux vamos a comunicar la data entre los componentes de nuestra app de manera centralizada. También llamado manejadores de estado, con dicho patron estructural conseguimos una manera centralizada de comunicar data entre componentes.</p>
+                            <p>Resumiendo, es una implementación de una estructura en donde un 'store' sera la fuente de verdad para toda comunicación dentro de nuestra app</p>
+                            
+                            <div class="imgContainer">
+                            <img style="max-width: 100%;
+                                        height: auto;
+                                        width: 100%;
+                                        max-width: 500px;" 
+                              src="img/fluxSinflux.png">
+                            </div>
+                            <br>
+                            <blockquote>En nuestras app, la comunicación entre componentes se puede convertir en una anarquía, un desarrollador va a usar servicios, otro le va a pasar data de un componente hijo al padre, y otro de un componente al padre de su padre. La aplicación se convertirá en un zoológico.</blockquote>
+                            
+                          
+
+
+                            <h2 class="section-heading">Ejemplo practico desde cero</h2>
+
+                            <p>Creamos un nuevo proyecto, e instalamos Vuex:</p>
+                            <pre>
+    npm init vue@latest
+    cd proyecto
+    npm install
+    npm i vuex
+    npm run dev
+                            </pre>
+                            <p>Para comunicar data desde un componente a cualquier parte de nuestra app, primero le almacenamos en el store.</p>
+
+                            <h2 class="section-heading">main.js</h2>
+                            <p> En nuestro main.js, vemos que solo usaremos 2 componentes, y comunicaremos un string de uno a otro, tan simple como eso. </p>
+                            
+<pre class="prettyprint lang-js">
+import { createApp } from 'vue'
+import App from './App.vue'
+
+import store from './store';
+
+import componente1 from './components/componente1.vue';
+import componente2 from './components/componente2.vue';
+
+const app = createApp(App);
+app.component('componente1',componente1);
+app.component('componente2',componente2);
+
+app.use(store);
+app.mount('#app');
+</pre>
+        
+<h2 class="section-heading">app.vue</h2>
+                            
+<pre class="prettyprint lang-js">
+  &lt;template>
+    &lt;h1>vuex&lt;/h1>
+  
+    &lt;componente1>&lt;/componente1>
+  
+    &lt;componente2>&lt;/componente2>
+    
+    &lt;/template>
+</pre>           
+                            <h2 class="section-heading">Creamos un store.js</h2>
+<p></p>
+<pre class="prettyprint lang-js">
+  import { createStore } from 'vuex';
+
+  export default createStore({
+    state: {
+      count: 0,
+      cadena:"lala"
+    },
+    mutations: {
+      increment(state) {
+        state.count++;
+      },
+      modificaCadena (state){
+        state.cadena="otra cadena";
+      }
+    },
+    actions: {
+      incrementAsync({ commit }) {
+        setTimeout(() => {
+          commit('increment');
+        }, 1000);
+      }
+    },
+    getters: {
+      getCount: state => state.count,
+      getCadena: state => state.cadena
+    }
+  });
+
+</pre>
+
+
+<h3>Explicacion: </h3> 
+
+<p>Mutations:</p>
+<ul>
+<li>Modifican las variables del store (state). Es de hecho la unica forma de cambiar el estado del store. (el valor de dichas variables)</li>
+<li>Para usos simples y sincronicos</li>
+</ul>  
+    
+
+<p> Actions </p>
+<ul>
+  <li>Actions son despachadas usando el metodo dispatch en los componentes: this.$store.dispatch('incrementAsync');</li>
+  <li>Para cambiar el estado, los actions usan "commit" en  "mutations":</li>
+  <li>Las actions se usan en funciones mas complejas, asincronicas y etc. </li>
+</ul>
+
+
+
+
+<h2 class="section-heading">Creamos 2 componentes.</h2>
+<p>La idea central de este ejemplo es comunicar cierta data entre componentes, usando como intermediario un store.</p>
+<h3 >componente1.vue</h3>
+<p>Este componente establece el valor de un string, y lo guarda en el store que hemos creado:</p>
+
+<pre class="prettyprint lang-js">
+  &lt;h2>Componente 1&lt;/h2>
+  &lt;template>
+ Una cadena: {{  unString }} &lt;br>
+
+ &lt;button @click="modificaString">Modifica cadena&lt;/button> &lt;br>
+ &lt;/template>
+
+ &lt;script>
+export default {
+    computed: {
+        unString(){
+            return this.$store.state.cadena;
+        }
+    },
+    methods: {
+        modificaString(){
+            const nuevaCadena = "otra cadena";
+            this.$store.commit('modificaCadena', nuevaCadena);
+        }
+    }
+}
+&lt;/script>
+</pre>
+     
+<p>Note que el metodo modificaCadena() es un mutator del store.js</p>
+
+
+<h3>Componente2.vue</h3>
+<p>Mientras que componente1 establece el valor de una variable en el store.js, componente2 va acceder a ese valor, finalizando la comunicacion entre componentes.</p>
+
+<pre class="prettyprint lang-js">
+
+&lt;template>
+
+&lt;h2>Componente 2 &lt;/h2>
+Accedo a un estado (variable) del store {{ unString }}</p>
+&lt;/template>
+
+&lt;script>
+export default {
+  computed: {
+    unString(){
+      return this.$store.state.cadena;
+    }
+  }
+
+};
+&lt;/script>
+</pre>
+
+<h2 class="section-heading">Conclusiones</h2>
+<p>Patron Redox en Vue es muy sencillo, centralizamos la comunicación entre componentes y lo hacemos de manera 'reactiva', en el siguiente Post haremos un ejemplo un poco mas complejo, como siempre, "desde cero".</p>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/redox-ejemplo-vue">Siguiente &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="#"> Arriba &uarr;</a>
+                                </li> 
+                                <!--
+                                <li class="next">
+                                    <a href="/redox-vue"> Atras &larr;</a>
+                                </li> -->
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../../plantillas/pies.ejs') %>
+
+          
