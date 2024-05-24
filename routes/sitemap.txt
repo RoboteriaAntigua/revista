@@ -34,3 +34,5 @@ https://old-robotics.com.ar/flux
 https://old-robotics.com.ar/flux-ejemplo
 https://old-robotics.com.ar/iptables
 https://old-robotics.com.ar/icmp
+https://old-robotics.com.ar/redox-vue
+https://old-robotics.com.ar/redox-ejemplo-vue
