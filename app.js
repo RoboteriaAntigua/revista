@@ -18,8 +18,8 @@ app.use('/users', usersRouter);
 //Para poder usar los archivos estaticos en la carpeta public, express.static('ruta'):
 app.use('/',express.static(__dirname+'/public'));
 
-app.listen(3001,(req,res)=>{
-    console.log('servidor corriendo en el http://localhost:3001')
+app.listen(3000,(req,res)=>{
+    console.log('servidor corriendo en el http://localhost:3000')
 })
 
 module.exports = app;
