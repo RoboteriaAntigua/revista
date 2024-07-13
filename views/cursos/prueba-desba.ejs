@@ -1,0 +1,163 @@
+<%- include('../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Buenas practicas programando con javascript nodejs">
+    <title> Buenas practicas en Nodejs y Javascript</title>
+
+
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../plantillas/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Set your background image for this header on the line below. -->
+            <header class="intro-header"
+                style="background-image: url('img/observer.png');  text-shadow: 1px 0px black;  background-size:auto; background-position: 50% 30%;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading">
+                                <h1>Prueba js para DESBA</h1>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../plantillas/acordeon_articulos.ejs') %>
+
+                        <div class="principal">
+
+                            <div class="text-center" style="border: 2px solid #28435a; border-radius: 10px; padding: 20px;">
+                                <h2 class="section-heading"> Drag and Drop</h2>
+
+                                <div style="margin-top:50px;  padding:10px;">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <h4 class="text-center" style=" margin-bottom:20px;">Alumnos encontrados
+                                            </h4>
+                                            <div class="dropzone well well-sm text-center"
+                                                style="background-color: #121920; border: 1px dashed #6c757d; border-radius: 10px; padding:20px;">
+                                                <li id="student1" class="draggable btn btn-block"
+                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
+                                                    draggable="true">George R. Martin</li><br>
+                                                <li id="student2" class="draggable btn btn-block"
+                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
+                                                    draggable="true">J.R.R. Tolkien</li><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-md-offset-1">
+                                            <h4 class="text-center" style=" margin-bottom:20px;">Alumnos asignados</h4>
+                                            <div class="dropzone well well-sm text-center"
+                                                style="background-color: #121920; border: 1px dashed #6c757d; border-radius: 10px; padding:20px;">
+                                                <li id="student3" class="draggable btn btn-block"
+                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
+                                                    draggable="true">Karl Sagan</li><br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="pager">
+                                    <button class="btn-cancel">Cancelar</button>
+                                    <button class="btn-save">Guardar</butto>
+                                </ul>
+
+                            </div>
+
+                        </div>
+                        <!--Columna derecha reservada para algo-->
+                        <div class="side-derecho"></div>
+                </div>
+            </article>
+
+            <hr>
+
+            <style>
+                .btn-save {
+                    font-family: sans-serif;
+                    font-size: 14px;
+                    font-weight: 800;
+                    letter-spacing: 1px;
+                    padding: 15px 25px;
+                    color: white;
+                    background-color: #0085A1;
+                    border: 1px solid #0085A1;
+                    border-radius: 6px;
+                }
+
+                .btn-save:hover,
+                .btn-save:focus {
+                    background-color: rgb(0, 0, 0);
+                    border: 1px solid rgb(24, 92, 24);
+                }
+
+                .btn-cancel {
+                    font-family: sans-serif;
+                    font-size: 14px;
+                    font-weight: 800;
+                    letter-spacing: 1px;
+                    padding: 15px 25px;
+                    color: white;
+                    background-color: #649eaa;
+                    border: 1px solid #0085A1;
+                    border-radius: 6px;
+                }
+
+                .btn-cancel:hover,
+                .btn-cancel:focus {
+                    background-color: rgb(0, 0, 0);
+                    border: 1px solid rgb(245, 124, 67);
+
+                }
+            </style>
+
+            <script>
+
+                const draggables = document.querySelectorAll('.draggable');
+                const dropzones = document.querySelectorAll('.dropzone');
+
+                draggables.forEach(draggable => {
+                    draggable.addEventListener('dragstart', function (event) {
+                        event.dataTransfer.setData('text/plain', draggable.id);
+                        draggable.style.opacity = '0.5';
+                    });
+
+                    draggable.addEventListener('dragend', function () {
+                        draggable.style.opacity = '1';
+                    });
+                });
+
+                dropzones.forEach(dropzone => {
+                    dropzone.addEventListener('dragover', function (event) {
+                        event.preventDefault();
+                        dropzone.classList.add('hover');
+                    });
+
+                    dropzone.addEventListener('dragleave', function () {
+                        dropzone.classList.remove('hover');
+                    });
+
+                    dropzone.addEventListener('drop', function (event) {
+                        event.preventDefault();
+                        const id = event.dataTransfer.getData('text');
+                        const draggableElement = document.getElementById(id);
+                        dropzone.appendChild(draggableElement);
+                        dropzone.classList.remove('hover');
+                    });
+                });
+
+            </script>
+
+
+
+            <!--footer-->
+            <%- include('../plantillas/pies.ejs') %>

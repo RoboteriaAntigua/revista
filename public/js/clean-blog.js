@@ -51,3 +51,5 @@ $("#id2.acordeon-root").click(() => {
     $("#id2.acordeon-child").toggle(500);
     $("#id2.acordeon-root").toggleClass("seleccionado-root");
 });
+
+//Boton de copy en los pre

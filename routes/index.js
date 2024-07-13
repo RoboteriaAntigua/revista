@@ -34,12 +34,12 @@ router.get('/laplacedemonio', (req, res) => { res.render('articulos/ellibrodelos
 router.get('/pucaras', (req, res) => { res.render('articulos/pucara-ñandus', { lazyload: 'ok', lang: "es"  }); })
 
 /********************** Fin de Post interesantes ******************************************************************* */
-
+/****** Prueba desba ******************** */
+router.get('/desbaTest', (req,res) => { res.render('cursos/prueba-desba', {lazyload: 'ok' , lang: "es"}); } );
 
 /********************** Varios ******************************************************************* */
-router.get('/buenas-practicas-js', (req, res) => {
-    res.render('cursos/buenas-practicas-js',{ lazyload: 'ok', lang: "es"  });
-})
+router.get('/buenas-practicas-js', (req, res) => { res.render('cursos/buenas-practicas-js', { lazyload: 'ok', lang: "es"  }); } );
+
 /********************** Finde varios ******************************************************************* */
 
 /******************************** curso de mysql **************************************/
@@ -68,6 +68,13 @@ router.get('/kubernetes-solucionar-problemas', (req, res) => { res.render('curso
 router.get('/kubernetes-labels', (req, res) => { res.render('cursos/kubernetes/kub-alias.ejs',{ lazyload: 'ok', lang: "es"  }); });
 router.get('/kubernetes-multiples-instancias', (req, res) => { res.render('cursos/kubernetes/kub-multiples-instancias.ejs',{ lazyload: 'ok', lang: "es"  }); });
 router.get('/kubernetes-updates-no-down', (req, res) => { res.render('cursos/kubernetes/kub-updates.ejs',{ lazyload: 'ok', lang: "es"  }); });
+
+/* English kub */
+router.get('/kubernetes-introduction', (req, res) => { res.render('cursos/kubernetes/en/kub-introduction.ejs',{ lazyload: 'ok', lang: "en"  }); });
+router.get('/kubernetes-concepts', (req, res) => { res.render('cursos/kubernetes/en/kub-concepts.ejs',{ lazyload: 'ok', lang: "en"  }); });
+router.get('/kubernetes-minikube-en', (req, res) => { res.render('cursos/kubernetes/en/kub-minikube-en.ejs',{ lazyload: 'ok', lang: "en"  }); });
+router.get('/kubernetes-services-en', (req, res) => { res.render('cursos/kubernetes/en/kub-services-en.ejs',{ lazyload: 'ok', lang: "en"  }); });
+
 
 /******************************** fin curso de kubernetes **************************************/
 
@@ -101,6 +108,10 @@ router.get('/en/redox-vue', (req, res) => { res.render('cursos/vue/en/redox.ejs'
 router.get('/en/redox-example-vue', (req, res) => { res.render('cursos/vue/en/redox-example-vue.ejs',{ lazyload: 'ok', lang: "en"  }); });
 
 /**********************************Fin de vue avanzado ****************************************************/
+
+
+
+
 
 // Apply gzip compression to text-based responses
 /*

@@ -1,0 +1,166 @@
+<%- include('../../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Kubernetes concepts">
+    <title>Kubernetes concepts</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../../plantillas/en/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" >
+                                <h1>Kubernetes concepts</h1>
+                                <span class="meta">Glosario</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../../plantillas/en/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            <h2 class="section-heading">Glossary of Concepts</h2>
+
+                            <p>We recommend skimming through this article without stopping at anything you don't understand, as we will cover and practice it later on.</p>
+                            <p>This page will also be useful for revisiting concepts whenever you need to.</p>
+
+
+                            <h2 class="section-heading">Glossary</h2>
+                            <a href="/kubernetes-concepts#k8">&rarr; K8</a><br>
+                            <a href="/kubernetes-concepts#alta-disponibilidad">&rarr;   High Availability </a> <br>
+                            <a href="/kubernetes-concepts#vertical">&rarr;   Vertical scaling </a><br>
+                            <a href="/kubernetes-concepts#horizontal">&rarr;   Horizontal scaling </a><br>
+                            <a href="/kubernetes-concepts#clusters">&rarr;   Clusters  </a><br>
+                            <a href="/kubernetes-concepts#pods">&rarr;   Pods </a><br>
+                            <a href="/kubernetes-concepts#nodes">&rarr;   Nodes </a><br>
+                            <a href="/kubernetes-concepts#deployments">&rarr;   Deployments </a><br>
+                            <a href="/kubernetes-concepts#control-plane">&rarr;   Control plane node </a><br>
+                            <a href="/kubernetes-concepts#etcd">&rarr;   etcd </a><br>
+                            <a href="/kubernetes-concepts#services">&rarr;   services </a><br>
+                            <a href="/kubernetes-concepts#minikube">&rarr;   Minikube </a><br>
+
+                            <a name="k8"></a>
+                            <h2 class="section-heading">K8</h2>
+                            <p>It is the abbreviation for Kubernetes, k + 8 letters.</p>
+
+                            <a name="alta-disponibilidad"></a>
+                            <h2 class="section-heading">High Availability</h2>
+                            <p>It is a service that is always available, 24 hours a day without a second of interruption.</p>
+                            <p>Without K8s (Kubernetes), a company must stop its website or a database server to make an update or any changes. With K8s, that is not necessary.</p>
+                            <p>When there is an error and a server 'falls', K8s redirects the traffic to other instances of that server, kills the fallen instance, and generates a replacement.</p>
+                            <p><b>Use cases:</b> Online sales sites that sell all day and night, government forms, movie sites, game sites, etc.</p>
+                            
+                            <a name="vertical"></a>
+                            <h2 class="section-heading">Vertical scaling</h2>
+                            <p>When a server (whether it is a web server, database, or others) becomes overloaded with work, it causes interruptions and a poor user experience. Vertical scaling involves increasing the physical capacity of the server, such as adding more RAM, a better processor, and more physical resources.</p>
+                            
+                            <a name="horizontal"></a>
+                            <h2 class="section-heading">Horizontal scaling</h2>
+                            <p>It is when, instead of increasing the resources of a CPU, we increase the number of replicas of the service, (It involves many identical servers.).</p>
+                            
+                            <div class="imgContainer">
+                                <img src="/img/escalado.jpeg">
+                            </div>
+
+                            <p>In other words, instead of having all the tasks done by a single server, the tasks are divided among many server instances. For example: instead of one server with 8GB of RAM and 8 processor cores, we can divide the tasks into 8 virtual machines, each with 1GB of RAM and 1 core.</p>
+                            <p>Horizontal scaling in Kubernetes refers to 'instances' that can be, for example, our app running in a Docker container. Outside the K8s world, horizontal scaling can refer to increasing the number of physical servers, not just virtual ones.</p>
+                            
+                            <a name="clusters"></a>
+                            <h2 class="section-heading">Computer Clusters</h2>
+                            <p>(Clusters=Bunches). A group of computers connected by a network or other connections, in such a way that they are seen as a supercomputer.</p>
+                            <p>It is an interesting and extensive topic to discuss, which had its origins at NASA in the 1980s. The <b>Beowulf</b> project resulted from the union of a dozen computers through their network cards.</p>
+                            <p>A PC (master) distributes the task to the slaves; in the world of Kubernetes, we talk about a Control Plane Node and workers. (It seems there are several similarities between slaves and workers.)</p>
+                            
+                            <a name="pods"></a>
+                            <h2 class="section-heading">Pods</h2>
+                            <p>They are a Kubernetes abstraction that represents one or more application containers.</p>
+                            <p>More clearly: our web app would be a Docker image running in a pod.</p>
+                            <ul>
+                                <li>A pod consists of instances of one or more containers.</li>
+                                <li>Pods are the atomic unit of Kubernetes.</li>
+                                <li>Each pod runs on a Node.</li>
+                                <li>Pods are mortal; they have a lifecycle.</li>
+                            </ul>     
+                                                    
+                            
+                            <a name="nodes"></a>
+                            <h2 class="section-heading">Nodes in Kubernetes</h2>
+                            <p>Nodes have three components: Kubelet, Docker, and pods.</p>
+                            <p>We already know what Docker is. The pod would be our 'dockerized' app, and Kubelet is the manager within the node.</p>
+                            <div class="containerK8" >
+                                <img  src="/img/k8-imgs/nodes.svg">
+                            </div>
+
+
+                            <a name="deployments"> </a>
+                            <h2 class="section-heading">Deployments</h2>
+                            <p>A deployment is a rollout of our app. It is when our app goes live and becomes visible to the rest of the homo sapiens (or other thinking species, if they exist).</p>
+                            
+                            <a name="control-plane"> </a>
+                            <h2 class="section-heading">Control plane</h2>
+                            <p>It is nodes with the function of handle all the cluster: 
+                                <p>Planned maintenance, updates, scaling applications, etc.</p>
+                                <p>In other words, the brain behind the slave nodes that run the app.</p>
+                            <div class="containerK8">
+                                <img src="/img/k8-imgs/controlPlane.svg">
+                            </div>
+
+                            <a name="etcd"></a>
+                            <h2 class="section-heading">ETCD</h2>
+                            <p>They are configuration nodes that ensure consistency in the service. They are key:value pairs that, when you contract a service like Google Cloud, OpenShift (Red Hat), or Digital Ocean, you don't see the etcd; they manage it.</p>
+                            
+                            <a name="services"></a>
+                            <h2 class="section-heading">Services</h2>
+                            <p>In Kubernetes, pods are not visible from outside the cluster. Services are what expose them to the outside world. For example: A service that exposes our 3 instances of our website (our cluster) to the outside world. They are the End Points to the external world.</p>
+                            <p>A service is a Kubernetes abstraction that defines a set of pods and policies on how to access them. They are defined in YAML or JSON.</p>
+                            <div class="containerK8">
+                                <img src="/img/k8-imgs/services.png">
+                            </div>
+
+                            <a name="minikube"></a>
+                            <h2 class="section-heading">Minikube</h2>
+                            <p>A lightweight virtual machine for local testing (for production, use cloud-hosted computers).</p>
+                            <p>It is the free tool we will use for our practice sessions in our course.</p>
+
+                           
+                            
+                            <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-minikube-en#arriba">Next &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-concepts#arriba">go up &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-introduction#arriba"> &larr; Previus</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../../plantillas/en/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../../plantillas/pies.ejs') %>
+
+             

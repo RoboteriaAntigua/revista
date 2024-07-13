@@ -1,0 +1,223 @@
+<%- include('../../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="practica de Kubernetes con minikube en español">
+    <title> Kubernetes practice (Minikube)</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../../plantillas/en/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header" style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;" >
+                <div class="container"> 
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" >
+                                <h1>First Kubernetes practice from scratch</h1>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../../plantillas/en/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                            <a name="arriba"></a>
+                            
+                            <h2 class="section-heading">Minikube:</h2>
+                            <p> A lightweight virtual machine for local testing (for production use cloud-hosted computers)
+                            
+                                It is the free tool that we will use for our practices in our course </p>
+                            <p>
+                            
+                            <h3>Review:</h3>
+                            <br> 
+                            Each node has: <br>
+                            <ul>
+                                <li>A kubelet (to communicate with the control plane)</li>
+                                <li>A container runtime (docker)</li>
+                                <li>pods</li>
+                            </ul><br>
+                                                                    
+                            Each pod has:<br>
+                            <ul>
+                                <li>One or more containerized applications (own app + images + volume)</li>
+                                <li>A lifecycle.</li>
+                                <li>A volume (to persist data)</li>
+                            </ul><br>
+                            
+                            A Kubernetes cluster has:              
+                            <ul>
+                                <li>nodes</li>
+                                <li>control plane</li>
+                            </ul>     <br>    
+                            
+                            <h3>Example running an app in minikube</h3>
+
+                            <p>Let's start the Docker Daemon:</p>
+
+                              
+                            <pre  >systemctl start docker </pre></button>
+                            <style>pre {
+                                cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+                                padding: 10px;
+                                margin-bottom: 10px;
+                              }</style>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+  // Select all <pre> elements
+  const preElements = document.querySelectorAll('pre');
+
+  // Attach click event listener to each <pre> element
+  preElements.forEach(pre => {
+    pre.addEventListener('click', function() {
+      // Create a textarea element to hold the text to copy
+      const textarea = document.createElement('textarea');
+      textarea.value = this.textContent; // Assign the content of <pre> to textarea
+
+      // Append textarea to the document
+      document.body.appendChild(textarea);
+
+      // Select the content of the textarea
+      textarea.select();
+      textarea.setSelectionRange(0, textarea.value.length);
+
+      // Copy the selected text to the clipboard
+      document.execCommand('copy');
+
+      // Remove the textarea from the document
+      document.body.removeChild(textarea);
+
+
+      // Create feedback message element
+      const feedbackMessage = document.createElement('span');
+      feedbackMessage.textContent = '(Copied to clipboard!)';
+      feedbackMessage.style.padding = '15px';
+      feedbackMessage.style.color="white";
+
+
+      // Append feedback message to <pre> element
+      this.appendChild(feedbackMessage);
+
+      });
+ 
+
+  });
+});
+                            </script>
+                            
+                            <p>Before proceeding, please ensure Minikube and Kubectl is installed: </p>  
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/">    Kubectl Instalation on macOs &rarr;</a> <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">    Kubectl Instalation on Linux &rarr;</a>    <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/">  Kubectl Instalation on Windows &rarr;</a> <br>
+                            <p><a href="https://minikube.sigs.k8s.io/docs/start/">Minikube instalation &rarr;</a><br></p>
+                            
+                            <p>Now, let's run Minikube for local testing in Kubernetes:</p>
+                            <pre>minikube start (it installs and configures kubectl for the first time)</pre>
+
+                            <p>We'll create a deployment that runs a web server:</p>
+                            <pre>kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080</pre>
+
+                            <blockquote>What we just did is download an existing image (hello-node) provided by Google and Kubernetes, and deploy it locally. In the future, you will create your own image with your application.</blockquote>
+
+                            <span>Don't try to understand everything in detail right now; let's continue practicing:</span>
+
+
+                            <p>We'll see the deployments:</p>
+                            <pre>kubectl get deployments </pre>
+<pre>
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+hello-node   1/1     1            1           13m
+</pre>
+
+<p> the pods:</p>
+<pre>  kubectl get pods 
+NAME                          READY   STATUS    RESTARTS   AGE  
+hello-node-7b87cd5f68-vnrr6   1/1     Running   0          11m  
+</pre> 
+<p>To view cluster events:</p>
+<pre>kubectl get events</pre>
+
+<p>To see the current kubectl configuration:</p>
+<pre>kubectl config view</pre>
+
+<p>To delete a deployment:</p>
+<pre>kubectl delete -n default deployment hello-node</pre>
+
+<h2 class="section-heading">Running the app hello-node and viewing it in the browser:</h2>
+
+<p>Once again, we'll create a deployment:</p>
+
+                                <pre>kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080</pre>
+
+
+                                <p>By default, pods are accessible only inside the Kubernetes cluster. To make them accessible outside the cluster, 
+                                    you need to expose the deployment using something called a 'Service':</p>
+                                 
+                                 <pre>kubectl expose deployment hello-node --port=8080 --type=LoadBalancer</pre>
+                                 
+                                 <blockquote>The --type=LoadBalancer option sets up a load balancer for web traffic. It distributes HTTP requests 
+                                             among our workers, in this case, a single pod.</blockquote>
+                                 
+                                 <p>Now, let's view the services:</p>
+                                 <pre>kubectl get services</pre>
+                                 
+                                 <p>Let's use the service. (In this example with Minikube, it works differently than with a cloud provider.)</p>
+                                 
+                                <pre>minikube service hello-node</pre>
+<pre>
+|-----------|------------|-------------|---------------------------|
+| NAMESPACE |    NAME    | TARGET PORT |            URL            |
+|-----------|------------|-------------|---------------------------|
+| default   | hello-node |        8080 | http://192.168.49.2:31800 |
+|-----------|------------|-------------|---------------------------|
+🎉  Opening service default/hello-node in default browser... 
+</pre>
+<p>Open your browser, and that's it! Congratulations, you've taken your first steps in Kubernetes. 
+    Keep moving forward with the right guidance.</p>
+ 
+ <p>Always remember to clean up:</p>
+ <pre>
+ kubectl delete service hello-node      # Delete the service
+ kubectl delete deployment hello-node   # Delete the deployment
+ minikube stop                          # Stop Minikube
+ </pre>
+ 
+                                    <!-- Pager -->
+                             <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-services-en#arriba">Next &rarr;</a>
+                                </li>
+                                <li class="arriba">
+                                    <a href="/kubernetes-minikube-en#arriba">To up &uArr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/kubernetes-concepts#arriba"> Previous</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        
+                        <%- include('../../../plantillas/en/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../../plantillas/pies.ejs') %>
+
+           

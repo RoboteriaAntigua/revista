@@ -1,0 +1,90 @@
+<%- include('../../../plantillas/cabecera.ejs') %>
+
+    <meta name="description" content="Free course of Kubernetes">
+    <title> Kubernetes introduction</title>
+    </head>
+
+    <body>
+
+        <!--navbar-->
+        <%- include('../../../plantillas/en/navbar.ejs') %>
+
+            <!-- Page Header -->
+            <!-- Sin imagen de fondo por ahora -->
+            <header class="intro-header"  style="background-image: url('img/barrio-anime.jpeg'); text-shadow: 1px 0px black;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                            <div class="post-heading" >
+                                <h1>Kubernetes full course</h1>
+                                <span class="meta">free full course</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Post Content -->
+            <article>
+                <!-- Main Content -->
+                <div class="flecha">
+
+                    <!--acordeon articulos/barra lateral-->
+                    <%- include('../../../plantillas/en/acordeon_cursos_k8.ejs') %>
+
+                        <div class="principal">
+                           <a name="arriba"></a>
+                            <h2 class="section-heading">Introduction to the course</h2>
+                            <p>This course, in addition to being completely free, includes exercises in every module, which are conducted using free tools available to you on the web.</p>
+<p>On your left (or above on mobile devices), you will see a panel with the course index, which, as you can see, is quite comprehensive.</p>
+<p>On your right, there is a general site panel for Old Robotics Workshop (at the bottom on mobile devices).</p>
+<p>The teaching method applied is of approximations, meaning we will make 'passes' that go over the surface of the concepts, then repeat the passes adding more details. For this reason, we suggest you keep going when you don't understand something; continue, as it will become clear with practice.</p>
+<blockquote>On the official Kubernetes site, I found this message: "The Kubernetes Project wishes to thank O'Reilly Media for the many years it has supported the community via the Katacoda learning platform." However, the tutorials have not been available since March 31, 2023. This inspired me to offer this course, which is based on the original.</blockquote>
+                            
+<h2 class="section-heading">Prior Knowledge</h2>
+<p>Some minimal knowledge of Dockers and a bit of Linux will be necessary for this course.</p>
+<h2 class="section-heading">What is Kubernetes?</h2>
+<p>Kubernetes is a container orchestrator. That's the definition, though it doesn't say much.</p>
+<p>Let's say it's a program that ensures a server is always 'up.' Even when it is updating, restarting, under heavy load (overloaded with requests), and even when the server has a fatal problem.</p>
+<p>For example, web servers, databases, APIs, etc.</p>
+<h3>How does it do it?</h3>
+<p>When a website has 5 million users connected (or 50 million), no server can handle it, no matter how much memory and processing power it has. What Kubernetes does is create many (or as many as needed) mini servers to meet the demand. So, the task of Kubernetes is to manage this cluster of virtual computers.</p>
+<p>Thus, we can say that <b>Kubernetes creates instances of Docker containers running an app, a database, or the necessary service</b>.</p>
+<p>When one of these instances fails, it redirects the traffic to another. When it needs to update, it creates new instances, updates them, and then deletes the outdated instances, thus always providing what is called 'high availability service.'</p>
+<p>Kubernetes was created at the heart of Google, and this is the reason why the Google search engine has remained 'up' for the past 30 years.</p>
+
+                            <blockquote> El nombre Kubernetes hace referencia a StarTreck y una raza alienígena llamada los Borg, los cuales tenían naves espaciales en forma de cubos, y la característica de auto-replicarse por toda la galaxia.</blockquote>
+                            <p> En la siguiente sección veremos algunos conceptos fundacionales para entender bien de que estamos hablando. Ahora empecemos por instalar las herramientas necesarias.</p>
+
+                            <h2 class="section-heading">Instalation</h2>
+                            <p>It involves installing the kubectl tool, which will allow us to access all the Kubernetes resources.</p>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/">Instalation on macOs &rarr;</a> <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/">Instalation on Linux &rarr;</a>    <br>
+                            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/">Instalation on Windows &rarr;</a> <br>
+
+                            <p>And the minikube tool, which will allow us to perform local tests.</p>
+                            <a href="https://minikube.sigs.k8s.io/docs/start/">Minikube instalation &rarr;</a><br><br>
+                            <blockquote>We do not recommend installing by following any source other than the official Kubernetes page, because it gets updated frequently, while posts and courses do not get updated as often (sometimes never).</blockquote>
+
+                            <!-- Pager -->
+                            <ul class="pager">
+                                <li class="next">
+                                    <a href="/kubernetes-concepts">Next &rarr;</a>
+                                </li>
+                                <li class="next">
+                                    <a href="/"> Home</a>
+                                </li> 
+                            </ul>
+                        </div>
+
+                        <!--Columna derecha reservada para algo-->
+                        <%- include('../../../plantillas/acordeon_articulos.ejs') %>
+                </div>
+            </article>
+
+            <hr>
+
+            <!--footer-->
+            <%- include('../../../plantillas/pies.ejs') %>
+
+             
