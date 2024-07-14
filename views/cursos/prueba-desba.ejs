@@ -37,31 +37,119 @@
 
                         <div class="principal">
 
-                            <div class="text-center" style="border: 2px solid #28435a; border-radius: 10px; padding: 20px;">
-                                <h2 class="section-heading"> Drag and Drop</h2>
+                            <div class="box text-center">
 
                                 <div style="margin-top:50px;  padding:10px;">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <h4 class="text-center" style=" margin-bottom:20px;">Alumnos encontrados
                                             </h4>
-                                            <div class="dropzone well well-sm text-center"
-                                                style="background-color: #121920; border: 1px dashed #6c757d; border-radius: 10px; padding:20px;">
-                                                <li id="student1" class="draggable btn btn-block"
-                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
-                                                    draggable="true">George R. Martin</li><br>
-                                                <li id="student2" class="draggable btn btn-block"
-                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
-                                                    draggable="true">J.R.R. Tolkien</li><br>
+                                            <div class="dropzoneContainer well well-sm text-center">
+                                                <div class="dropzone draggAndDrop">
+                                                    <p style="margin-top: 10px;">Arrastra aqui</p>
+                                                    <li id="student1" class="draggable btn btn-block" draggable="true">
+                                                        George R. Martin</li>
+                                                    <li id="student2" class="draggable btn btn-block" draggable="true">
+                                                        J.R.R. Tolkien</li>
+                                                    <li id="student3" class="draggable btn btn-block" draggable="true">
+                                                        Karl Sagan</li>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="col-md-5 col-md-offset-1">
                                             <h4 class="text-center" style=" margin-bottom:20px;">Alumnos asignados</h4>
-                                            <div class="dropzone well well-sm text-center"
-                                                style="background-color: #121920; border: 1px dashed #6c757d; border-radius: 10px; padding:20px;">
-                                                <li id="student3" class="draggable btn btn-block"
-                                                    style=" border-radius: 10px; border: 2px solid rgb(103, 103, 141); "
-                                                    draggable="true">Karl Sagan</li><br>
+                                            <div class="dropzoneContainer well well-sm text-center">
+                                                <div class=" dropzone draggAndDrop">
+                                                    <p style="margin-top: 10px;">Arrastra aqui</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container">
+                                    <div class="panel-group" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1"
+                                                        class="btn btn-block">Ficha de alumno</a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse1" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                    <form>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="esAlumno" style="margin-right:10px;">
+                                                                        Es Alumno</label>
+                                                                    <input id="esAlumno" type="checkbox" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="coberturaMedica">Cobertura
+                                                                        Médica</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="coberturaMedica">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="bajoTratamiento"
+                                                                        style="margin-right:10px;">Bajo
+                                                                        Tratamiento</label>
+                                                                    <input id="bajoTratamiento" type="checkbox">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="tratamiento"
+                                                                        id="tratamientoLabel">Especifique
+                                                                        Tratamiento</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="tratamiento">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="colegioAnterior">Colegio
+                                                                        Anterior</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="colegioAnterior">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="fechaIngreso">Fecha de Ingreso</label>
+                                                                    <input type="date" class="form-control datepicker"
+                                                                        id="fechaIngreso">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="padece" id="padeceLabel"
+                                                                        style="margin-right:10px;"> ¿Padece Alguna
+                                                                        Enfermedad?</label>
+                                                                    <input type="checkbox" id="padece">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="enfermedad"
+                                                                        id="enfermedadLabel">Especifique
+                                                                        Enfermedad</label>
+                                                                    <input type="text" class="form-control"
+                                                                        id="enfermedad">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label>¿Puede Tomar Paracetamol?</label><br>
+                                                                    <label class="radio-inline"><input type="radio"
+                                                                            name="paracetamol" value="no sabe"> No
+                                                                        Sabe</label>
+                                                                    <label class="radio-inline"><input type="radio"
+                                                                            name="paracetamol" value="si puede"> Sí
+                                                                        Puede</label>
+                                                                    <label class="radio-inline"><input type="radio"
+                                                                            name="paracetamol" value="no puede"> No
+                                                                        Puede</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -70,8 +158,12 @@
                                     <button class="btn-cancel">Cancelar</button>
                                     <button class="btn-save">Guardar</butto>
                                 </ul>
-
                             </div>
+                            <br>
+
+
+
+
 
                         </div>
                         <!--Columna derecha reservada para algo-->
@@ -82,6 +174,39 @@
             <hr>
 
             <style>
+                input {
+                    top: 20%;
+                }
+
+                .draggAndDrop {
+                    border: 2px dotted #28435a;
+                    color: #28435a;
+                    min-height: 100px;
+                    z-index: -1;
+                    padding: 10px;
+                }
+
+                .box {
+                    border: 2px solid #28435a;
+                    border-radius: 10px;
+                    padding: 20px;
+                }
+
+                .draggable {
+                    border-radius: 10px;
+                    border: 2px solid rgb(103, 103, 141);
+                }
+
+
+
+                .dropzoneContainer {
+                    background-color: #121920;
+                    border: 1px dashed #6c757d;
+                    border-radius: 10px;
+                    padding: 20px;
+
+                }
+
                 .btn-save {
                     font-family: sans-serif;
                     font-size: 14px;
@@ -118,6 +243,27 @@
                     border: 1px solid rgb(245, 124, 67);
 
                 }
+
+                .panel-default {
+                    background-color: #121920;
+                    border-color: #0085A1;
+                }
+
+                .panel-default>.panel-heading {
+                    background-color: #121920;
+                    border-color: #0085A1;
+                }
+
+                .form-control {
+                    background-color: #121920;
+                    border: 2px solid rgb(103, 103, 141);
+                    color: rgb(229, 230, 199);
+                }
+
+                .heading {
+                    border: 1px solid rgb(103, 103, 141);
+                    color: rgb(229, 230, 199);
+                }
             </style>
 
             <script>
@@ -134,6 +280,7 @@
                     draggable.addEventListener('dragend', function () {
                         draggable.style.opacity = '1';
                     });
+
                 });
 
                 dropzones.forEach(dropzone => {
@@ -154,6 +301,41 @@
                         dropzone.classList.remove('hover');
                     });
                 });
+
+                //Formulario
+                const bajoTratamiento = document.getElementById("bajoTratamiento");
+                const tratamiento = document.getElementById("tratamiento");
+                const tratamientoLabel = document.getElementById("tratamientoLabel");
+                const padece = document.getElementById("padece");
+                const enfermedad = document.getElementById("enfermedad");
+                const enfermedadLabel = document.getElementById("enfermedadLabel");
+
+                tratamiento.classList.add('hidden');
+                tratamientoLabel.classList.add('hidden');
+
+                enfermedad.classList.add('hidden');
+                enfermedadLabel.classList.add('hidden');
+
+                bajoTratamiento.addEventListener('change', function (event) {
+                    if (bajoTratamiento.checked) {
+                        tratamiento.classList.remove('hidden');
+                        tratamientoLabel.classList.remove('hidden');
+                    } else {
+                        tratamiento.classList.add('hidden');
+                        tratamientoLabel.classList.add('hidden');
+                    }
+                });
+
+                padece.addEventListener('change', function (event) {
+                    if (padece.checked) {
+                        enfermedad.classList.remove('hidden');
+                        enfermedadLabel.classList.remove('hidden');
+                    } else {
+                        enfermedad.classList.add('hidden');
+                        enfermedadLabel.classList.add('hidden');
+                    }
+                })
+
 
             </script>
 
